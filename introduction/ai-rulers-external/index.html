@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-themes="tokyo-night,dracula,catppuccin-mocha,nord,corporate-clean">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>给 AI 编程助手装上"护栏" · Rulers Template</title>
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/themes/tokyo-night.css">
+<link rel="stylesheet" href="../../assets/animations/animations.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="tpl-presenter-mode-reveal">
+<div class="deck">
+
+  <!-- ============ 1. COVER ============ -->
+  <section class="slide" data-title="Cover">
+    <p class="kicker">开源项目 · 技术分享</p>
+    <h1 class="h1 anim-fade-up" data-anim="fade-up">给 AI 编程助手装上<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">"护栏"</span></h1>
+    <p class="lede mt-m">Rulers Template — 让你的 AI 写代码更安全、更一致、更可预测</p>
+    <div class="row wrap mt-l">
+      <span class="pill pill-accent">v1.0.0</span>
+      <span class="pill">Claude Code</span>
+      <span class="pill">Cursor</span>
+      <span class="pill">GitHub Copilot</span>
+    </div>
+    <div class="speaker">
+      <div class="av"></div>
+      <div><b>@AndersJet</b><span>开源分享 · 15–20 min</span></div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">#ai-rulers #opensource #devtools</span>
+      <span class="slide-number" data-current="1" data-total="14"></span>
+    </div>
+    <aside class="notes">
+      <p>大家好，今天给大家介绍一个开源项目——Rulers Template。</p>
+      <p>一句话概括：它是<strong>给 AI 编程助手装上的"交通护栏"</strong>。如果你在用 Cursor、Copilot 或 Claude Code 写代码，这个项目能让 AI 的输出<strong>更安全、更一致、更符合你的项目规范</strong>。</p>
+      <p>我自己在用 AI 写代码的过程中踩过很多坑——AI 擅自改认证逻辑、每次输出的代码风格不一样、同一个需求我和同事的 AI 给出了完全不同的方案。这些问题的根源不是 AI 不够聪明，而是它<em>缺少边界</em>。</p>
+      <p>今天大概花 15 到 20 分钟，先聊痛点，再讲方案，最后告诉大家怎么三分钟上手。有问题随时打断。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 2. PAIN POINTS ============ -->
+  <section class="slide" data-title="Pain Points">
+    <p class="kicker">// part 01 · 痛点</p>
+    <h2 class="h2">你遇到过这些问题吗？</h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>🎲 风格随机</h4>
+        <p class="dim">AI 这次写的代码风格，和上次完全不同——命名、缩进、错误处理全都不一样。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔓 越权操作</h4>
+        <p class="dim">AI 擅自改了认证逻辑，你 review 时吓出一身冷汗——它甚至没提醒你这是高风险改动。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🗄️ 数据风险</h4>
+        <p class="dim">AI 直接删了数据库字段，没提醒你备份，也没给 rollback 脚本。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔄 输出不一致</h4>
+        <p class="dim">同一个需求，你和同事的 AI 给出了完全不同的实现方案——规范在哪？</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>我相信用 AI 写代码的朋友都遇到过这四种情况。</p>
+      <p><strong>第一个，风格随机</strong>。同一个项目，今天和明天生成的代码风格完全不同——命名方式变了、缩进变了、错误处理模式变了。每次 code review 都在修风格问题。</p>
+      <p><strong>第二个，越权操作</strong>。AI 擅自改了认证逻辑，review 的时候吓出一身冷汗——它甚至不提醒你"兄弟，这是高风险改动"。</p>
+      <p><strong>第三个，数据风险</strong>。AI 直接生成 DROP COLUMN 语句，不提醒备份，不给 rollback。如果没仔细看就直接执行了，后果真的不堪设想。</p>
+      <p><strong>第四个，输出不一致</strong>。你和同事都给 AI 同一个需求，结果两个人拿到了完全不同的实现方案——一个用 ORM，一个写原生 SQL——团队规范形同虚设。</p>
+      <p>这些问题的<em>根源</em>是什么？不是 AI 不够聪明——而是它<strong>缺少边界</strong>。下一页展开讲。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3. ROOT CAUSE ============ -->
+  <section class="slide" data-title="Root Cause">
+    <p class="kicker">// part 01 · 根源</p>
+    <h2 class="h2">AI 越强大，<span class="accent">边界越重要</span></h2>
+    <p class="lede">AI 编码助手本质上是通用工具——它不了解你项目的特定约束。</p>
+    <div class="grid g2 mt-l">
+      <div class="feature-row"><span class="num blue">①</span><div><b>上下文窗口有限</b><p class="dim">AI 一次只能"看到"一小部分代码，不了解你的项目全貌和架构决策。</p></div></div>
+      <div class="feature-row"><span class="num green">②</span><div><b>会话独立无记忆</b><p class="dim">每次新会话都是"重新认识"你的项目，上次的约定全部丢失。</p></div></div>
+      <div class="feature-row"><span class="num orange">③</span><div><b>通用训练数据</b><p class="dim">训练数据来自互联网，不包含你项目的编码规范、技术选型和业务约束。</p></div></div>
+      <div class="feature-row"><span class="num purple">④</span><div><b>无安全感知</b><p class="dim">AI 不知道哪些操作是"禁区"——它不会区分开发环境和生产环境的风险。</p></div></div>
+    </div>
+    <aside class="notes">
+      <p>AI 编码助手本质上是通用工具，它不了解你项目的特定约束。四个原因。</p>
+      <p><strong>第一，上下文窗口有限</strong>。AI 一次只能看一小部分代码，不了解项目全貌。你的架构决策、技术债务、历史原因——它都不知道。</p>
+      <p><strong>第二，会话完全独立</strong>。每次开新会话，AI 就是"重新认识"你的项目。上一次你花半小时教它的约定，全没了。</p>
+      <p><strong>第三，通用训练数据</strong>。AI 学的是互联网上的代码，不包含你项目的编码规范。它不知道你们团队决定用 class-validator 而不是 Joi，不知道你们 API 返回格式统一是 <code>{code, data, message}</code>。</p>
+      <p><strong>第四，没有安全感知</strong>。AI 分不清开发环境还是生产环境。对它来说，改一个 CSS 颜色和删一个数据库字段——都是"修改文件"。</p>
+      <p>所以我们需要的方案很明确：<strong>给 AI 一套项目专属的规则手册</strong>——不是限制它，而是保护它不犯错。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 4. THREE STAGES ============ -->
+  <section class="slide" data-title="Evolution">
+    <p class="kicker">// part 01 · 行业演进</p>
+    <h2 class="h2">行业走过的<span class="accent">三个阶段</span></h2>
+    <div class="grid g3 mt-l">
+      <div class="card" style="border-top:3px solid var(--bad)">
+        <h4>阶段 A · 无规则</h4>
+        <p style="font-size:24px;margin:8px 0">😱</p>
+        <p class="dim"><b>vibe coding</b><br>快但不可控<br>质量全靠个人运气</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--warn)">
+        <h4>阶段 B · 大文件</h4>
+        <p style="font-size:24px;margin:8px 0">😓</p>
+        <p class="dim"><b>一个巨大的 AGENTS.md</b><br>有规范但难维护<br>重要规则被噪声淹没</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--good)">
+        <h4>阶段 C · 结构化</h4>
+        <p style="font-size:24px;margin:8px 0">😎</p>
+        <p class="dim"><b>目录索引 + 渐进式加载</b><br>精准且可规模化<br>最小必要规则集</p>
+      </div>
+    </div>
+    <p class="lede mt-m tc">Rulers Template 就是<strong>阶段 C</strong> 的开源实现。</p>
+    <aside class="notes">
+      <p>行业在 AI 编码规范这件事上，大致经历了三个阶段。</p>
+      <p><strong>阶段 A——无规则 vibe coding</strong>。一开始大家都没规则，靠个人提示词能力。很快，但质量完全不可控。一个人能驾驭，一个团队就乱了。</p>
+      <p><strong>阶段 B——大 AGENTS.md 单文件</strong>。有人开始写一个巨大的 AGENTS.md，所有规则全塞进去。有了规范，但文件越来越长，重要规则被噪声淹没。改一处可能影响全局。</p>
+      <p><strong>阶段 C——目录索引 + 渐进式加载</strong>。这是当前的最佳实践：把规则按领域拆成目录结构，AI 只加载当前任务需要的规则。后端任务不加载前端规则，数据库 migration 不加载 CSS 规范。</p>
+      <p><strong>Rulers Template 就是阶段 C 的开源实现</strong>。它提供了一套完整的模板和自动化工具，让你几分钟内就能从阶段 A 跨到阶段 C。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 5. WHAT IS RULERS ============ -->
+  <section class="slide" data-title="What is Rulers">
+    <p class="kicker">// part 02 · 方案</p>
+    <h2 class="h2">Rulers Template —<br>项目<span class="accent">专属</span>规则手册</h2>
+    <div class="flow anim-stagger-list mt-l" data-anim-target style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center">
+      <div class="node" style="flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:28px;margin-bottom:4px">📂</div><h4 style="font-size:14px">你的代码库</h4><p style="font-size:11px;color:var(--text-3)">项目真实文件</p></div>
+      <div class="arr" style="color:var(--text-3);font-size:24px;flex-shrink:0">→</div>
+      <div class="node hl" style="flex:1;min-width:140px;background:var(--surface);border:1px solid var(--accent);border-radius:var(--radius);padding:18px;text-align:center;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent),var(--shadow)"><div style="font-size:28px;margin-bottom:4px">🔍</div><h4 style="font-size:14px">AI 九维扫描</h4><p style="font-size:11px;color:var(--text-3)">自动发现</p></div>
+      <div class="arr" style="color:var(--text-3);font-size:24px;flex-shrink:0">→</div>
+      <div class="node" style="flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:28px;margin-bottom:4px">📋</div><h4 style="font-size:14px">项目画像</h4><p style="font-size:11px;color:var(--text-3)">已确认事实</p></div>
+      <div class="arr" style="color:var(--text-3);font-size:24px;flex-shrink:0">→</div>
+      <div class="node" style="flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:28px;margin-bottom:4px">📦</div><h4 style="font-size:14px">领域规则</h4><p style="font-size:11px;color:var(--text-3)">backend / db / frontend</p></div>
+      <div class="arr" style="color:var(--text-3);font-size:24px;flex-shrink:0">→</div>
+      <div class="node" style="flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:28px;margin-bottom:4px">✅</div><h4 style="font-size:14px">审阅激活</h4><p style="font-size:11px;color:var(--text-3)">逐级解锁</p></div>
+    </div>
+    <p class="lede mt-l tc">每次 AI 会话自动遵循——<strong>不用再重复告诉 AI 你的项目规范</strong>。</p>
+    <aside class="notes">
+      <p>Rulers Template 的工作方式用一张流程图就能讲清楚。</p>
+      <p>你的项目代码库是起点——真实的文件、配置、目录结构。AI 对你的项目做<strong>九维度自动扫描</strong>——技术栈、安全模型、数据库、CI/CD、命令等等。</p>
+      <p>扫描完成后生成<strong>PROJECT_PROFILE.md</strong>——这是一份项目画像，记录已确认的事实："这个项目用 Express + TypeORM"、"数据库是 PostgreSQL"、"CI 用 GitHub Actions"。</p>
+      <p>然后基于画像，<strong>为每个领域生成专属规则</strong>——backend 有 API 设计和数据访问规范，database 有 migration 和备份规范，frontend 有组件和样式规范。</p>
+      <p>最后一步是<strong>人工审阅激活</strong>——不是生成完就全生效，而是你逐级审阅、逐级解锁。这个安全机制下一张片子细讲。</p>
+      <p>最重要的是：<em>初始化完成之后，每次 AI 会话自动遵循这些规则</em>。你不需要再说"注意安全""注意风格"——规则帮你说了。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 6. FOUR PRINCIPLES ============ -->
+  <section class="slide" data-title="Principles">
+    <p class="kicker">// part 02 · 设计原则</p>
+    <h2 class="h2">不是"更多规则"，<br>而是<span class="accent">更聪明的规则</span></h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>🔍 证据驱动</h4>
+        <p class="dim">规则基于项目真实的文件、配置和命令生成——<strong>绝不编造</strong>。每条规则都有据可查。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>⚡ 渐进加载</h4>
+        <p class="dim">AI 只加载<strong>当前任务相关</strong>的规则，不浪费宝贵的上下文窗口。后端任务不加载前端规则。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔒 激活门禁</h4>
+        <p class="dim">四级安全等级，规则<strong>未经人工审阅</strong>不能执行危险操作。给 AI 装上权限系统。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🧭 领域路由</h4>
+        <p class="dim">后端、数据库、前端——每个领域有<strong>独立的约束集</strong>，互不干扰，各管各的。</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>四个核心设计理念，每个都围绕一个关键问题。</p>
+      <p><strong>证据驱动</strong>——你肯定见过那种"AI 编码规范大全"的博客，写了几十条规则但跟你的项目没关系。Rulers 不一样——规则基于你项目的真实代码生成，绝不编造。文件说用 Express，规则就写 Express；配置里是 PostgreSQL，规则就写 PostgreSQL。</p>
+      <p><strong>渐进加载</strong>——AI 不会一口气加载所有规则。上下文窗口是稀缺资源，我们只加载当前任务需要的。做后端接口只加载 backend 规则，做数据库 migration 只加载 database 规则。</p>
+      <p><strong>激活门禁</strong>——这个最重要。不是生成完就全放开，而是有四级安全等级。高风险操作必须人工审阅后才能执行。</p>
+      <p><strong>领域路由</strong>——后端、数据库、前端各有各的约束，互不干扰。每个领域有独立的 INDEX.md 作为索引。</p>
+      <p>这四个原则加起来，让 Rulers 不是一个"规则大全"，而是一个<strong>规则系统</strong>。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 7. ACTIVATION LEVELS ============ -->
+  <section class="slide" data-title="Activation Levels">
+    <p class="kicker">// part 02 · 安全兜底</p>
+    <h2 class="h2">给 AI 装上<span class="accent">权限系统</span></h2>
+    <p class="lede">四级激活门禁——不是一开始就全放开</p>
+    <div class="stack mt-l">
+      <div class="rule-row">
+        <span class="num" style="color:var(--text-3)">L0</span>
+        <div><b>模板已部署</b><p class="dim">仅项目发现——AI <strong>只能看，不能动</strong>。你需要确认项目目录名。</p></div>
+      </div>
+      <div class="rule-row">
+        <span class="num" style="color:var(--accent-2)">L1</span>
+        <div><b>项目画像已审阅</b><p class="dim">允许只读分析、低风险文档、小型本地修复。你需要审阅 PROJECT_PROFILE.md。</p></div>
+      </div>
+      <div class="rule-row">
+        <span class="num" style="color:var(--accent)">L2</span>
+        <div><b>领域规则已审阅</b><p class="dim">允许在已激活领域内开发。<strong>认证/安全变更、数据库 migration 至少需此级。</strong></p></div>
+      </div>
+      <div class="rule-row">
+        <span class="num" style="color:var(--good)">L3</span>
+        <div><b>发布门禁已审阅</b><p class="dim">允许有生产影响的工作。<strong>CI/CD 变更必须到此级。</strong></p></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>四级激活门禁是 Rulers 最重要的安全机制。一句话概括：<strong>不是生成完就全放开，而是逐级解锁</strong>。</p>
+      <p><strong>Level 0——模板刚放进来</strong>。AI 只能做项目发现，不能改任何代码。你想让它写代码？不行，先升级。</p>
+      <p><strong>Level 1——项目画像已审阅</strong>。你看过了 PROJECT_PROFILE.md，确认里面的技术栈、命令、项目事实都是对的。这时候 AI 可以做简单的只读分析和文档工作了。</p>
+      <p><strong>Level 2——领域规则已审阅</strong>。这是大部分日常开发所在的等级。你审阅了对应领域的规则，AI 可以在那个领域内开发。注意：<em>认证变更、数据库 migration 这些高风险操作，最低要求就是 Level 2</em>。</p>
+      <p><strong>Level 3——发布门禁已审阅</strong>。CI/CD 部署相关的变更必须到这个等级。这是生产环境的最后一道防线。</p>
+      <p>这个设计相当于给 AI 装了一个<strong>权限系统</strong>——不是什么都能碰，什么操作需要什么等级，明明白白。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 8. QUICK START ============ -->
+  <section class="slide" data-title="Quick Start">
+    <p class="kicker">// part 03 · 上手</p>
+    <h2 class="h2">从零到可用，只需<span class="accent">一句话</span></h2>
+    <div class="code-block mt-l">
+<span class="comment"># 1. 安装 skill（一次性，30 秒）</span>
+<span class="cmd">cp -r</span> ai-rulers-template/skills/ai-rulers-init/ <span class="flag">~/.claude/skills/</span>
+
+<span class="comment"># 2. 在项目中，对 AI 说出那句魔法指令：</span>
+<span class="flag">"使用 ai-rulers-init skill，帮我初始化 AI rulers"</span>
+
+<span class="comment"># AI 自动完成：</span>
+<span class="comment">#  扫描项目 → 生成画像 → 生成规则 → 校验 → 你审阅激活</span>
+<span class="comment">#              ← 全自动，几分钟内完成 →</span>
+    </div>
+    <p class="lede mt-l tc">两种方式任选：Skill 一键初始化，或手动拷贝模板。</p>
+    <aside class="notes">
+      <p>听起来很复杂？其实上手只需要两件事。</p>
+      <p><strong>第一步</strong>，安装 skill——一条 cp 命令，30 秒。一次安装，所有项目通用。</p>
+      <p><strong>第二步</strong>，打开你的项目，对 AI 说一句："使用 ai-rulers-init skill，帮我初始化 AI rulers"。</p>
+      <p>然后 AI 自动完成一切：扫描项目技术栈、生成项目画像、为每个领域生成规则、跑校验脚本检查完整性。<strong>你只需要做一件事——审阅并确认激活</strong>。</p>
+      <p>整个过程全自动，通常几分钟内完成。不是"下载下来再手动改半天"——是真正的<strong>一键初始化</strong>。</p>
+      <p>如果你不想装 skill，也可以用传统方式：手动拷贝模板目录，然后对 AI 说"加载 AGENTS.md，按初始化流程执行"。两种方式效果一样。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 9. DAILY USE ============ -->
+  <section class="slide" data-title="Daily Use">
+    <p class="kicker">// part 03 · 日常</p>
+    <h2 class="h2">初始化之后——<span class="accent">无感运行</span></h2>
+    <div class="code-block mt-l">
+<span class="comment">你对 AI 说："帮我加一个用户列表接口"</span>
+
+<span class="comment">AI 自动加载规则链：</span>
+<span class="flag">AGENTS.md</span> → <span class="flag">core/*</span> → <span class="flag">PROJECT_PROFILE.md</span> → <span class="flag">backend/INDEX.md</span> → <span class="flag">api-design.md</span>
+
+<span class="comment">AI 输出自动遵循：</span>
+<span class="cmd">✓</span> 命名规范（Controller → Service → Repository）
+<span class="cmd">✓</span> 分页参数命名用 page / page_size
+<span class="cmd">✓</span> 返回格式统一 { code, data, pagination }
+<span class="cmd">✓</span> 输入校验用 class-validator
+<span class="cmd">✓</span> 错误处理用统一异常过滤器
+    </div>
+    <aside class="notes">
+      <p>初始化完成之后，日常使用是<strong>完全无感</strong>的。你不需要每次跟 AI 说"注意风格""注意安全"——规则自动生效。</p>
+      <p>举个实际例子。你对 AI 说"帮我加一个用户列表接口"。AI 自动加载规则链：从 AGENTS.md 入口开始，到 core 全局约束，到 PROJECT_PROFILE 项目画像——知道了你用 Express + TypeORM——再到 backend 领域索引，最后到具体的 api-design 规则。</p>
+      <p>输出的代码<strong>自动遵循你们项目的所有约定</strong>：分层架构是 Controller-Service-Repository、分页参数叫 page 和 page_size、返回格式统一是 <code>{code, data, pagination}</code>、输入校验用 class-validator——全部自动对齐。</p>
+      <p>这就是"护栏"的真正含义——<strong>不是每次都手动提醒 AI，而是规则自动帮你说</strong>。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 10. INDUSTRY EVIDENCE ============ -->
+  <section class="slide" data-title="Evidence">
+    <p class="kicker">// part 04 · 证据</p>
+    <h2 class="h2"><span class="accent">不是一家之言</span></h2>
+    <div class="stack mt-l">
+      <div class="rule-row">
+        <span class="num blue">01</span>
+        <div><b>AGENTS.md 社区标准</b><p class="dim">跨工具上下文规范已成行业趋势。可预测位置 + 就近覆盖 + 可持续维护。</p></div>
+      </div>
+      <div class="rule-row">
+        <span class="num green">02</span>
+        <div><b>arXiv:2601.20404 · AGENTS.md 影响研究</b><p class="dim">在样本中 AGENTS.md 与运行时长、token 消耗下降相关。</p></div>
+      </div>
+      <div class="rule-row">
+        <span class="num orange">03</span>
+        <div><b>arXiv:2511.12884 · Agent READMEs 研究</b><p class="dim">安全/性能约束在标准 AI 配置中覆盖率偏低——这正是 Rulers 专门解决的问题。</p></div>
+      </div>
+      <div class="rule-row">
+        <span class="num purple">04</span>
+        <div><b>Claude Code Best Practices</b><p class="dim">"上下文窗口是稀缺资源"，规则应模块化拆分，不宜塞入单个大文件。</p></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>这个方向不是我们在自说自话。学术界和工业界都在关注。</p>
+      <p><strong>AGENTS.md 已经成为一个跨工具的社区标准</strong>，强调可预测位置、就近覆盖、可持续维护。</p>
+      <p>有一篇今年发表在 arXiv 上的研究（2601.20404），专门分析了 AGENTS.md 的影响——他们发现在样本中，AGENTS.md 的使用与<em>运行时长和 token 消耗下降</em>相关。换句话说，有了规则，AI 反而更高效。</p>
+      <p>另一篇研究（2511.12884）分析了很多 Agent READMEs 文件，发现一个关键问题——<strong>安全约束和性能约束的覆盖率明显偏低</strong>。这正是 Rulers Template 专门解决的：它有专门的 HARD_CONSTRAINTS.md 和安全规则。</p>
+      <p>Claude Code 官方最佳实践也强调：上下文窗口是稀缺资源，规则应该模块化拆分，不要塞进一个大文件——这恰好是 Rulers 的"渐进式加载"理念。</p>
+      <p>所以我们不是拍脑袋做的，是<strong>基于行业趋势和学术证据</strong>。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 11. COMPARISON ============ -->
+  <section class="slide" data-title="Comparison">
+    <p class="kicker">// part 04 · 对比</p>
+    <h2 class="h2">为什么不用 ____ ？</h2>
+    <div class="grid g3 mt-l">
+      <div class="card" style="border-top:3px solid var(--text-3)">
+        <h4>手写 AGENTS.md</h4>
+        <ul style="padding-left:18px;font-size:14px;line-height:2;color:var(--text-2)">
+          <li>人工编写，依赖经验</li>
+          <li>需自行设计领域拆分</li>
+          <li>无安全等级机制</li>
+          <li>无可校验结构</li>
+          <li>跨工具支持部分</li>
+        </ul>
+      </div>
+      <div class="card" style="border-top:3px solid var(--text-3)">
+        <h4>Cursor Rules</h4>
+        <ul style="padding-left:18px;font-size:14px;line-height:2;color:var(--text-2)">
+          <li>人工编写</li>
+          <li>单文件模式</li>
+          <li>无安全等级</li>
+          <li>无自动校验</li>
+          <li>仅 Cursor 可用</li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <h4>✅ Rulers Template</h4>
+        <ul style="padding-left:18px;font-size:14px;line-height:2;color:var(--text-2)">
+          <li><b>AI 扫描项目自动生成</b></li>
+          <li><b>内置 4 大领域 + 可扩展</b></li>
+          <li><b>四级激活门禁</b></li>
+          <li><b>自动校验脚本</b></li>
+          <li><b>Claude Code / Cursor / Copilot</b></li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>和其他方案对比一下，让大家看清楚差异。</p>
+      <p><strong>手写 AGENTS.md</strong>——很多人这么做。问题是高度依赖个人经验，你得知道该写什么、怎么组织。而且随着项目演进，维护成本越来越高。没有安全等级、没有自动校验。</p>
+      <p><strong>Cursor Rules</strong>——只支持 Cursor 一个工具。单文件模式，项目大了之后和阶段 B 的大 AGENTS.md 是同一个问题。也没有安全等级和校验能力。</p>
+      <p><strong>Rulers Template</strong> 的差异化很清晰：AI 自动扫描项目生成——不用你自己想该写什么；内置四大领域加可扩展——结构是现成的；四级激活门禁——安全兜底；自动校验脚本——改了规则跑一下就知道对不对；跨工具通用——Claude Code、Cursor、Copilot 都支持。</p>
+      <p>简单说，手写方案是<strong>"我想好规则再写下来"</strong>，Rulers 是<strong>"AI 帮我发现规则，我审阅确认"</strong>。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 12. FEEDBACK ============ -->
+  <section class="slide" data-title="Feedback">
+    <p class="kicker">// part 04 · 效果</p>
+    <h2 class="h2">开发者<span class="accent">反馈</span></h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent">
+        <div style="font-size:32px;margin-bottom:8px">💬</div>
+        <p class="dim" style="font-size:15px;line-height:1.7">"初始化之后，AI 自动遵循团队规范。code review 中的<strong>风格修正时间减少了至少一半</strong>。"</p>
+        <p style="font-size:12px;color:var(--text-3);margin-top:8px">—— 早期用户</p>
+      </div>
+      <div class="card card-accent">
+        <div style="font-size:32px;margin-bottom:8px">💬</div>
+        <p class="dim" style="font-size:15px;line-height:1.7">"四级激活门禁让<strong>安全变更不再裸奔</strong>。数据库 migration 现在有固定流程，不再靠人肉记住。"</p>
+        <p style="font-size:12px;color:var(--text-3);margin-top:8px">—— 后端负责人</p>
+      </div>
+      <div class="card card-accent">
+        <div style="font-size:32px;margin-bottom:8px">💬</div>
+        <p class="dim" style="font-size:15px;line-height:1.7">"新人入职第一周就能用 AI 写出<strong>符合团队规范的代码</strong>。规则体系成了最好的 onboarding 工具。"</p>
+        <p style="font-size:12px;color:var(--text-3);margin-top:8px">—— 团队 Lead</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>来看几条真实的早期用户反馈。</p>
+      <p>第一位用户说：初始化之后 code review 中的<strong>风格修正时间减少了一半以上</strong>。因为 AI 自动遵循规范，review 时不需要再纠结命名对不对、格式对不对——只关注逻辑。</p>
+      <p>第二位是后端负责人，他对激活门禁的评价很高——以前数据库 migration 的风险全靠人肉记住流程，现在规则体系强制执行安全检查，<strong>"安全变更不再裸奔"</strong>。</p>
+      <p>第三位团队 Lead 提了一个我之前没想到的角度：规则体系成了<strong>最好的新人 onboarding 工具</strong>。新人入职第一周，用 AI 写代码时自动接触团队规范——不是看文档学，而是用中学。</p>
+      <p>这也从侧面验证了"规则不是负担，是效率放大器"这个理念。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 13. CTA ============ -->
+  <section class="slide" data-title="Get Started">
+    <p class="kicker">// part 05 · 开始</p>
+    <h2 class="h2">三件事，立刻开始</h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent" style="text-align:center">
+        <div style="font-size:48px;margin-bottom:10px">⭐</div>
+        <h4>Star 不迷路</h4>
+        <p class="dim" style="font-size:14px">github.com/AndersJet/<br>ai-rulers-template</p>
+      </div>
+      <div class="card card-accent" style="text-align:center">
+        <div style="font-size:48px;margin-bottom:10px">📦</div>
+        <h4>克隆安装</h4>
+        <p class="dim" style="font-size:14px">git clone + cp<br>一条命令搞定</p>
+      </div>
+      <div class="card card-accent" style="text-align:center">
+        <div style="font-size:48px;margin-bottom:10px">🚀</div>
+        <h4>说出那句话</h4>
+        <p class="dim" style="font-size:14px">"帮我初始化<br>AI rulers"</p>
+      </div>
+    </div>
+    <p class="lede mt-l tc">几分钟后，你的项目就有了<strong>完整的 AI 开发护栏</strong>。</p>
+    <aside class="notes">
+      <p>最后，三件事，现在就能做。</p>
+      <p><strong>第一，去 GitHub 给个 Star</strong>。开源项目，Star 不迷路，后续更新你不会错过。</p>
+      <p><strong>第二，克隆安装</strong>。git clone 加 cp 一条命令，30 秒。一次安装，你所有项目都能用。</p>
+      <p><strong>第三，对你的 AI 说出那句魔法指令</strong>："使用 ai-rulers-init skill，帮我初始化 AI rulers"。然后看着 AI 自动扫描、自动生成、自动校验——你只需要审阅确认。</p>
+      <p>几分钟后，你的项目就有了完整的 AI 开发护栏。听起来像魔法，但本质上就是<strong>把团队规范自动化了</strong>。</p>
+      <p>好，今天就到这里。欢迎大家去 GitHub 上试试，有问题直接提 issue。谢谢！</p>
+    </aside>
+  </section>
+
+  <!-- ============ 14. THANKS ============ -->
+  <section class="slide" data-title="Thanks">
+    <p class="kicker">// end</p>
+    <h2 class="h2" style="font-size:clamp(48px,7vw,96px);text-align:center"><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">Thanks</span></h2>
+    <p class="lede tc" style="margin-top:16px">规范不是约束，是效率的放大器 🚀</p>
+    <div class="row mt-l" style="justify-content:center;gap:32px;flex-wrap:wrap">
+      <div class="dim" style="font-size:15px"><b>GitHub</b> · AndersJet/ai-rulers-template</div>
+      <div class="dim" style="font-size:15px">MIT · Open Source</div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">#thanks · Q&A</span>
+      <span class="slide-number" data-current="14" data-total="14"></span>
+    </div>
+    <aside class="notes">
+      <p>最后一句话送给大家——<strong>规范不是约束，是效率的放大器</strong>。</p>
+      <p>你前置花五分钟写的规则，会在后续每一次 AI 交互中帮你节省时间和认知负担。这不是限制 AI，而是让 AI 更好地为你工作。</p>
+      <p>感谢大家的时间。有问题现在开始，也欢迎去 GitHub 提 issue 或者 PR。谢谢！</p>
+    </aside>
+  </section>
+
+</div>
+
+<div style="position:fixed;bottom:12px;left:12px;font-size:11px;color:#484f5866;z-index:100;pointer-events:none">
+  S 演讲者视图 · T 切换主题 · ← → 翻页 · F 全屏 · O 总览 · R 重置计时
+</div>
+
+<script src="../../assets/runtime.js"></script>
+</body>
+</html>

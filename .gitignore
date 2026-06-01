@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+# Environment & secrets
+.env
+.env.*
+*.local
+secrets/
+credentials/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Logs
+*.log
+logs/
+
+# Build output
+dist/
+build/
+*.pyc
+__pycache__/
+/docs/
