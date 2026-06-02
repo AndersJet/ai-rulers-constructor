@@ -6,6 +6,8 @@
 
 **Universal AI Coding Standards Template — Progressive Guardrails for AI-Powered Development**
 
+> Standards are not final drafts, but living systems symbiotic with the business. Calibrated in practice, evolved through feedback — no silver bullet, only iterative convergence toward truth.
+
 <div align="center">
 
 <a href="./README-zh.md">简体中文</a> |

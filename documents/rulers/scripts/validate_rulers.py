@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -328,8 +329,11 @@ def validate_template_artifacts(files: list[Path]) -> list[str]:
     for path in files:
         if not is_authoritative_document(path):
             continue
-        text = read_text(path)
         relative = template_rel(path)
+        # 排除 bootstrap 引导规则 — 其中的 AI_FILL 描述是生成指导的正当内容
+        if str(relative).startswith("bootstrap/"):
+            continue
+        text = read_text(path)
 
         # 检查全局模板路径
         for pattern in TEMPLATE_PATH_PATTERNS:
@@ -393,6 +397,14 @@ def validate_project_profile_metadata(files: list[Path]) -> list[str]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Validate rulers template files.")
+    parser.add_argument(
+        "--template",
+        action="store_true",
+        help="Run in template development mode: skip template artifact checks (AI_FILL, path placeholders).",
+    )
+    args = parser.parse_args()
+
     files = collect_markdown_files()
     errors: list[str] = []
     errors.extend(validate_links(files))
@@ -403,7 +415,8 @@ def main() -> int:
     errors.extend(validate_core_references())
     errors.extend(validate_activation_levels())
     errors.extend(validate_high_risk_activation_language())
-    errors.extend(validate_template_artifacts(files))
+    if not args.template:
+        errors.extend(validate_template_artifacts(files))
     errors.extend(validate_project_profile_metadata(files))
 
     if errors:
