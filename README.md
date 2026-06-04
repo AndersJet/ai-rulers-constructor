@@ -35,11 +35,8 @@
 - [Activation Levels](#activation-levels)
 - [Daily Usage](#daily-usage)
 - [Validation](#validation)
-- [Full Initialization Flow](#full-initialization-flow)
 - [Template Directory Reference](#template-directory-reference)
 - [Key Conventions](#key-conventions)
-- [Project Structure](#project-structure)
-- [Development Guide](#development-guide)
 - [FAQ](#faq)
 - [Star History](#star-history)
 
@@ -49,8 +46,8 @@
 
 AI coding assistants are powerful but unpredictable. Without clear boundaries, they can:
 
-- Make changes that violate your project's security, data, or deployment policies
-- Generate code in inconsistent styles across different sessions
+- Violate your project's security, data, or deployment policies
+- Generate code in inconsistent styles across sessions
 - Apply generic patterns that don't match your tech stack
 - Perform high-risk operations (database migrations, auth changes) without review
 
@@ -61,31 +58,41 @@ AI coding assistants are powerful but unpredictable. Without clear boundaries, t
 Rulers Template gives your AI assistants a **project-specific rulebook** — automatically generated from your actual codebase, not copied from a blog post.
 
 - **Evidence-driven** — Rules are generated from your project's real files, configs, and commands, never fabricated
-- **Progressive loading** — AI only loads the rules relevant to the current task, not the entire tree
-- **Activation gates** — Four security levels (Level 0-3) prevent AI from doing dangerous work before rules are reviewed by a human
-- **Domain routing** — Backend, database, frontend — each domain gets its own set of constraints
+- **Progressive loading** — AI only loads rules relevant to the current task
+- **Activation gates** — Four security levels (Level 0-3) prevent AI from doing dangerous work before human review
+- **Domain routing** — Backend, database, frontend — each domain gets its own constraints
 - **One-command init** — The `ai-rulers-init` skill scans your project and generates everything automatically
 
 ### How It Works
 
 ```text
-1. Template placed in your project
-2. AI scans your codebase (9 dimensions: tech stack, security, database, CI/CD, etc.)
-3. AI generates PROJECT_PROFILE.md with confirmed facts
-4. Domain-specific rules are generated for each area your project uses
-5. Rules are activated level-by-level after human review
-6. Every future AI session automatically follows these rules
+1. Copy the template into your project
+2. AI scans your codebase and generates PROJECT_PROFILE.md
+3. AI creates domain-specific rules for your tech stack
+4. Rules are activated level-by-level after human review
+5. Every future AI session follows these rules automatically
 ```
+
+<details>
+<summary><strong>Full initialization flow (click to expand)</strong></summary>
+
+| Step | Action | Output |
+|------|--------|--------|
+| 1. Confirm name | Ask whether to rename `rulers` directory; replace `{{RULERS_DIR}}` placeholders if renamed | Correct directory name and paths |
+| 2. Migrate entry | Copy `AGENTS.md` to project root | Root `AGENTS.md` |
+| 3. Project discovery | Scan 9 dimensions: repo structure, tech stack, commands, security, persistence, API contracts, frontend, CI/CD, high-risk areas | Discovery records |
+| 4. Generate profile | Fill `PROJECT_PROFILE.template.md` with confirmed facts, cite evidence sources | `PROJECT_PROFILE.md` |
+| 5. Generate rules | Create `INDEX.md` + leaf rules for each existing domain, delete unused templates | Domain `INDEX.md` + leaf rules |
+| 6. Validate | Run `validate_rulers.py`, fix structural issues (max 3 retries) | Validation passed |
+| 7. Activate | Activate domains level by level per activation gates | Working AI standards system |
+
+</details>
 
 ---
 
 ## 🚀 Quick Start
 
-Two ways to get started — pick the one that fits your workflow.
-
 ### Method 1: Copy + AI Auto-Init
-
-Copy the template into your project, then send an explicit instruction to your AI assistant.
 
 ```bash
 # 1. Clone this repo
@@ -95,38 +102,27 @@ git clone https://github.com/AndersJet/ai-rulers-template.git
 cp -r ai-rulers-template/documents/rulers /path/to/your-project/documents/
 ```
 
-**3. Open your project in an AI coding assistant (Claude Code, Cursor, Copilot, etc.) and send:**
+**3. Open your project in an AI coding assistant and send:**
 
 > Please load `documents/rulers/AGENTS.md` into context, then follow the initialization flow to complete the standards initialization for this project.
 
-The AI will read AGENTS.md and automatically walk through: directory confirmation → placeholder replacement → AGENTS.md migration → 9-dimension project discovery → PROJECT_PROFILE.md generation → domain rule generation → validation → activation.
-
 ### Method 2: Install Skill + One-Command Init (Recommended)
-
->[!TIP]
-> **Recommended for most users** — install once, use across all your projects.
-
-The [ai-rulers-init](skills/ai-rulers-init/) skill automates the entire initialization process.
-
-**Download & Install:**
 
 ```bash
 # 1. Clone this repo
 git clone https://github.com/AndersJet/ai-rulers-template.git
 
 # 2. Install the skill
-#    Claude Code
+#    Claude Code:
 cp -r ai-rulers-template/skills/ai-rulers-init/ ~/.claude/skills/ai-rulers-init/
 
-#    Other platforms (Cursor, Copilot, etc.)
+#    Other platforms (Cursor, Copilot, etc.):
 #    Import ai-rulers-template/skills/ai-rulers-init.skill
 ```
 
 **3. Open your target project, send to AI:**
 
 > Initialize AI rulers for this project using the ai-rulers-init skill.
-
-The skill handles every step automatically. Supports incremental re-runs — when you add a new platform later (e.g., mobile), re-run the skill and it auto-detects new domains without touching existing active rules. See [SKILL.md](skills/ai-rulers-init/SKILL.md) for the complete workflow.
 
 | | Method 1 (Copy) | Method 2 (Skill) |
 |---|---|---|
@@ -135,44 +131,27 @@ The skill handles every step automatically. Supports incremental re-runs — whe
 | **Incremental** | Manual re-copy + re-init | Re-run skill, auto-detects new domains |
 | **Best for** | One-off use, trying it out | Multiple projects, team onboarding |
 
----
+<details>
+<summary><strong>Deploy with <code>ruler</code> CLI (optional)</strong></summary>
 
-### Deploy with `ruler` CLI (Optional)
+After initialization, you can optionally use the [`ruler`](https://github.com/intellectronica/ruler) CLI for tighter AI assistant integration.
 
-After completing the initialization above, you can deploy the rules to your AI coding assistant using the [`ruler`](https://github.com/intellectronica/ruler) CLI tool for tighter integration.
+**Prerequisites:** Node.js + `npm install -g @intellectronica/ruler`
 
-**Prerequisites:**
-- Node.js installed
-- `ruler` CLI installed: `npm install -g @intellectronica/ruler`
+```bash
+# In your target project root:
+ruler init                           # Creates .ruler/ directory
+cp AGENTS.md .ruler/AGENTS.md       # Copy generated AGENTS.md
 
-**Steps:**
+# Deploy to your environment:
+ruler apply --agents claude         # Claude Code
+ruler apply --agents codex          # GitHub Copilot / Codex
+# Other supported agents: kilocode, opencode, trae
+```
 
-1. **Complete the normal initialization** (Method 1 or Method 2 above).
+> The `ruler` CLI is an optional companion. You can continue using the rulers template directly through `AGENTS.md` without it.
 
-2. **Initialize `ruler`:** In your target project root, run:
-   ```bash
-   ruler init
-   ```
-   This creates a `.ruler/` directory.
-
-3. **Copy AGENTS.md:** Copy the `AGENTS.md` generated in your target project root into `.ruler/`:
-   ```bash
-   cp AGENTS.md .ruler/AGENTS.md
-   ```
-
-4. **Apply rules:** Deploy to your AI assistant based on your development environment:
-   ```bash
-   # Claude Code
-   ruler apply --agents claude
-
-   # GitHub Copilot / Codex
-   ruler apply --agents codex
-
-   # Other supported agents: kilocode, opencode, trae
-   ```
-
-> [!NOTE]
-> The `ruler` tool is an optional companion. If you prefer, you can continue using the rulers template directly through AGENTS.md without the `ruler` CLI.
+</details>
 
 ---
 
@@ -220,12 +199,11 @@ Simply reference the relevant domain in your AI prompt:
 python3 documents/rulers/scripts/validate_rulers.py
 ```
 
->[!NOTE]
-> The ai-rulers-init skill runs validation automatically during initialization. Manual validation is useful when editing rules directly.
+The ai-rulers-init skill runs validation automatically during initialization. Manual validation is useful when editing rules directly.
 
 Validates:
 - Markdown link validity (no external references)
-- Every authoritative document has `metadata` (applies_to, trigger_keywords, must_load_with)
+- Every authoritative document has `metadata` (`applies_to`, `trigger_keywords`, `must_load_with`)
 - `must_load_with` paths are resolvable and within template scope
 - Each `INDEX.md` covers all sibling leaf documents
 - `AGENTS.md` references all 5 core rules
@@ -234,100 +212,27 @@ Validates:
 
 ---
 
-## 🔄 Full Initialization Flow
-
-When AI executes the initialization (via either method), the complete flow is:
-
-```text
-Confirm directory name → Replace placeholders → Copy AGENTS.md to root → Project discovery → Generate PROJECT_PROFILE.md → Generate domain rules → Validate → Activate by level
-```
-
-| Step | Action | By | Output |
-|------|--------|-----|--------|
-| 1. Confirm name | Ask whether to rename `rulers` directory; if renamed, replace all `{{RULERS_DIR}}` placeholders | AI + Human | Correct directory name and paths |
-| 2. Migrate entry | Copy AGENTS.md from template dir to project root (keep copy in template for validation) | AI/auto | Root `AGENTS.md` |
-| 3. Project discovery | Scan 9 dimensions: repo structure, tech stack, commands, security, persistence, API contracts, frontend, CI/CD, high-risk areas | AI + Human | Discovery records |
-| 4. Generate profile | Fill `PROJECT_PROFILE.template.md` with confirmed facts, cite evidence sources | AI + Human review | `PROJECT_PROFILE.md` |
-| 5. Generate rules | Generate `INDEX.md` + leaf rules for each existing domain, delete unused domain templates | AI + Human review | Domain `INDEX.md` + leaf rules |
-| 6. Validate | Run `validate_rulers.py`, fix structural issues (max 3 retries) | AI/auto | Validation passed |
-| 7. Activate | Activate domains level by level per activation gates | Human review | Working AI standards system |
-
----
-
 ## 📁 Template Directory Reference
 
 The template (`documents/rulers/`) contains:
 
-### Entry Files
-
-| File | Description |
+| Path | Description |
 |------|-------------|
-| `AGENTS.md` | AI collaboration protocol entry — AI reads this to start initialization |
+| `AGENTS.md` | AI collaboration protocol entry — start here |
 | `INDEX.md` | Template navigation |
 | `PROJECT_PROFILE.template.md` | Project profile template |
+| `core/` | Global resident rules: hard constraints, workflow, governance, maintenance, commit convention |
+| `backend/` | Backend domain specs: architecture, API security, data access, observability, testing |
+| `database/` | Database specs: schema design, migration, review checklist, seed & backfill |
+| `frontend/` | Frontend specs: web + mobile, develop + design subdomains |
+| `bootstrap/` | Boot & generation guides: discovery, brownfield rules, activation levels, completeness checklist |
+| `scripts/` | `validate_rulers.py` — structural integrity checker |
 
-### core/ — Global Resident Rules
-
-| File | Description |
-|------|-------------|
-| `HARD_CONSTRAINTS.md` | Global hard constraints |
-| `WORKFLOW.md` | Implementation workflow & reasoning order |
-| `DOC_GOVERNANCE.md` | Rules document governance |
-| `RULER_MAINTENANCE.md` | Rule maintenance decision tree |
-| `GIT_COMMIT_CONVENTION.md` | Git commit convention |
-
-### backend/ — Backend Specs
-
-Architecture, API security, data access, configuration, observability, testing.
-
-### database/ — Database Specs
-
-Schema design, migration, review checklist, seed & backfill.
-
-### frontend/ — Frontend Specs
-
-- `common/`: Shared design tokens, styles, accessibility baseline
-- `web/develop/`: Web architecture, API integration, authorization, state management, testing
-- `web/design/`: Web visual system, component patterns, accessibility
-- `app/develop/`: Mobile architecture, UI patterns, testing
-- `app/design/`: Mobile tokens, layout, components, interaction, accessibility, examples
-
-### bootstrap/ — Bootstrap Guides
-
-| File | Description |
-|------|-------------|
-| `PROJECT_DISCOVERY.md` | Project discovery process |
-| `BROWNFIELD_RULE_GENERATION.md` | Brownfield rule generation guide |
-| `ACTIVATION_LEVELS.md` | Four-level activation gate definitions |
-| `RULES_COMPLETENESS_CHECKLIST.md` | Completeness checklist |
-
-### scripts/
-
-`validate_rulers.py` — Structural integrity checker.
+For the full directory walkthrough, see [`documents/rulers/INDEX.md`](documents/rulers/INDEX.md).
 
 ---
 
 ## 🔑 Key Conventions
-
-### Protected Content
-
-- `metadata:` / `applies_to` / `trigger_keywords` / `must_load_with` — Machine-parsable metadata keys
-- `AI_FILL` — Marks sections requiring AI population
-- `PROJECT_PROFILE.md` / `PROJECT_PROFILE.template.md` / `AGENTS.md` / `INDEX.md` — Protocol filenames
-- `Level 0` / `Level 1` / `Level 2` / `Level 3` — Activation level identifiers
-
-### trigger_keywords Strategy
-
-Each rule file uses bilingual trigger keywords for cross-model hit rate:
-
-```yaml
-trigger_keywords:
-  - git
-  - commit
-  - conventional commits
-  - 提交
-  - 提交规范
-```
 
 ### Conflict Resolution
 
@@ -335,84 +240,24 @@ trigger_keywords:
 core hard constraints > security rules > activation gates > domain rules > topic rules > examples
 ```
 
+### Protected Keywords
+
+- `metadata:` / `applies_to` / `trigger_keywords` / `must_load_with` — Machine-parsable metadata keys
+- `AI_FILL` — Marks sections requiring AI population
+- `Level 0` / `Level 1` / `Level 2` / `Level 3` — Activation level identifiers
+
 ### Commit Conventions
 
-- `type`: English (feat/fix/docs/refactor/test/chore/build/ci)
+- `type`: English (`feat`/`fix`/`docs`/`refactor`/`test`/`chore`/`build`/`ci`)
 - `subject`: Chinese, verb-object structure, no trailing period
 - `body`: Chinese, explain "what changed" and "why"
 - Format: `<type>[optional scope]: <subject>`
 
----
-
-## 🏗️ Project Structure
-
-```text
-ai-rulers-template/
-├── README.md                        # This file (English)
-├── README-zh.md                     # Chinese version
-├── AGENTS.md                        # Template maintenance AI entry
-├── logo.png
-├── LICENSE
-├── skills/                          # Packaged skills (deliverables)
-│   ├── ai-rulers-init.skill         # Portable skill package
-│   └── ai-rulers-init/              # Unpacked skill
-│       ├── SKILL.md
-│       └── templates/               # Embedded rulers template
-├── documents/
-│   └── rulers/                      # Rulers template (the product)
-│       ├── AGENTS.md
-│       ├── INDEX.md
-│       ├── PROJECT_PROFILE.template.md
-│       ├── core/                    # Global resident rules
-│       ├── backend/                 # Backend domain specs
-│       ├── database/                # Database domain specs
-│       ├── frontend/                # Frontend domain specs
-│       │   ├── common/
-│       │   ├── web/
-│       │   └── app/
-│       ├── bootstrap/               # Boot & generation guides
-│       └── scripts/                 # Validation scripts
-└── docs/
-    └── superpowers/
-        ├── specs/                   # Design specs
-        └── plans/                   # Implementation plans
-```
-
----
-
-## 🛠️ Development Guide
-
-### Modifying Template Rules
-
-1. Load `documents/rulers/core/DOC_GOVERNANCE.md` for governance before modifying
-2. Run ruler impact assessment (see `documents/rulers/core/RULER_MAINTENANCE.md`)
-3. Run validation after changes: `python3 documents/rulers/scripts/validate_rulers.py`
-4. Follow commit conventions (see `documents/rulers/core/GIT_COMMIT_CONVENTION.md`)
-
-### Modifying the ai-rulers-init Skill
-
-1. Edit `skills/ai-rulers-init/SKILL.md` for workflow changes
-2. Edit `skills/ai-rulers-init/templates/` for template updates
-3. Re-package: `python -m scripts.package_skill skills/ai-rulers-init` (requires skill-creator)
-4. Replace `skills/ai-rulers-init.skill` with the new package
-
-### Commit Conventions
-
-- `type`: English (feat/fix/docs/refactor/test/chore/build/ci)
-- `subject`: Chinese, verb-object structure, no trailing period
-- `body`: Chinese, explain "what changed" and "why"
-- Format: `<type>[optional scope]: <subject>`
+See [`core/GIT_COMMIT_CONVENTION.md`](documents/rulers/core/GIT_COMMIT_CONVENTION.md) for the full convention.
 
 ---
 
 ## ❓ FAQ
-
-<details>
-<summary><strong>Do I need all domains?</strong></summary>
-
-No. Delete unused domains (e.g., no mobile app → remove `frontend/app/`) and update `AGENTS.md` and `INDEX.md` routing. The ai-rulers-init skill handles this automatically.
-
-</details>
 
 <details>
 <summary><strong>Can I write code at Level 0?</strong></summary>
@@ -442,20 +287,11 @@ Run ruler impact assessment first (see `core/RULER_MAINTENANCE.md`). The ai-rule
 
 </details>
 
-<details>
-<summary><strong>How do I install the skill?</strong></summary>
+---
 
-**Claude Code:** Copy `skills/ai-rulers-init/` to `~/.claude/skills/ai-rulers-init/`
-**Other platforms:** Import `skills/ai-rulers-init.skill`
+## 🤝 Contributing
 
-</details>
-
-<details>
-<summary><strong>What if the AI doesn't auto-start initialization after copy?</strong></summary>
-
-Send the explicit instruction: "Please load `documents/rulers/AGENTS.md` into context, then follow the initialization flow to complete the standards initialization for this project."
-
-</details>
+Want to modify rules or the skill? See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ---
 
