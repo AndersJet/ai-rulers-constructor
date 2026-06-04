@@ -19,6 +19,8 @@ metadata:
     - 暂存区差异
     - 工作区
     - 提交门禁
+    - changelog
+    - 变更记录
   must_load_with:
     - ../AGENTS.md
     - HARD_CONSTRAINTS.md
@@ -38,6 +40,8 @@ metadata:
 6. 提供拟提交文件的简明摘要，并说明它们为什么属于本任务。
 7. 提供拟使用的提交信息。
 8. 在运行提交命令前等待明确人工确认。
+9. 在提交前更新 `CHANGELOG.md`（详见 CHANGELOG_MAINTENANCE.md §2）。
+10. 确保 `CHANGELOG.md` 的修改已与代码变更一并暂存。
 
 如果用户没有要求提交，则不要提交。
 
