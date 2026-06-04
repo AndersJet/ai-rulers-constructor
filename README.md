@@ -137,6 +137,45 @@ The skill handles every step automatically. Supports incremental re-runs — whe
 
 ---
 
+### Deploy with `ruler` CLI (Optional)
+
+After completing the initialization above, you can deploy the rules to your AI coding assistant using the [`ruler`](https://github.com/intellectronica/ruler) CLI tool for tighter integration.
+
+**Prerequisites:**
+- Node.js installed
+- `ruler` CLI installed: `npm install -g @intellectronica/ruler`
+
+**Steps:**
+
+1. **Complete the normal initialization** (Method 1 or Method 2 above).
+
+2. **Initialize `ruler`:** In your target project root, run:
+   ```bash
+   ruler init
+   ```
+   This creates a `.ruler/` directory.
+
+3. **Copy AGENTS.md:** Copy the `AGENTS.md` generated in your target project root into `.ruler/`:
+   ```bash
+   cp AGENTS.md .ruler/AGENTS.md
+   ```
+
+4. **Apply rules:** Deploy to your AI assistant based on your development environment:
+   ```bash
+   # Claude Code
+   ruler apply --agents claude
+
+   # GitHub Copilot / Codex
+   ruler apply --agents codex
+
+   # Other supported agents: kilocode, opencode, trae
+   ```
+
+> [!NOTE]
+> The `ruler` tool is an optional companion. If you prefer, you can continue using the rulers template directly through AGENTS.md without the `ruler` CLI.
+
+---
+
 ## 🔒 Activation Levels
 
 Controls what AI is permitted to do at each stage:
