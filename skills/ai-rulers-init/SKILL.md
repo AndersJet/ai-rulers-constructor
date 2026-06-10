@@ -348,6 +348,10 @@ ls -la CHANGELOG.md && echo "OK: CHANGELOG.md exists" || echo "MISSING"
 
 读取 `documents/<RULERS_DIR_NAME>/PROJECT_PROFILE.template.md`。
 
+### 2.1.1 输出位置
+
+生成的 `PROJECT_PROFILE.md` 必须写入 `documents/<RULERS_DIR_NAME>/PROJECT_PROFILE.md`（与模板同目录，位于 rulers 体系内），而非项目根目录。
+
 ### 2.2 填充事实
 
 将 Step 1 中确认的事实填入模板对应章节：
@@ -529,7 +533,7 @@ python3 documents/<RULERS_DIR_NAME>/scripts/validate_rulers.py
 🎉 ai-rulers-init 初始化完成
    - PROJECT_PROFILE.md：已生成
    - 激活等级：Level 2（部分领域）
-   - 加载链：AGENTS.md → core/* → PROJECT_PROFILE.md → 领域 INDEX.md → 叶子规则
+   - 加载链：AGENTS.md → core/* → {{RULERS_DIR}}/PROJECT_PROFILE.md → 领域 INDEX.md → 叶子规则
    - 校验：validate_rulers.py 通过
 ```
 

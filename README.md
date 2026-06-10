@@ -15,7 +15,7 @@
 
 </div>
 
-[![Version](https://img.shields.io/badge/version-v1.0.4-blue)](https://github.com/AndersJet/ai-rulers-template/releases)
+[![Version](https://img.shields.io/badge/version-v1.0.5-blue)](https://github.com/AndersJet/ai-rulers-template/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/AndersJet/ai-rulers-template/pulls)
 
@@ -182,7 +182,7 @@ Controls what AI is permitted to do at each stage:
 After initialization, AI loads rules in this order for every session:
 
 ```text
-AGENTS.md → core/* → PROJECT_PROFILE.md → domain INDEX.md → matched leaf rules
+AGENTS.md → core/* → {{RULERS_DIR}}/PROJECT_PROFILE.md → domain INDEX.md → matched leaf rules
 ```
 
 Simply reference the relevant domain in your AI prompt:

@@ -15,7 +15,7 @@
 
 </div>
 
-[![Version](https://img.shields.io/badge/version-v1.0.4-blue)](https://github.com/AndersJet/ai-rulers-template/releases)
+[![Version](https://img.shields.io/badge/version-v1.0.5-blue)](https://github.com/AndersJet/ai-rulers-template/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/AndersJet/ai-rulers-template/pulls)
 
@@ -182,7 +182,7 @@ ruler apply --agents codex          # GitHub Copilot / Codex
 初始化完成后，AI 在每次会话中按以下顺序加载规范：
 
 ```text
-AGENTS.md → core/* → PROJECT_PROFILE.md → 领域 INDEX.md → 命中的叶子规则
+AGENTS.md → core/* → {{RULERS_DIR}}/PROJECT_PROFILE.md → 领域 INDEX.md → 命中的叶子规则
 ```
 
 只需在 AI 指令中引用对应的领域即可：

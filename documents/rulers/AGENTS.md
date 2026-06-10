@@ -36,7 +36,7 @@ load_order:
 推荐加载链：
 
 ```text
-{{RULERS_DIR}}/AGENTS.md -> {{RULERS_DIR}}/core/* -> PROJECT_PROFILE.md -> {{RULERS_DIR}}/domain INDEX.md -> matched leaf rules
+{{RULERS_DIR}}/AGENTS.md -> {{RULERS_DIR}}/core/* -> {{RULERS_DIR}}/PROJECT_PROFILE.md -> {{RULERS_DIR}}/domain INDEX.md -> matched leaf rules
 ```
 
 ---

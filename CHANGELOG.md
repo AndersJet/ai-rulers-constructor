@@ -5,7 +5,13 @@
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-06-10
+
 ### Changed
+
+- 将 PROJECT_PROFILE.md 的推荐加载路径统一为 `{{RULERS_DIR}}/PROJECT_PROFILE.md`
+- ai-rulers-init 明确 PROJECT_PROFILE.md 输出到 `documents/<RULERS_DIR_NAME>/PROJECT_PROFILE.md`
+- 重新打包 `ai-rulers-init.skill`
 
 ## [1.0.4] - 2026-06-08
 
