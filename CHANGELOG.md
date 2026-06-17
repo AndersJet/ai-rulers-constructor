@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- 修复 validate_rulers.py 领域模板路径校验的子串误报
+
 ## [1.0.5] - 2026-06-10
 
 ### Changed

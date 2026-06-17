@@ -344,14 +344,20 @@ def validate_template_artifacts(files: list[Path]) -> list[str]:
                     f"Template path '{pattern}' found in: {rel(path)}"
                 )
 
-        # 检查领域特定的模板路径
+        # 检查领域特定的模板路径（仅在 metadata applies_to 值中精确匹配，避免子串误报）
         for domain, patterns in DOMAIN_TEMPLATE_PATHS.items():
             if str(relative).startswith(domain + "/"):
                 for pattern in patterns:
-                    if pattern in text:
-                        errors.append(
-                            f"Domain template path '{pattern}' in {domain}: {rel(path)}"
-                        )
+                    # 从 metadata 块提取 applies_to 列表，精确比对
+                    md_block = yaml_metadata_block(text)
+                    if md_block is not None:
+                        applies_to_values = extract_metadata_list(md_block, "applies_to") or []
+                        for value in applies_to_values:
+                            if value == pattern:
+                                errors.append(
+                                    f"Domain template path '{pattern}' in {domain}: {rel(path)}"
+                                )
+                                break
 
         # 检查元指令文本
         for pattern in META_INSTRUCTION_PATTERNS:
