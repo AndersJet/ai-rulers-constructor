@@ -7,7 +7,7 @@ metadata:
   applies_to:
     - "{{RULERS_DIR}}/**"
     - AGENTS.md
-    - PROJECT_PROFILE.md
+    - "{{RULERS_DIR}}/PROJECT_PROFILE.md"
     - scripts/**
   trigger_keywords:
     - ruler impact assessment

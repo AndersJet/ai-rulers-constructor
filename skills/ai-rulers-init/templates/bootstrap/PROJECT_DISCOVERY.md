@@ -6,8 +6,8 @@
 metadata:
   applies_to:
     - "{{RULERS_DIR}}/**"
-    - PROJECT_PROFILE.md
-    - PROJECT_PROFILE.template.md
+    - "{{RULERS_DIR}}/PROJECT_PROFILE.md"
+    - "{{RULERS_DIR}}/PROJECT_PROFILE.template.md"
   trigger_keywords:
     - project discovery
     - project profile

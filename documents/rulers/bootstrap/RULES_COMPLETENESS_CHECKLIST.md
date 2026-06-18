@@ -6,7 +6,7 @@
 metadata:
   applies_to:
     - "{{RULERS_DIR}}/**"
-    - PROJECT_PROFILE.md
+    - "{{RULERS_DIR}}/PROJECT_PROFILE.md"
     - AGENTS.md
   trigger_keywords:
     - completeness checklist

@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- 统一规则 metadata 中 PROJECT_PROFILE 相关路径为 `{{RULERS_DIR}}` 全路径格式
+
 ### Fixed
 
 - 修复 validate_rulers.py 领域模板路径校验的子串误报
