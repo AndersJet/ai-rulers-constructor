@@ -5,9 +5,24 @@
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.0.6] - 2026-06-18
+
 ### Changed
 
 - 统一规则 metadata 中 PROJECT_PROFILE 相关路径为 `{{RULERS_DIR}}` 全路径格式
+- 重新打包 `ai-rulers-init.skill`
 
 ### Fixed
 
