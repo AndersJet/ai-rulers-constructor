@@ -4,7 +4,7 @@
 
 # Rulers Constructor
 
-**Universal AI Coding Standards Template — Progressive Guardrails for AI-Powered Development**
+**Universal AI Coding Standards Constructor — Progressive Guardrails for AI-Powered Development**
 
 > Standards are not final drafts, but living systems symbiotic with the business. Calibrated in practice, evolved through feedback — no silver bullet, only iterative convergence toward truth.
 
@@ -35,7 +35,7 @@
 - [Activation Levels](#activation-levels)
 - [Daily Usage](#daily-usage)
 - [Validation](#validation)
-- [Template Directory Reference](#template-directory-reference)
+- [Rulers Directory Reference](#rulers-directory-reference)
 - [Key Conventions](#key-conventions)
 - [FAQ](#faq)
 - [Star History](#star-history)
@@ -66,7 +66,7 @@ Rulers Constructor gives your AI assistants a **project-specific rulebook** — 
 ### How It Works
 
 ```text
-1. Copy the template into your project
+1. Copy the rulers into your project
 2. AI scans your codebase and generates PROJECT_PROFILE.md
 3. AI creates domain-specific rules for your tech stack
 4. Rules are activated level-by-level after human review
@@ -149,7 +149,7 @@ ruler apply --agents codex          # GitHub Copilot / Codex
 # Other supported agents: kilocode, opencode, trae
 ```
 
-> The `ruler` CLI is an optional companion. You can continue using the rulers template directly through `AGENTS.md` without it.
+> The `ruler` CLI is an optional companion. You can continue using the rulers directly through `AGENTS.md` without it.
 
 </details>
 
@@ -161,7 +161,7 @@ Controls what AI is permitted to do at each stage:
 
 | Level | Status | Permitted |
 |-------|--------|-----------|
-| **Level 0** | Template placed, no profile | Project discovery only |
+| **Level 0** | Rulers placed, no profile | Project discovery only |
 | **Level 1** | Profile reviewed | Read-only analysis, low-risk docs, small local fixes |
 | **Level 2** | Domain rules reviewed | Work within activated domains |
 | **Level 3** | Release gates reviewed | Production-impacting work |
@@ -204,7 +204,7 @@ The ai-rulers-init skill runs validation automatically during initialization. Ma
 Validates:
 - Markdown link validity (no external references)
 - Every authoritative document has `metadata` (`applies_to`, `trigger_keywords`, `must_load_with`)
-- `must_load_with` paths are resolvable and within template scope
+- `must_load_with` paths are resolvable and within rulers scope
 - Each `INDEX.md` covers all sibling leaf documents
 - `AGENTS.md` references all 5 core rules
 - `ACTIVATION_LEVELS.md` defines Level 0-3
@@ -212,14 +212,14 @@ Validates:
 
 ---
 
-## 📁 Template Directory Reference
+## 📁 Rulers Directory Reference
 
-The template (`documents/rulers/`) contains:
+The rulers directory (`documents/rulers/`) contains:
 
 | Path | Description |
 |------|-------------|
 | `AGENTS.md` | AI collaboration protocol entry — start here |
-| `INDEX.md` | Template navigation |
+| `INDEX.md` | Rulers navigation |
 | `PROJECT_PROFILE.template.md` | Project profile template |
 | `core/` | Global resident rules: hard constraints, workflow, governance, maintenance, commit convention |
 | `backend/` | Backend domain specs: architecture, API security, data access, observability, testing |

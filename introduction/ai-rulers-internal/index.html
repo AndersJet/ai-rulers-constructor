@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI 编码规范实战 · Rulers Template 内部分享</title>
+<title>AI 编码规范实战 · Rulers Constructor 内部分享</title>
 <link rel="stylesheet" href="../../assets/fonts.css">
 <link rel="stylesheet" href="../../assets/base.css">
 <link rel="stylesheet" id="theme-link" href="../../assets/themes/tokyo-night.css">
@@ -17,7 +17,7 @@
   <section class="slide" data-title="Cover">
     <p class="kicker">内部培训 · 实操课</p>
     <h1 class="h1 anim-fade-up" data-anim="fade-up">AI 编码规范实战</h1>
-    <p class="lede mt-m">Rulers Template — 从安装到精通 · 学完就能用</p>
+    <p class="lede mt-m">Rulers Constructor — 从安装到精通 · 学完就能用</p>
     <div class="speaker">
       <div class="av"></div>
       <div><b>团队分享</b><span>30–45 min · 含实操练习</span></div>
@@ -27,7 +27,7 @@
       <span class="slide-number" data-current="1" data-total="26"></span>
     </div>
     <aside class="notes">
-      <p>今天的内容很实在——花 40 分钟，让大家学会用 Rulers Template 管好自己项目里的 AI。</p>
+      <p>今天的内容很实在——花 40 分钟，让大家学会用 Rulers Constructor 管好自己项目里的 AI。</p>
       <p>不是讲理论，是讲操作。学完今天的内容，你就能在自己的项目里把 AI 的"护栏"搭起来。</p>
       <p>今天的内容分四段：先对齐认知——为什么需要规范；然后看结构——这个模板里有什么，怎么工作的；接着是四个实战场景——后端、数据库、前端、全栈；最后是踩坑指南和动手练习。</p>
       <p>练习环节大概 15 分钟，三道题，大家在自己的电脑上操作。有问题随时打断。好，我们开始。</p>
@@ -40,7 +40,7 @@
     <h2 class="h2">学完今天，你将能——</h2>
     <div class="stack mt-l">
       <div class="rule-row"><span class="num blue">01</span><div><b>理解</b><p class="dim">为什么 AI 编码需要规范体系——不是限制效率，是放大效率。</p></div></div>
-      <div class="rule-row"><span class="num green">02</span><div><b>掌握</b><p class="dim">Rulers Template 的目录结构和规则加载机制——知道什么东西在哪里。</p></div></div>
+      <div class="rule-row"><span class="num green">02</span><div><b>掌握</b><p class="dim">Rulers Constructor 的目录结构和规则加载机制——知道什么东西在哪里。</p></div></div>
       <div class="rule-row"><span class="num orange">03</span><div><b>独立完成</b><p class="dim">项目初始化——skill 安装 → 规则生成 → 逐级激活，全套流程。</p></div></div>
       <div class="rule-row"><span class="num purple">04</span><div><b>正确使用</b><p class="dim">日常开发中的各领域规则，以及排查和修复常见规则问题。</p></div></div>
       <div class="rule-row"><span class="num red">05</span><div><b>持续维护</b><p class="dim">知道怎么改规则、怎么校验、怎么提交——规则也是代码。</p></div></div>
@@ -106,14 +106,14 @@
         <p style="font-size:13px;color:var(--text-2)">目录索引+渐进式加载<br>精准且可规模化</p>
       </div>
     </div>
-    <p class="lede mt-l tc">Rulers Template = <strong>阶段 C 的开源实践</strong>。接下来我们看怎么用。</p>
+    <p class="lede mt-l tc">Rulers Constructor = <strong>阶段 C 的开源实践</strong>。接下来我们看怎么用。</p>
     <aside class="notes">
       <p>行业在这件事上经历了三个阶段，了解这个演进路径有助于理解"为什么 Rulers 是这个结构"。</p>
       <p><strong>阶段 A——无规则</strong>，也就是所谓的 vibe coding。靠个人提示词能力驱动 AI。短期内很快，一个人的时候没问题——但团队协作就崩了，质量全靠运气。</p>
       <p><strong>阶段 B——大 AGENTS.md</strong>。有人意识到需要规范，于是写了一个巨大的文件，所有规则全塞在里面。刚开始有用，但随着规则越来越多，文件越来越长——重要规则被噪声淹没，改一处影响全局，维护成本飙升。</p>
       <p>我们团队有些人可能经历过前两个阶段——知道痛点在哪。</p>
       <p><strong>阶段 C</strong> 是当前的最佳实践：<strong>目录索引加渐进式加载</strong>。规则按领域拆分成独立文件，AI 只加载当前任务相关的。后端任务不碰前端规则，数据库 migration 不加载 CSS 规范。</p>
-      <p>Rulers Template 把这个模式做成了<strong>开箱即用的模板</strong>——你不用自己设计目录结构、不用自己写索引机制、不用自己搭校验——全都现成的。</p>
+      <p>Rulers Constructor 把这个模式做成了<strong>开箱即用的模板</strong>——你不用自己设计目录结构、不用自己写索引机制、不用自己搭校验——全都现成的。</p>
     </aside>
   </section>
 

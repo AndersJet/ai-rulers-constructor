@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>给 AI 编程助手装上"护栏" · Rulers Template</title>
+<title>给 AI 编程助手装上"护栏" · Rulers Constructor</title>
 <link rel="stylesheet" href="../../assets/fonts.css">
 <link rel="stylesheet" href="../../assets/base.css">
 <link rel="stylesheet" id="theme-link" href="../../assets/themes/tokyo-night.css">
@@ -17,7 +17,7 @@
   <section class="slide" data-title="Cover">
     <p class="kicker">开源项目 · 技术分享</p>
     <h1 class="h1 anim-fade-up" data-anim="fade-up">给 AI 编程助手装上<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">"护栏"</span></h1>
-    <p class="lede mt-m">Rulers Template — 让你的 AI 写代码更安全、更一致、更可预测</p>
+    <p class="lede mt-m">Rulers Constructor — 让你的 AI 写代码更安全、更一致、更可预测</p>
     <div class="row wrap mt-l">
       <span class="pill pill-accent">v1.0.0</span>
       <span class="pill">Claude Code</span>
@@ -33,7 +33,7 @@
       <span class="slide-number" data-current="1" data-total="14"></span>
     </div>
     <aside class="notes">
-      <p>大家好，今天给大家介绍一个开源项目——Rulers Template。</p>
+      <p>大家好，今天给大家介绍一个开源项目——Rulers Constructor。</p>
       <p>一句话概括：它是<strong>给 AI 编程助手装上的"交通护栏"</strong>。如果你在用 Cursor、Copilot 或 Claude Code 写代码，这个项目能让 AI 的输出<strong>更安全、更一致、更符合你的项目规范</strong>。</p>
       <p>我自己在用 AI 写代码的过程中踩过很多坑——AI 擅自改认证逻辑、每次输出的代码风格不一样、同一个需求我和同事的 AI 给出了完全不同的方案。这些问题的根源不是 AI 不够聪明，而是它<em>缺少边界</em>。</p>
       <p>今天大概花 15 到 20 分钟，先聊痛点，再讲方案，最后告诉大家怎么三分钟上手。有问题随时打断。</p>
@@ -114,20 +114,20 @@
         <p class="dim"><b>目录索引 + 渐进式加载</b><br>精准且可规模化<br>最小必要规则集</p>
       </div>
     </div>
-    <p class="lede mt-m tc">Rulers Template 就是<strong>阶段 C</strong> 的开源实现。</p>
+    <p class="lede mt-m tc">Rulers Constructor 就是<strong>阶段 C</strong> 的开源实现。</p>
     <aside class="notes">
       <p>行业在 AI 编码规范这件事上，大致经历了三个阶段。</p>
       <p><strong>阶段 A——无规则 vibe coding</strong>。一开始大家都没规则，靠个人提示词能力。很快，但质量完全不可控。一个人能驾驭，一个团队就乱了。</p>
       <p><strong>阶段 B——大 AGENTS.md 单文件</strong>。有人开始写一个巨大的 AGENTS.md，所有规则全塞进去。有了规范，但文件越来越长，重要规则被噪声淹没。改一处可能影响全局。</p>
       <p><strong>阶段 C——目录索引 + 渐进式加载</strong>。这是当前的最佳实践：把规则按领域拆成目录结构，AI 只加载当前任务需要的规则。后端任务不加载前端规则，数据库 migration 不加载 CSS 规范。</p>
-      <p><strong>Rulers Template 就是阶段 C 的开源实现</strong>。它提供了一套完整的模板和自动化工具，让你几分钟内就能从阶段 A 跨到阶段 C。</p>
+      <p><strong>Rulers Constructor 就是阶段 C 的开源实现</strong>。它提供了一套完整的模板和自动化工具，让你几分钟内就能从阶段 A 跨到阶段 C。</p>
     </aside>
   </section>
 
   <!-- ============ 5. WHAT IS RULERS ============ -->
   <section class="slide" data-title="What is Rulers">
     <p class="kicker">// part 02 · 方案</p>
-    <h2 class="h2">Rulers Template —<br>项目<span class="accent">专属</span>规则手册</h2>
+    <h2 class="h2">Rulers Constructor —<br>项目<span class="accent">专属</span>规则手册</h2>
     <div class="flow anim-stagger-list mt-l" data-anim-target style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center">
       <div class="node" style="flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:28px;margin-bottom:4px">📂</div><h4 style="font-size:14px">你的代码库</h4><p style="font-size:11px;color:var(--text-3)">项目真实文件</p></div>
       <div class="arr" style="color:var(--text-3);font-size:24px;flex-shrink:0">→</div>
@@ -141,7 +141,7 @@
     </div>
     <p class="lede mt-l tc">每次 AI 会话自动遵循——<strong>不用再重复告诉 AI 你的项目规范</strong>。</p>
     <aside class="notes">
-      <p>Rulers Template 的工作方式用一张流程图就能讲清楚。</p>
+      <p>Rulers Constructor 的工作方式用一张流程图就能讲清楚。</p>
       <p>你的项目代码库是起点——真实的文件、配置、目录结构。AI 对你的项目做<strong>九维度自动扫描</strong>——技术栈、安全模型、数据库、CI/CD、命令等等。</p>
       <p>扫描完成后生成<strong>PROJECT_PROFILE.md</strong>——这是一份项目画像，记录已确认的事实："这个项目用 Express + TypeORM"、"数据库是 PostgreSQL"、"CI 用 GitHub Actions"。</p>
       <p>然后基于画像，<strong>为每个领域生成专属规则</strong>——backend 有 API 设计和数据访问规范，database 有 migration 和备份规范，frontend 有组件和样式规范。</p>
@@ -292,7 +292,7 @@
       <p>这个方向不是我们在自说自话。学术界和工业界都在关注。</p>
       <p><strong>AGENTS.md 已经成为一个跨工具的社区标准</strong>，强调可预测位置、就近覆盖、可持续维护。</p>
       <p>有一篇今年发表在 arXiv 上的研究（2601.20404），专门分析了 AGENTS.md 的影响——他们发现在样本中，AGENTS.md 的使用与<em>运行时长和 token 消耗下降</em>相关。换句话说，有了规则，AI 反而更高效。</p>
-      <p>另一篇研究（2511.12884）分析了很多 Agent READMEs 文件，发现一个关键问题——<strong>安全约束和性能约束的覆盖率明显偏低</strong>。这正是 Rulers Template 专门解决的：它有专门的 HARD_CONSTRAINTS.md 和安全规则。</p>
+      <p>另一篇研究（2511.12884）分析了很多 Agent READMEs 文件，发现一个关键问题——<strong>安全约束和性能约束的覆盖率明显偏低</strong>。这正是 Rulers Constructor 专门解决的：它有专门的 HARD_CONSTRAINTS.md 和安全规则。</p>
       <p>Claude Code 官方最佳实践也强调：上下文窗口是稀缺资源，规则应该模块化拆分，不要塞进一个大文件——这恰好是 Rulers 的"渐进式加载"理念。</p>
       <p>所以我们不是拍脑袋做的，是<strong>基于行业趋势和学术证据</strong>。</p>
     </aside>
@@ -324,7 +324,7 @@
         </ul>
       </div>
       <div class="card card-accent">
-        <h4>✅ Rulers Template</h4>
+        <h4>✅ Rulers Constructor</h4>
         <ul style="padding-left:18px;font-size:14px;line-height:2;color:var(--text-2)">
           <li><b>AI 扫描项目自动生成</b></li>
           <li><b>内置 4 大领域 + 可扩展</b></li>
@@ -338,7 +338,7 @@
       <p>和其他方案对比一下，让大家看清楚差异。</p>
       <p><strong>手写 AGENTS.md</strong>——很多人这么做。问题是高度依赖个人经验，你得知道该写什么、怎么组织。而且随着项目演进，维护成本越来越高。没有安全等级、没有自动校验。</p>
       <p><strong>Cursor Rules</strong>——只支持 Cursor 一个工具。单文件模式，项目大了之后和阶段 B 的大 AGENTS.md 是同一个问题。也没有安全等级和校验能力。</p>
-      <p><strong>Rulers Template</strong> 的差异化很清晰：AI 自动扫描项目生成——不用你自己想该写什么；内置四大领域加可扩展——结构是现成的；四级激活门禁——安全兜底；自动校验脚本——改了规则跑一下就知道对不对；跨工具通用——Claude Code、Cursor、Copilot 都支持。</p>
+      <p><strong>Rulers Constructor</strong> 的差异化很清晰：AI 自动扫描项目生成——不用你自己想该写什么；内置四大领域加可扩展——结构是现成的；四级激活门禁——安全兜底；自动校验脚本——改了规则跑一下就知道对不对；跨工具通用——Claude Code、Cursor、Copilot 都支持。</p>
       <p>简单说，手写方案是<strong>"我想好规则再写下来"</strong>，Rulers 是<strong>"AI 帮我发现规则，我审阅确认"</strong>。</p>
     </aside>
   </section>

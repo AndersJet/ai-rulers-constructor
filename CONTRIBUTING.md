@@ -1,6 +1,6 @@
-# Contributing to Rulers Template
+# Contributing to Rulers Constructor
 
-感谢你对 Rulers Template 的兴趣！本文档面向希望修改模板规则、维护 skill 或贡献代码的开发者。
+感谢你对 Rulers Constructor 的兴趣！本文档面向希望修改模板规则、维护 skill 或贡献代码的开发者。
 
 ---
 
