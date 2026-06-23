@@ -15,9 +15,9 @@
 
 </div>
 
-[![Version](https://img.shields.io/badge/version-v1.0.6-blue)](https://github.com/AndersJet/ai-rulers-template/releases)
+[![Version](https://img.shields.io/badge/version-v1.0.6-blue)](https://github.com/AndersJet/ai-rulers-constructor/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/AndersJet/ai-rulers-template/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/AndersJet/ai-rulers-constructor/pulls)
 
 [![Claude Code](https://img.shields.io/badge/AI-Claude%20Code-d97757)](https://claude.ai)
 [![Cursor](https://img.shields.io/badge/AI-Cursor-6c4df5)](https://cursor.sh)
@@ -96,10 +96,10 @@ Rulers Template 为 AI 助手提供一套**项目专属的规则手册**——�
 
 ```bash
 # 1. 克隆本仓库
-git clone https://github.com/AndersJet/ai-rulers-template.git
+git clone https://github.com/AndersJet/ai-rulers-constructor.git
 
 # 2. 将 rulers/ 目录复制到目标项目
-cp -r ai-rulers-template/documents/rulers /path/to/your-project/documents/
+cp -r ai-rulers-constructor/documents/rulers /path/to/your-project/documents/
 ```
 
 **3. 在 AI 编码助手中打开项目，发送以下指令：**
@@ -110,14 +110,14 @@ cp -r ai-rulers-template/documents/rulers /path/to/your-project/documents/
 
 ```bash
 # 1. 克隆本仓库
-git clone https://github.com/AndersJet/ai-rulers-template.git
+git clone https://github.com/AndersJet/ai-rulers-constructor.git
 
 # 2. 安装 skill
 #    Claude Code:
-cp -r ai-rulers-template/skills/ai-rulers-init/ ~/.claude/skills/ai-rulers-init/
+cp -r ai-rulers-constructor/skills/ai-rulers-init/ ~/.claude/skills/ai-rulers-init/
 
 #    其他平台（Cursor、Copilot 等）:
-#    导入 ai-rulers-template/skills/ai-rulers-init.skill
+#    导入 ai-rulers-constructor/skills/ai-rulers-init.skill
 ```
 
 **3. 打开目标项目，对 AI 发送：**
@@ -297,7 +297,7 @@ core 全局硬约束 > 安全规则 > 激活门禁 > 领域规则 > 专题规则
 
 ## ⭐ Star 趋势
 
-[![Star History Chart](https://api.star-history.com/svg?repos=AndersJet/ai-rulers-template&type=Date)](https://star-history.com/#AndersJet/ai-rulers-template&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=AndersJet/ai-rulers-constructor&type=Date)](https://star-history.com/#AndersJet/ai-rulers-constructor&Date)
 
 ---
 

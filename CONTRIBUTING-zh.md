@@ -41,4 +41,4 @@ feat(validate): core 文件引用校验扩展为 6 个
 
 ---
 
-如有疑问，欢迎通过 [Issue](https://github.com/AndersJet/ai-rulers-template/issues) 或 [Pull Request](https://github.com/AndersJet/ai-rulers-template/pulls) 交流。
+如有疑问，欢迎通过 [Issue](https://github.com/AndersJet/ai-rulers-constructor/issues) 或 [Pull Request](https://github.com/AndersJet/ai-rulers-constructor/pulls) 交流。

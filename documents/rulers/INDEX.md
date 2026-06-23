@@ -17,7 +17,7 @@
 ## 目录地图
 
 ```text
-ai-rulers-template/
+ai-rulers-constructor/
 ├── README.md
 ├── README-zh.md
 ├── AGENTS.md

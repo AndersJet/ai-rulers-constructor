@@ -1,7 +1,7 @@
 # AI 协作协议（模板维护）
 
 > **Version**: v1.0.0
-> **Role**: ai-rulers-template 项目自身的 AI 协作入口
+> **Role**: ai-rulers-constructor 项目自身的 AI 协作入口
 > **Goal**: 轻量路由，指向 documents/rulers/ 下的维护规则。
 
 ---

@@ -15,9 +15,9 @@
 
 </div>
 
-[![Version](https://img.shields.io/badge/version-v1.0.6-blue)](https://github.com/AndersJet/ai-rulers-template/releases)
+[![Version](https://img.shields.io/badge/version-v1.0.6-blue)](https://github.com/AndersJet/ai-rulers-constructor/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/AndersJet/ai-rulers-template/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/AndersJet/ai-rulers-constructor/pulls)
 
 [![Claude Code](https://img.shields.io/badge/AI-Claude%20Code-d97757)](https://claude.ai)
 [![Cursor](https://img.shields.io/badge/AI-Cursor-6c4df5)](https://cursor.sh)
@@ -96,10 +96,10 @@ Rulers Template gives your AI assistants a **project-specific rulebook** — aut
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/AndersJet/ai-rulers-template.git
+git clone https://github.com/AndersJet/ai-rulers-constructor.git
 
 # 2. Copy rulers/ into your target project
-cp -r ai-rulers-template/documents/rulers /path/to/your-project/documents/
+cp -r ai-rulers-constructor/documents/rulers /path/to/your-project/documents/
 ```
 
 **3. Open your project in an AI coding assistant and send:**
@@ -110,14 +110,14 @@ cp -r ai-rulers-template/documents/rulers /path/to/your-project/documents/
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/AndersJet/ai-rulers-template.git
+git clone https://github.com/AndersJet/ai-rulers-constructor.git
 
 # 2. Install the skill
 #    Claude Code:
-cp -r ai-rulers-template/skills/ai-rulers-init/ ~/.claude/skills/ai-rulers-init/
+cp -r ai-rulers-constructor/skills/ai-rulers-init/ ~/.claude/skills/ai-rulers-init/
 
 #    Other platforms (Cursor, Copilot, etc.):
-#    Import ai-rulers-template/skills/ai-rulers-init.skill
+#    Import ai-rulers-constructor/skills/ai-rulers-init.skill
 ```
 
 **3. Open your target project, send to AI:**
@@ -297,7 +297,7 @@ Want to modify rules or the skill? See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=AndersJet/ai-rulers-template&type=Date)](https://star-history.com/#AndersJet/ai-rulers-template&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=AndersJet/ai-rulers-constructor&type=Date)](https://star-history.com/#AndersJet/ai-rulers-constructor&Date)
 
 ---
 
