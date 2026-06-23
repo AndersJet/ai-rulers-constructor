@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="logo.png" alt="Rulers Template" width="120">
+<img src="logo.png" alt="Rulers Constructor" width="120">
 
-# Rulers Template
+# Rulers Constructor
 
 **Universal AI Coding Standards Template — Progressive Guardrails for AI-Powered Development**
 
@@ -55,7 +55,7 @@ AI coding assistants are powerful but unpredictable. Without clear boundaries, t
 
 ## 💡 The Solution
 
-Rulers Template gives your AI assistants a **project-specific rulebook** — automatically generated from your actual codebase, not copied from a blog post.
+Rulers Constructor gives your AI assistants a **project-specific rulebook** — automatically generated from your actual codebase, not copied from a blog post.
 
 - **Evidence-driven** — Rules are generated from your project's real files, configs, and commands, never fabricated
 - **Progressive loading** — AI only loads rules relevant to the current task
