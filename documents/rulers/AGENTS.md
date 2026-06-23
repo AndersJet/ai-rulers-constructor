@@ -33,6 +33,13 @@ load_order:
 5. 仅加载该领域索引中必需或条件命中的叶子规则。
 6. 默认不得加载整棵规则树。
 
+### 加载后强制检查（不得跳过）
+
+读取本文件后，AI **必须**立即使用文件系统工具（glob、ls、find 等）检查 `{{RULERS_DIR}}/PROJECT_PROFILE.md` 是否实际存在。**禁止**从本文件第 3 节的等级表格或任何描述性文字推断当前项目状态。
+
+- 若文件存在：读取 `{{RULERS_DIR}}/PROJECT_PROFILE.md`，并以其 §12 激活状态为准。
+- 若文件不存在：报告当前为 Level 0，仅允许执行 bootstrap discovery。
+
 推荐加载链：
 
 ```text
@@ -64,7 +71,7 @@ Analyze dependencies -> Check constraints -> Verify patterns -> Write code
 
 | Level | 状态 | 允许的工作 | 必需证据 |
 | --- | --- | --- | --- |
-| Level 0 | 已放入模板，尚无 `PROJECT_PROFILE.md` | 仅允许 bootstrap discovery；检查已观察到的文件、文档、配置与项目结构 | 来自仓库或人工确认的 discovery 记录与事实 |
+| Level 0 | 已放入模板，`PROJECT_PROFILE.md` 未生成 | 仅允许 bootstrap discovery；检查已观察到的文件、文档、配置与项目结构 | 来自仓库或人工确认的 discovery 记录与事实 |
 | Level 1 | `PROJECT_PROFILE.md` 已存在且 core 规则已激活 | core 规则覆盖的低风险任务；准备领域规则生成输入 | 已审阅的项目画像，包含明确置信度与未确认事实 |
 | Level 2 | 领域规则已生成并审阅 | 按已审阅领域的 `INDEX.md` 与命中叶子规则开展工作 | 领域 `INDEX.md`、必需叶子规则与审阅者接受记录 |
 | Level 3 | 发布、部署、回滚、安全与质量门禁已审阅 | 有生产影响的高风险工作、发布操作与部署变更 | 已审阅的发布/部署/回滚/安全/质量门禁与验证命令 |

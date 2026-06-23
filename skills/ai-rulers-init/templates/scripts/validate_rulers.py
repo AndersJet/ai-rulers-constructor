@@ -321,6 +321,47 @@ def validate_high_risk_activation_language() -> list[str]:
     return errors
 
 
+def validate_agents_post_load_check() -> list[str]:
+    """检查 AGENTS.md 是否强制要求加载后通过文件系统检查 PROJECT_PROFILE.md 存在性。
+
+    早期模板仅在表格中描述 Level 0 为"尚无 PROJECT_PROFILE.md"，AI 容易将其
+    误读为当前项目状态而跳过实际检查。此校验确保模板包含强制语言和检查要求。
+    """
+    errors: list[str] = []
+    agents_path = RULERS_TEMPLATE_DIR / "AGENTS.md"
+    if not agents_path.is_file():
+        return [f"Missing AGENTS entry: {rel(agents_path)}"]
+
+    text = read_text(agents_path)
+
+    # 必须包含禁止从表格/描述推断状态的语言
+    if not re.search(r"禁止.*推断|不得.*推断|must not infer", text):
+        errors.append(
+            f"AGENTS.md missing mandatory language forbidding state inference from tables: {rel(agents_path)}"
+        )
+
+    # 必须包含要求使用文件系统工具检查存在性的语言
+    filesystem_tool_pattern = r"(glob|ls|find|文件系统工具|filesystem tool)"
+    existence_check_pattern = r"(PROJECT_PROFILE\.md.*存在|存在.*PROJECT_PROFILE\.md|check.*PROJECT_PROFILE\.md.*exists)"
+    if not re.search(filesystem_tool_pattern, text, re.IGNORECASE):
+        errors.append(
+            f"AGENTS.md missing mandatory filesystem-tool check instruction: {rel(agents_path)}"
+        )
+    if not re.search(existence_check_pattern, text, re.IGNORECASE):
+        errors.append(
+            f"AGENTS.md missing mandatory PROJECT_PROFILE.md existence check: {rel(agents_path)}"
+        )
+
+    # Level 0 描述不得使用容易被误读为当前状态的"尚无"
+    level_0_match = re.search(r"\|\s*Level\s+0\s*\|([^|]+)\|", text)
+    if level_0_match and "尚无" in level_0_match.group(1):
+        errors.append(
+            f"AGENTS.md Level 0 description uses fact-sounding '尚无'; use neutral wording like '未生成': {rel(agents_path)}"
+        )
+
+    return errors
+
+
 def validate_template_artifacts(files: list[Path]) -> list[str]:
     """检查生成后的规则文件是否残留模板路径和元指令文本。
 
@@ -404,6 +445,69 @@ def validate_project_profile_metadata(files: list[Path]) -> list[str]:
     return errors
 
 
+def validate_post_init_cleanup(files: list[Path]) -> list[str]:
+    """检查初始化后是否残留一次性产物。
+
+    ai-rulers-init 初始化完成后，模具文件和初始化操作手册应被移除，
+    入口文档应去除初始化-only 内容。此校验确保 rulers 目录从“生成中”
+    状态转换为“运行中”状态。
+    """
+    errors: list[str] = []
+
+    # 1. 检查 *.template.md 模具文件
+    for template_path in sorted(RULERS_TEMPLATE_DIR.glob("*.template.md")):
+        errors.append(
+            f"Post-init cleanup: template file remains: {rel(template_path)}"
+        )
+
+    # 2. 检查初始化操作手册
+    init_manuals = (
+        RULERS_TEMPLATE_DIR / "bootstrap" / "PROJECT_DISCOVERY.md",
+        RULERS_TEMPLATE_DIR / "bootstrap" / "BROWNFIELD_RULE_GENERATION.md",
+    )
+    for manual_path in init_manuals:
+        if manual_path.is_file():
+            errors.append(
+                f"Post-init cleanup: bootstrap operation manual remains: {rel(manual_path)}"
+            )
+
+    # 3. 检查 AGENTS.md 是否仍包含初始化-only 小节
+    agents_path = RULERS_TEMPLATE_DIR / "AGENTS.md"
+    if agents_path.is_file():
+        agents_text = read_text(agents_path)
+        init_only_markers = (
+            "初始化前置步骤",
+            "目录名确认",
+            "占位符替换",
+            "复制模板文件",
+        )
+        for marker in init_only_markers:
+            if marker in agents_text:
+                errors.append(
+                    f"Post-init cleanup: AGENTS.md still contains init-only marker '{marker}': {rel(agents_path)}"
+                )
+                break
+
+    # 4. 检查 INDEX.md 是否仍包含模板采用路径
+    index_path = RULERS_TEMPLATE_DIR / "INDEX.md"
+    if index_path.is_file():
+        index_text = read_text(index_path)
+        index_init_markers = (
+            "模板采用路径",
+            "复制 documents/rulers",
+            "PROJECT_PROFILE.template.md",
+            "CHANGELOG.template.md",
+        )
+        for marker in index_init_markers:
+            if marker in index_text:
+                errors.append(
+                    f"Post-init cleanup: INDEX.md still contains init-only marker '{marker}': {rel(index_path)}"
+                )
+                break
+
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate rulers template files.")
     parser.add_argument(
@@ -423,9 +527,12 @@ def main() -> int:
     errors.extend(validate_core_references())
     errors.extend(validate_activation_levels())
     errors.extend(validate_high_risk_activation_language())
+    errors.extend(validate_agents_post_load_check())
     if not args.template:
         errors.extend(validate_template_artifacts(files))
     errors.extend(validate_project_profile_metadata(files))
+    if not args.template:
+        errors.extend(validate_post_init_cleanup(files))
 
     if errors:
         print("Rulers template validation failed:")

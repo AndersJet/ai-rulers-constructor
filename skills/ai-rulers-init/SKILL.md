@@ -24,7 +24,7 @@ Step 0: 前置准备 → Step 1: 项目发现 → Step 2: 项目画像 → Step 
 
 ## 模式检测
 
-在开始任何操作前，检查目标项目中是否存在 `PROJECT_PROFILE.md`：
+在开始任何操作前，**必须通过文件系统工具**（glob、ls、find 等）检查目标项目中是否存在 `documents/<RULERS_DIR_NAME>/PROJECT_PROFILE.md`。**禁止**从 `AGENTS.md` 的等级表格或描述性文字推断当前状态。
 
 - **不存在** → 首次运行，走完整流程
 - **已存在** → 增量模式（见文末"增量模式"章节）
@@ -535,6 +535,93 @@ python3 documents/<RULERS_DIR_NAME>/scripts/validate_rulers.py
    - 激活等级：Level 2（部分领域）
    - 加载链：AGENTS.md → core/* → {{RULERS_DIR}}/PROJECT_PROFILE.md → 领域 INDEX.md → 叶子规则
    - 校验：validate_rulers.py 通过
+```
+
+---
+
+## Step 6: 初始化后清理（Finalization）
+
+初始化完成后，必须将 rulers 目录从“生成中”状态转换为“运行中”状态。一次性产物必须移除，维护参考必须整合到持续有效的规则中。
+
+### 6.1 移除模具文件
+
+以下文件在实例化后失去作用，必须删除：
+
+- `{{RULERS_DIR}}/PROJECT_PROFILE.template.md` → 已生成 `{{RULERS_DIR}}/PROJECT_PROFILE.md`
+- `{{RULERS_DIR}}/CHANGELOG.template.md` → 已复制到项目根目录为 `CHANGELOG.md`
+
+验证：
+```bash
+ls {{RULERS_DIR}}/*.template.md 2>/dev/null \
+  && echo "FAIL: template files remain" || echo "OK"
+```
+
+### 6.2 移除初始化操作手册
+
+以下 bootstrap 文档仅在生成阶段指导 AI，初始化完成后必须删除：
+
+- `{{RULERS_DIR}}/bootstrap/PROJECT_DISCOVERY.md`
+- `{{RULERS_DIR}}/bootstrap/BROWNFIELD_RULE_GENERATION.md`
+
+验证：
+```bash
+ls {{RULERS_DIR}}/bootstrap/PROJECT_DISCOVERY.md \
+   {{RULERS_DIR}}/bootstrap/BROWNFIELD_RULE_GENERATION.md 2>/dev/null \
+  && echo "FAIL: bootstrap operation manuals remain" || echo "OK"
+```
+
+### 6.3 整合维护参考
+
+以下文档包含有用的持续维护信息，但不应以“待确认”的模板形式残留在 `bootstrap/` 中。按以下方式处理：
+
+1. **`ACTIVATION_LEVELS.md`**
+   - 将等级定义表格合并到 `{{RULERS_DIR}}/AGENTS.md` 第 3 节或 `{{RULERS_DIR}}/core/HARD_CONSTRAINTS.md` 第 3 节。
+   - 删除 `{{RULERS_DIR}}/bootstrap/ACTIVATION_LEVELS.md`。
+
+2. **`RULES_COMPLETENESS_CHECKLIST.md`**
+   - 将“完整性矩阵”中的实际状态写入 `{{RULERS_DIR}}/PROJECT_PROFILE.md` §12 激活状态表格。
+   - 将“审阅协议”和“检查清单维护规则”合并到 `{{RULERS_DIR}}/core/RULER_MAINTENANCE.md`。
+   - 删除 `{{RULERS_DIR}}/bootstrap/RULES_COMPLETENESS_CHECKLIST.md`。
+
+如果项目希望保留原始 bootstrap 文档作为审计追溯，可将其移动到项目级归档目录（如 `docs/rulers-archive/`），但**不得**保留在 `{{RULERS_DIR}}/` 内，避免 AI 在运行阶段加载到初始化指导。
+
+### 6.4 清理入口文档
+
+1. **`AGENTS.md`**
+   - 删除第 6 节“初始化前置步骤：目录名确认与占位符替换”。
+   - 删除任何仅与初始化相关的操作说明（如“确认目录名”、“复制模板文件”等）。
+   - 保留：加载链、激活门禁、任务路由、项目专属生成约束。
+
+2. **`INDEX.md`**
+   - 删除“模板采用路径”流程图。
+   - 删除指向 `*.template.md` 和 bootstrap 生成指南的链接。
+   - 更新目录地图，移除已删除的平台目录（如 `frontend/app/`）。
+   - 更新领域入口表，移除已删除领域的行。
+
+### 6.5 清理领域索引
+
+对每个已激活领域的 `INDEX.md`：
+
+- 移除指向已删除子平台或叶子规则的链接。
+- 将“当前等级”更新为审阅后的实际等级（如 Level 2（已审阅））。
+- 移除任何 AI_FILL 占位符、元指令文本或不匹配示例。
+
+### 6.6 运行最终校验
+
+清理完成后必须运行：
+
+```bash
+python3 {{RULERS_DIR}}/scripts/validate_rulers.py
+```
+
+校验脚本新增的检查项见脚本注释。所有校验通过后，rulers 进入运行状态。
+
+```
+✅ Step 6 完成 — 初始化后清理完成
+   已移除：*.template.md, bootstrap/PROJECT_DISCOVERY.md, bootstrap/BROWNFIELD_RULE_GENERATION.md
+   已整合：ACTIVATION_LEVELS.md, RULES_COMPLETENESS_CHECKLIST.md
+   已清理：AGENTS.md, INDEX.md, 领域 INDEX.md
+   校验：validate_rulers.py 通过
 ```
 
 ---
