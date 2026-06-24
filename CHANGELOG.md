@@ -3,19 +3,31 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 规范，
 并采用 [语义化版本](https://semver.org/lang/zh-CN/) 进行版本号管理。
 
-## [Unreleased]
+## [1.0.8] - 2026-06-24
 
 ### Added
 
+- AGENTS.md 新增 §0 防御层，包含锚点句、内联提交约束、主动验证义务、指令优先级声明，覆盖一切 skill/command 的 commit 操作
+- HARD_CONSTRAINTS.md 禁止行为追加"提交不符合规范的 commit"，必需行为追加"提交前重新加载提交规范"
+- GIT_COMMIT_CONVENTION.md 新增优先级声明 blockquote 与历史反面例子机制（§1 步骤 3.5）
+- WORKFLOW.md §2.8 提交门禁从一行展开为 7 个可执行子步骤（a-g）
+- DOC_GOVERNANCE.md §1 追加入口文件例外条款，允许 AGENTS.md/CLAUDE.md 内联关键约束摘要
+- SKILL.md Step 0.3 新增阶段 D：`§` 符号自动替换为中文节号引用
+- 新建根目录 `CLAUDE.md`，与 `AGENTS.md` 保持一致
+- 根 `AGENTS.md` 新增 §0 防御层，默认加载链从 3 个扩展为 6 个 core 文件
+
 ### Changed
 
-### Deprecated
-
-### Removed
+- ai-rulers-init.skill 重新打包，包含全部防御层变更
+- .gitignore 新增 `/.superpowers/` 忽略规则
+- `documents/rulers/` 实例同步至最新模板
 
 ### Fixed
 
-### Security
+- SKILL.md Step 4.2 core 文件引用数从 5 修正为 6
+- SKILL.md § 替换正则从 `[0-9]` 修正为 `[0-9][0-9]*`，支持多位数节号
+- SKILL.md Step 6.4 清理步骤增加 §0 保护说明
+- DOC_GOVERNANCE.md 弱措辞"应链接到"修正为"必须链接到，不得通过复制完整正文替代"
 
 ## [1.0.7] - 2026-06-23
 
