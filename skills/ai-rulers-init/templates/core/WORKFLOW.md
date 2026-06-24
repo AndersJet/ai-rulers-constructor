@@ -46,7 +46,14 @@ Analyze dependencies -> Check constraints -> Verify patterns -> Write code
 5. 实施：在保留无关用户工作的前提下，做出满足任务的最小一致变更。
 6. 验证：运行 `PROJECT_PROFILE.md` 和命中领域规则要求的命令；当验证无法运行时记录阻塞原因。
 7. 规则影响评估：评估本次工作是否改变了模式、约束、路由、激活、校验或规则结构。
-8. 如需提交则执行提交门禁：遵循 `GIT_COMMIT_CONVENTION.md`；没有明确人工确认不得提交。
+8. 如需提交则执行提交门禁：
+   a. 重新加载 `{{RULERS_DIR}}/core/GIT_COMMIT_CONVENTION.md`，不得依赖历史记忆。
+   b. 运行 `git log --oneline -20` 识别历史格式，警告自身历史中可能存在违规格式，不得模仿。
+   c. 运行 `git diff --cached --stat` 和 `git diff --cached` 收集变更证据。
+   d. 按 `GIT_COMMIT_CONVENTION.md` 第5.1-5.5节推断 type、scope、subject、body。
+   e. 判断是否需要更新 `CHANGELOG.md`，如需则在 `[Unreleased]` 下追加条目并一并 `git add`。
+   f. 展示提交信息草案和文件清单等待用户确认。
+   g. 用户确认后执行 `git commit`；没有明确人工确认不得提交。
 
 ---
 
