@@ -3,6 +3,14 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 规范，
 并采用 [语义化版本](https://semver.org/lang/zh-CN/) 进行版本号管理。
 
+## [Unreleased]
+
+### Changed
+
+- 重组宣传素材至 `assets/promo/`，删除根目录 `logo.png`，README 与 README-zh 的 logo 引用改指向新海报素材
+- README 目录锚点更新为带 emoji 的嵌套形式，修复跳转失效
+- `.gitignore` 新增 `.history/` 忽略规则
+
 ## [1.0.8] - 2026-06-24
 
 ### Added

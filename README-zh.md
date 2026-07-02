@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo.png" alt="Rulers Constructor" width="120">
+<img src="assets/promo/rulers-constructor-guardrails-poster.png" alt="Rulers Constructor" width="120">
 
 # Rulers Constructor
 

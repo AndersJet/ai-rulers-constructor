@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo.png" alt="Rulers Constructor" width="120">
+<img src="assets/promo/rulers-constructor-guardrails-poster.png" alt="Rulers Constructor" width="120">
 
 # Rulers Constructor
 
@@ -29,16 +29,26 @@
 
 ## 📑 Table of Contents
 
-- [The Problem](#the-problem)
-- [The Solution](#the-solution)
-- [Quick Start](#quick-start)
-- [Activation Levels](#activation-levels)
-- [Daily Usage](#daily-usage)
-- [Validation](#validation)
-- [Rulers Directory Reference](#rulers-directory-reference)
-- [Key Conventions](#key-conventions)
-- [FAQ](#faq)
-- [Star History](#star-history)
+- [Rulers Constructor](#rulers-constructor)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [🎯 The Problem](#-the-problem)
+  - [💡 The Solution](#-the-solution)
+    - [How It Works](#how-it-works)
+  - [🚀 Quick Start](#-quick-start)
+    - [Method 1: Copy + AI Auto-Init](#method-1-copy--ai-auto-init)
+    - [Method 2: Install Skill + One-Command Init (Recommended)](#method-2-install-skill--one-command-init-recommended)
+  - [🔒 Activation Levels](#-activation-levels)
+  - [📋 Daily Usage](#-daily-usage)
+  - [✅ Validation](#-validation)
+  - [📁 Rulers Directory Reference](#-rulers-directory-reference)
+  - [🔑 Key Conventions](#-key-conventions)
+    - [Conflict Resolution](#conflict-resolution)
+    - [Protected Keywords](#protected-keywords)
+    - [Commit Conventions](#commit-conventions)
+  - [❓ FAQ](#-faq)
+  - [🤝 Contributing](#-contributing)
+  - [⭐ Star History](#-star-history)
+    - [If this project helps you, give us a Star!](#if-this-project-helps-you-give-us-a-star)
 
 ---
 
