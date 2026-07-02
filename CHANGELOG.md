@@ -11,6 +11,10 @@
 - README 目录锚点更新为带 emoji 的嵌套形式，修复跳转失效
 - `.gitignore` 新增 `.history/` 忽略规则
 
+### Fixed
+
+- 修复 1.0.8 发布时遗漏的 README/README-zh 版本徽章更新，徽章由 v1.0.7 同步至 v1.0.8
+
 ## [1.0.8] - 2026-06-24
 
 ### Added

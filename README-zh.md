@@ -15,7 +15,7 @@
 
 </div>
 
-[![Version](https://img.shields.io/badge/version-v1.0.7-blue)](https://github.com/AndersJet/ai-rulers-constructor/releases)
+[![Version](https://img.shields.io/badge/version-v1.0.8-blue)](https://github.com/AndersJet/ai-rulers-constructor/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/AndersJet/ai-rulers-constructor/pulls)
 
