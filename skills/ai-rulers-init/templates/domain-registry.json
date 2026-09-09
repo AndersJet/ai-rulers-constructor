@@ -1,0 +1,156 @@
+{
+  "domains": {
+    "core": {
+      "risk": "low",
+      "readiness_level": 1,
+      "render_mode": "deterministic",
+      "template_root": "core",
+      "target_dir": "core",
+      "requires_active": [],
+      "templates": [
+        "HARD_CONSTRAINTS.md",
+        "WORKFLOW.md"
+      ],
+      "detection_hints": []
+    },
+    "backend": {
+      "risk": "medium",
+      "readiness_level": 2,
+      "render_mode": "project-generated",
+      "template_root": "domains/backend",
+      "target_dir": "backend",
+      "requires_active": [],
+      "templates": [
+        "INDEX.md",
+        "ARCHITECTURE.md",
+        "API_SECURITY.md",
+        "TESTING.md",
+        "DATA_ACCESS.md",
+        "CONFIGURATION.md",
+        "OBSERVABILITY.md"
+      ],
+      "detection_hints": [
+        "server",
+        "backend",
+        "pom.xml",
+        "go.mod"
+      ]
+    },
+    "database": {
+      "risk": "high",
+      "readiness_level": 2,
+      "render_mode": "project-generated",
+      "template_root": "domains/database",
+      "target_dir": "database",
+      "requires_active": [],
+      "templates": [
+        "INDEX.md",
+        "SCHEMA_DESIGN.md",
+        "MIGRATION.md",
+        "DATA_SEED.md",
+        "REVIEW_CHECKLIST.md"
+      ],
+      "detection_hints": [
+        "db",
+        "database",
+        "migrations"
+      ]
+    },
+    "frontend-web": {
+      "risk": "medium",
+      "readiness_level": 2,
+      "render_mode": "project-generated",
+      "template_root": "domains/frontend",
+      "target_dir": "frontend",
+      "requires_active": [],
+      "templates": [
+        "INDEX.md",
+        "common/INDEX.md",
+        "common/DESIGN_TOKENS.md",
+        "web/INDEX.md",
+        "web/develop/INDEX.md",
+        "web/develop/API_INTEGRATION.md",
+        "web/develop/ARCHITECTURE.md",
+        "web/develop/AUTHORIZATION.md",
+        "web/develop/STATE_MANAGEMENT.md",
+        "web/develop/TESTING.md",
+        "web/design/INDEX.md",
+        "web/design/ACCESSIBILITY.md",
+        "web/design/COMPONENT_PATTERNS.md",
+        "web/design/VISUAL_SYSTEM.md"
+      ],
+      "detection_hints": [
+        "web",
+        "frontend",
+        "package.json"
+      ]
+    },
+    "security": {
+      "risk": "high",
+      "readiness_level": 2,
+      "render_mode": "deterministic",
+      "template_root": "domains/security",
+      "target_dir": "security",
+      "requires_active": [],
+      "templates": [
+        "INDEX.md",
+        "AUTHENTICATION.md",
+        "AUTHORIZATION.md",
+        "SECRETS.md"
+      ],
+      "detection_hints": [
+        "security",
+        "auth"
+      ]
+    },
+    "delivery": {
+      "risk": "critical",
+      "readiness_level": 3,
+      "render_mode": "deterministic",
+      "template_root": "domains/delivery",
+      "target_dir": "delivery",
+      "requires_active": [
+        "security"
+      ],
+      "templates": [
+        "INDEX.md",
+        "CI.md",
+        "DEPLOYMENT.md",
+        "RELEASE.md",
+        "ROLLBACK.md"
+      ],
+      "detection_hints": [
+        ".github/workflows",
+        ".gitlab-ci.yml",
+        "Dockerfile",
+        "deploy"
+      ]
+    },
+    "frontend-app": {
+      "risk": "medium",
+      "readiness_level": 2,
+      "render_mode": "project-generated",
+      "template_root": "domains/frontend/app",
+      "target_dir": "frontend/app",
+      "requires_active": [],
+      "templates": [
+        "INDEX.md",
+        "design/ACCESSIBILITY.md",
+        "design/COMPONENTS.md",
+        "design/INDEX.md",
+        "design/INTERACTION.md",
+        "design/LAYOUT.md",
+        "design/TOKENS.md",
+        "develop/ARCHITECTURE.md",
+        "develop/INDEX.md",
+        "develop/TESTING.md",
+        "develop/UI_PATTERNS.md"
+      ],
+      "detection_hints": [
+        "mobile",
+        "app.json",
+        "pubspec.yaml"
+      ]
+    }
+  }
+}

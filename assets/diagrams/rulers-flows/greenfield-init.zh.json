@@ -1,0 +1,190 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "绿地项目 · 从批准决定到有效规范",
+    "locale": "zh-CN",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "prepare",
+      "label": "发现与初始化"
+    },
+    {
+      "id": "review",
+      "label": "审阅与激活"
+    },
+    {
+      "id": "hold",
+      "label": "待处理",
+      "variant": "exception"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "facts",
+      "lane": "prepare",
+      "col": 0,
+      "type": "external",
+      "label": "确认设计决定",
+      "sublabel": "approved · 需求 / ADR",
+      "width": 148
+    },
+    {
+      "id": "plan",
+      "lane": "prepare",
+      "col": 1,
+      "type": "backend",
+      "label": "审阅初始化计划",
+      "sublabel": "plan → review → apply",
+      "width": 148
+    },
+    {
+      "id": "draft",
+      "lane": "prepare",
+      "col": 2,
+      "type": "database",
+      "label": "建立项目画像",
+      "sublabel": "Draft · Level 0",
+      "width": 148
+    },
+    {
+      "id": "profile-gate",
+      "lane": "review",
+      "col": 2,
+      "type": "security",
+      "label": "画像是否获批？",
+      "sublabel": "review-profile",
+      "width": 148
+    },
+    {
+      "id": "candidate",
+      "lane": "review",
+      "col": 3,
+      "type": "backend",
+      "label": "生成所需领域规则",
+      "sublabel": "画像 + INDEX + 叶子规则",
+      "width": 148
+    },
+    {
+      "id": "rule-gate",
+      "lane": "review",
+      "col": 4,
+      "type": "security",
+      "label": "校验与审阅通过？",
+      "sublabel": "candidate → owner review",
+      "width": 148
+    },
+    {
+      "id": "active",
+      "lane": "review",
+      "col": 5,
+      "type": "backend",
+      "label": "激活并验证运行态",
+      "sublabel": "Level 2 · runtime ready",
+      "width": 148
+    },
+    {
+      "id": "facts-hold",
+      "lane": "hold",
+      "col": 2,
+      "type": "external",
+      "label": "补充事实或决定",
+      "sublabel": "未决项保持未决",
+      "width": 148
+    },
+    {
+      "id": "rules-hold",
+      "lane": "hold",
+      "col": 4,
+      "type": "external",
+      "label": "修订候选规则",
+      "sublabel": "未获批领域不进入路由",
+      "width": 148
+    }
+  ],
+  "mainPath": [
+    "facts",
+    "plan",
+    "draft",
+    "profile-gate",
+    "candidate",
+    "rule-gate",
+    "active"
+  ],
+  "edges": [
+    {
+      "id": "facts-plan",
+      "to": "plan",
+      "role": "main",
+      "from": "facts"
+    },
+    {
+      "id": "plan-draft",
+      "to": "draft",
+      "role": "main",
+      "from": "plan"
+    },
+    {
+      "id": "draft-profile-gate",
+      "to": "profile-gate",
+      "role": "main",
+      "from": "draft"
+    },
+    {
+      "id": "profile-gate-candidate",
+      "to": "candidate",
+      "role": "main",
+      "from": "profile-gate",
+      "label": "通过 · core Level 1"
+    },
+    {
+      "id": "candidate-rule-gate",
+      "to": "rule-gate",
+      "role": "main",
+      "from": "candidate"
+    },
+    {
+      "id": "rule-gate-active",
+      "to": "active",
+      "role": "main",
+      "from": "rule-gate",
+      "label": "通过"
+    },
+    {
+      "id": "profile-gate-facts-hold",
+      "to": "facts-hold",
+      "role": "error",
+      "from": "profile-gate",
+      "label": "未通过",
+      "variant": "security"
+    },
+    {
+      "id": "rule-gate-rules-hold",
+      "to": "rules-hold",
+      "role": "error",
+      "from": "rule-gate",
+      "label": "未通过",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "依据与实现分开",
+      "items": [
+        "绿地决定标记为 approved；棕地事实标记为 observed。",
+        "候选规则必须经过审阅；生成不等于生效。"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "修订后重新检查",
+      "items": [
+        "补齐输入后重新进入对应审阅步骤。",
+        "Level 3 readiness 与具体生产授权单独处理。"
+      ]
+    }
+  ]
+}

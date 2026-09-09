@@ -1,0 +1,8 @@
+{
+  "id": "strict-cn",
+  "commit_language": "zh-CN",
+  "commit_style": "conventional",
+  "body_required": true,
+  "changelog_strategy": "keep-a-changelog",
+  "create_changelog_if_missing": true
+}

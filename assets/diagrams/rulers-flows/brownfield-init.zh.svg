@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" data-theme="light" viewBox="0 0 1192 528" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase" style="margin:0;padding:0;box-sizing:border-box;display:block;transform-origin:0 0;font-family:Arial, PingFang SC, sans-serif" width="1192" height="528">
+        <rect width="1192" height="528" fill="#ffffff" /><title id="archify-diagram-title" style="margin:0;padding:0;box-sizing:border-box">棕地项目 · 从仓库证据到有效规范</title>
+        <desc id="archify-diagram-description" style="margin:0;padding:0;box-sizing:border-box">由 Archify 生成的工作流图。</desc>
+
+        <defs style="margin:0;padding:0;box-sizing:border-box">
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" style="margin:0;padding:0;box-sizing:border-box;fill:#94a3b8" />
+          </marker>
+          <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" style="margin:0;padding:0;box-sizing:border-box;fill:#059669" />
+          </marker>
+          <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" style="margin:0;padding:0;box-sizing:border-box;fill:#e11d48" />
+          </marker>
+          <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" style="margin:0;padding:0;box-sizing:border-box;fill:#7c3aed" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse" style="margin:0;padding:0;box-sizing:border-box">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5" style="margin:0;padding:0;box-sizing:border-box;stroke:#e2e8f0;fill:none" />
+          </pattern>
+        </defs>
+
+
+        <rect width="100%" height="100%" fill="url(#grid)" style="margin:0;padding:0;box-sizing:border-box" />
+
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-0" x="40" y="52" width="1136" height="104" rx="10" class="c-lane" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(248, 250, 252, 0.65);stroke:#cbd5e1;stroke-dasharray:6,6" />
+        <text x="54" y="74" class="t-dim" font-size="10" font-weight="600" style="margin:0;padding:0;box-sizing:border-box;fill:#94a3b8;font-family:Heiti SC,Arial,sans-serif">01 / 发现与初始化</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-1" x="40" y="176" width="1136" height="104" rx="10" class="c-lane" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(248, 250, 252, 0.65);stroke:#cbd5e1;stroke-dasharray:6,6" />
+        <text x="54" y="198" class="t-dim" font-size="10" font-weight="600" style="margin:0;padding:0;box-sizing:border-box;fill:#94a3b8;font-family:Heiti SC,Arial,sans-serif">02 / 审阅与激活</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-2" x="40" y="300" width="1136" height="104" rx="10" class="c-lane" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(248, 250, 252, 0.65);stroke:#cbd5e1;stroke-dasharray:6,6" />
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="exception-lane" data-composition-frame-id="lane-2-exception" x="46" y="306" width="1124" height="92" rx="8" class="c-security-group" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:transparent;stroke:#e11d48;stroke-dasharray:4,4" />
+        <text x="54" y="322" class="t-security" font-size="10" font-weight="600" style="margin:0;padding:0;box-sizing:border-box;fill:#e11d48;font-family:Heiti SC,Arial,sans-serif">EX / 待处理</text>
+
+
+
+
+
+
+
+
+        <path data-edge-from="candidate" data-edge-to="rule-gate" data-edge-key="0" data-edge-id="candidate-rule-gate" data-composition-points="805.2,243;833.2,243" d="M 805.2 243 L 833.2 243" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="draft" data-edge-to="profile-gate" data-edge-key="1" data-edge-id="draft-profile-gate" data-composition-points="474,145;474,217" d="M 474 145 L 474 217" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="facts" data-edge-to="plan" data-edge-key="2" data-edge-id="facts-plan" data-composition-points="196,119;224,119" d="M 196 119 L 224 119" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="plan" data-edge-to="draft" data-edge-key="3" data-edge-id="plan-draft" data-composition-points="372,119;400,119" d="M 372 119 L 400 119" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="profile-gate" data-edge-to="candidate" data-edge-label="通过 · core Level 1" data-edge-key="4" data-edge-id="profile-gate-candidate" data-composition-points="548,243;657.2,243" d="M 548 243 L 657.2 243" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="profile-gate" data-edge-to="facts-hold" data-edge-label="未通过" data-edge-key="5" data-edge-id="profile-gate-facts-hold" data-composition-points="400,243;20,243;20,367;400,367" d="M 400 243 L 20 243 L 20 367 L 400 367" class="a-security" stroke-width="1.4" marker-end="url(#arrowhead-security)" style="margin:0;padding:0;box-sizing:border-box;stroke:#e11d48;fill:none;stroke-dasharray:5,5" />
+        <path data-edge-from="rule-gate" data-edge-to="active" data-edge-label="通过" data-edge-key="6" data-edge-id="rule-gate-active" data-composition-points="907.2,269;907.2,285;1093.2,285;1093.2,269" d="M 907.2 269 L 907.2 285 L 1093.2 285 L 1093.2 269" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="rule-gate" data-edge-to="rules-hold" data-edge-label="未通过" data-edge-key="7" data-edge-id="rule-gate-rules-hold" data-composition-points="907.2,269;907.2,290;817.2,290;817.2,367;833.2,367" d="M 907.2 269 L 907.2 290 L 817.2 290 L 817.2 367 L 833.2 367" class="a-security" stroke-width="1.4" marker-end="url(#arrowhead-security)" style="margin:0;padding:0;box-sizing:border-box;stroke:#e11d48;fill:none;stroke-dasharray:5,5" />
+
+
+        <g id="node-facts" data-node-id="facts" data-node-label="检查现有项目" tabindex="0" role="button" aria-label="聚焦检查现有项目，observed · 代码 / 配置 / 测试, 发现与初始化" aria-pressed="false" data-node-kind="external" data-node-sublabel="observed · 代码 / 配置 / 测试" data-node-context="发现与初始化" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">检查现有项目 · observed · 代码 / 配置 / 测试 · 发现与初始化</title>
+          <rect x="48" y="93" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="48" y="93" width="148" height="52" rx="6" class="c-external" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(148, 163, 184, 0.18);stroke:#64748b" />
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(54 99) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#64748b">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="122" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">检查现有项目</text>
+          <text data-detail="context" x="122" y="131" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">observed · 代码 / 配置 / 测试</text>
+        </g>
+
+        <g id="node-plan" data-node-id="plan" data-node-label="审阅初始化计划" tabindex="0" role="button" aria-label="聚焦审阅初始化计划，plan → review → apply, 发现与初始化" aria-pressed="false" data-node-kind="backend" data-node-sublabel="plan → review → apply" data-node-context="发现与初始化" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">审阅初始化计划 · plan → review → apply · 发现与初始化</title>
+          <rect x="224" y="93" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="224" y="93" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(230 99) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="298" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">审阅初始化计划</text>
+          <text data-detail="context" x="298" y="131" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">plan → review → apply</text>
+        </g>
+
+        <g id="node-draft" data-node-id="draft" data-node-label="建立项目画像" tabindex="0" role="button" aria-label="聚焦建立项目画像，Draft · Level 0, 发现与初始化" aria-pressed="false" data-node-kind="database" data-node-sublabel="Draft · Level 0" data-node-context="发现与初始化" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">建立项目画像 · Draft · Level 0 · 发现与初始化</title>
+          <rect x="400" y="93" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="400" y="93" width="148" height="52" rx="6" class="c-database" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(167, 139, 250, 0.2);stroke:#7c3aed" />
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(406 99) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#7c3aed">
+            <ellipse cx="8" cy="4" rx="5" ry="2" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="474" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">建立项目画像</text>
+          <text data-detail="context" x="474" y="131" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">Draft · Level 0</text>
+        </g>
+
+        <g id="node-profile-gate" data-node-id="profile-gate" data-node-label="画像是否获批？" tabindex="0" role="button" aria-label="聚焦画像是否获批？，review-profile, 审阅与激活" aria-pressed="false" data-node-kind="security" data-node-sublabel="review-profile" data-node-context="审阅与激活" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">画像是否获批？ · review-profile · 审阅与激活</title>
+          <rect x="400" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="400" y="217" width="148" height="52" rx="6" class="c-security" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(251, 113, 133, 0.15);stroke:#e11d48" />
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(406 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#e11d48">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="m5.8 8 1.5 1.5 3-3" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="474" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">画像是否获批？</text>
+          <text data-detail="context" x="474" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">review-profile</text>
+        </g>
+
+        <g id="node-candidate" data-node-id="candidate" data-node-label="生成所需领域规则" tabindex="0" role="button" aria-label="聚焦生成所需领域规则，画像 + INDEX + 叶子规则, 审阅与激活" aria-pressed="false" data-node-kind="backend" data-node-sublabel="画像 + INDEX + 叶子规则" data-node-context="审阅与激活" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">生成所需领域规则 · 画像 + INDEX + 叶子规则 · 审阅与激活</title>
+          <rect x="657.2" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="657.2" y="217" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(663.2 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="731.2" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">生成所需领域规则</text>
+          <text data-detail="context" x="731.2" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">画像 + INDEX + 叶子规则</text>
+        </g>
+
+        <g id="node-rule-gate" data-node-id="rule-gate" data-node-label="校验与审阅通过？" tabindex="0" role="button" aria-label="聚焦校验与审阅通过？，candidate → owner review, 审阅与激活" aria-pressed="false" data-node-kind="security" data-node-sublabel="candidate → owner review" data-node-context="审阅与激活" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">校验与审阅通过？ · candidate → owner review · 审阅与激活</title>
+          <rect x="833.2" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="833.2" y="217" width="148" height="52" rx="6" class="c-security" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(251, 113, 133, 0.15);stroke:#e11d48" />
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(839.2 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#e11d48">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="m5.8 8 1.5 1.5 3-3" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="907.2" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">校验与审阅通过？</text>
+          <text data-detail="context" x="907.2" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">candidate → owner review</text>
+        </g>
+
+        <g id="node-active" data-node-id="active" data-node-label="激活并验证运行态" tabindex="0" role="button" aria-label="聚焦激活并验证运行态，Level 2 · runtime ready, 审阅与激活" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Level 2 · runtime ready" data-node-context="审阅与激活" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">激活并验证运行态 · Level 2 · runtime ready · 审阅与激活</title>
+          <rect x="1019.2" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="1019.2" y="217" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1025.2 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1093.2" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">激活并验证运行态</text>
+          <text data-detail="context" x="1093.2" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">Level 2 · runtime ready</text>
+        </g>
+
+        <g id="node-facts-hold" data-node-id="facts-hold" data-node-label="补充事实或决定" tabindex="0" role="button" aria-label="聚焦补充事实或决定，未决项保持未决, 待处理" aria-pressed="false" data-node-kind="external" data-node-sublabel="未决项保持未决" data-node-context="待处理" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">补充事实或决定 · 未决项保持未决 · 待处理</title>
+          <rect x="400" y="341" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="400" y="341" width="148" height="52" rx="6" class="c-external" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(148, 163, 184, 0.18);stroke:#64748b" />
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(406 347) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#64748b">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="474" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">补充事实或决定</text>
+          <text data-detail="context" x="474" y="379" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">未决项保持未决</text>
+        </g>
+
+        <g id="node-rules-hold" data-node-id="rules-hold" data-node-label="修订候选规则" tabindex="0" role="button" aria-label="聚焦修订候选规则，未获批领域不进入路由, 待处理" aria-pressed="false" data-node-kind="external" data-node-sublabel="未获批领域不进入路由" data-node-context="待处理" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">修订候选规则 · 未获批领域不进入路由 · 待处理</title>
+          <rect x="833.2" y="341" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="833.2" y="341" width="148" height="52" rx="6" class="c-external" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(148, 163, 184, 0.18);stroke:#64748b" />
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(839.2 347) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#64748b">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="907.2" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">修订候选规则</text>
+          <text data-detail="context" x="907.2" y="379" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">未获批领域不进入路由</text>
+        </g>
+
+
+
+
+
+
+        <g data-detail="context" data-edge-from="profile-gate" data-edge-to="candidate" data-edge-label="通过 · core Level 1" data-edge-key="4" data-edge-id="profile-gate-candidate" style="margin:0;padding:0;box-sizing:border-box">
+          <rect x="552" y="223" width="101.2" height="14" rx="3" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <text x="602.6" y="233" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">通过 · core Level 1</text>
+        </g>
+        <g data-detail="context" data-edge-from="profile-gate" data-edge-to="facts-hold" data-edge-label="未通过" data-edge-key="5" data-edge-id="profile-gate-facts-hold" style="margin:0;padding:0;box-sizing:border-box">
+          <rect x="190.6" y="223" width="38.8" height="14" rx="3" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <text x="210" y="233" class="t-security" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#e11d48;font-family:Heiti SC,Arial,sans-serif">未通过</text>
+        </g>
+        <g data-detail="context" data-edge-from="rule-gate" data-edge-to="active" data-edge-label="通过" data-edge-key="6" data-edge-id="rule-gate-active" style="margin:0;padding:0;box-sizing:border-box">
+          <rect x="985.2" y="265" width="30" height="14" rx="3" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <text x="1000.2" y="275" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">通过</text>
+        </g>
+        <g data-detail="context" data-edge-from="rule-gate" data-edge-to="rules-hold" data-edge-label="未通过" data-edge-key="7" data-edge-id="rule-gate-rules-hold" style="margin:0;padding:0;box-sizing:border-box">
+          <rect x="842.8000000000001" y="270" width="38.8" height="14" rx="3" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <text x="862.2" y="280" class="t-security" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#e11d48;font-family:Heiti SC,Arial,sans-serif">未通过</text>
+        </g>
+
+
+        <g data-legend="" data-legend-bridge="" style="margin:0;padding:0;box-sizing:border-box">
+          <text x="20" y="428" class="t-primary" font-size="12" font-weight="650" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;font-family:Heiti SC,Arial,sans-serif">图例</text>
+          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="Agent 逻辑" data-legend-x="20" data-legend-baseline="448" data-legend-width="87" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="20" y="440" width="14" height="9" rx="2" class="c-backend" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+            <text x="42" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">Agent 逻辑</text>
+          </g>
+          <g data-legend-semantic-kind="security" data-legend-kind="security" data-legend-label="策略" data-legend-x="114" data-legend-baseline="448" data-legend-width="61" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="114" y="440" width="14" height="9" rx="2" class="c-security" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(251, 113, 133, 0.15);stroke:#e11d48" />
+            <text x="136" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">策略</text>
+          </g>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="上下文 / 追踪" data-legend-x="182" data-legend-baseline="448" data-legend-width="100" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="182" y="440" width="14" height="9" rx="2" class="c-database" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(167, 139, 250, 0.2);stroke:#7c3aed" />
+            <text x="204" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">上下文 / 追踪</text>
+          </g>
+          <g data-legend-semantic-kind="external" data-legend-kind="external" data-legend-label="外部系统" data-legend-x="289" data-legend-baseline="448" data-legend-width="78" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="289" y="440" width="14" height="9" rx="2" class="c-external" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(148, 163, 184, 0.18);stroke:#64748b" />
+            <text x="311" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">外部系统</text>
+          </g>
+        </g>
+      </svg>

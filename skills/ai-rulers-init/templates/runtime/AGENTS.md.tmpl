@@ -1,0 +1,25 @@
+# AI 协作协议
+
+> Version: {{RELEASE_VERSION}}。RULERS_STATE.json 是机器权威；日常任务读取校验后的 Context。
+
+## 加载顺序
+
+1. 运行 `python3 "{{RULERS_DIR}}/scripts/validate_rulers.py" --mode context --project-root . --rulers-dir "{{RULERS_DIR}}"`。
+2. 始终读取 `{{RULERS_DIR}}/core/HARD_CONSTRAINTS.md` 和 `{{RULERS_DIR}}/core/WORKFLOW.md`。
+3. 按 available_domains 选择任务领域，用 `--domain NAME` 重新查询；只加载有效的 Profile、领域 INDEX 和命中叶子规则。
+4. 非零退出、非法 JSON 或 blocked=true：仅诊断/恢复；next_action 非 none 时先处理对应事项。
+5. 需要具体文件清单或合并正文时使用 `--mode load --domain NAME [--rule PATH] [--format text]`；该输出由相同权威规则派生。
+
+模块工作区：将本次会话项目根绑定为绝对 `--project-root ROOT`，进入子目录后仍使用它；独立打开子仓库时绑定子仓库根。Context 有 available_modules 时，以 `--module NAME` 选择模块，再按领域／叶子加载；跨模块可重复该参数。组合约束另用 `--workspace-domain NAME [--workspace-rule PATH]`。普通编码消费主工程已采纳快照；更新来源、调整或迁移由用户手动调用 Skill。若客户端还自动注入了子仓库入口，应先消除双入口歧义再编码。
+
+## 条件路由
+
+| 任务条件 | 还需加载 |
+| --- | --- |
+| 增删改、移动、合并或拆分规则 | `{{RULERS_DIR}}/core/RULER_MAINTENANCE.md` |
+| 权威冲突、证据与所有权 | `{{RULERS_DIR}}/core/DOC_GOVERNANCE.md` |
+{{COMMIT_POLICY_ROUTE}}
+{{COMMIT_POLICY_BLOCK}}
+## 激活范围
+
+Level 0：发现、画像及候选准备；Level 1：已审阅事实支持的低风险工作；Level 2：已激活领域工作；Level 3 readiness：交付准备就绪，具体生产动作仍需授权。

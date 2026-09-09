@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/assets/diagrams/rulers-flows/task-loading.zh.json",
+  "output": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/assets/diagrams/rulers-flows/task-loading.zh.html",
+  "specification": {
+    "sha256": "a51c022afe3802d59902203301f834e327a041489313e74a6520008834615fa0",
+    "bytes": 4240
+  },
+  "artifact": {
+    "sha256": "f55defb48fcb2351297df820f791b5781619ef90657b2a3d222c7769319bc29a",
+    "bytes": 712017
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

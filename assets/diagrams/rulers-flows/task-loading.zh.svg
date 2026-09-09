@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" data-theme="light" viewBox="0 0 1129 528" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase" style="margin:0;padding:0;box-sizing:border-box;display:block;transform-origin:0 0;font-family:Arial, PingFang SC, sans-serif" width="1129" height="528">
+        <rect width="1129" height="528" fill="#ffffff" /><title id="archify-diagram-title" style="margin:0;padding:0;box-sizing:border-box">任务执行 · 判断、渐进加载与生效</title>
+        <desc id="archify-diagram-description" style="margin:0;padding:0;box-sizing:border-box">由 Archify 生成的工作流图。</desc>
+
+        <defs style="margin:0;padding:0;box-sizing:border-box">
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" style="margin:0;padding:0;box-sizing:border-box;fill:#94a3b8" />
+          </marker>
+          <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" style="margin:0;padding:0;box-sizing:border-box;fill:#059669" />
+          </marker>
+          <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" style="margin:0;padding:0;box-sizing:border-box;fill:#e11d48" />
+          </marker>
+          <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" style="margin:0;padding:0;box-sizing:border-box">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" style="margin:0;padding:0;box-sizing:border-box;fill:#7c3aed" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse" style="margin:0;padding:0;box-sizing:border-box">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5" style="margin:0;padding:0;box-sizing:border-box;stroke:#e2e8f0;fill:none" />
+          </pattern>
+        </defs>
+
+
+        <rect width="100%" height="100%" fill="url(#grid)" style="margin:0;padding:0;box-sizing:border-box" />
+
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-0" x="40" y="52" width="1073" height="104" rx="10" class="c-lane" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(248, 250, 252, 0.65);stroke:#cbd5e1;stroke-dasharray:6,6" />
+        <text x="54" y="74" class="t-dim" font-size="10" font-weight="600" style="margin:0;padding:0;box-sizing:border-box;fill:#94a3b8;font-family:Heiti SC,Arial,sans-serif">01 / 入口与判断</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-1" x="40" y="176" width="1073" height="104" rx="10" class="c-lane" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(248, 250, 252, 0.65);stroke:#cbd5e1;stroke-dasharray:6,6" />
+        <text x="54" y="198" class="t-dim" font-size="10" font-weight="600" style="margin:0;padding:0;box-sizing:border-box;fill:#94a3b8;font-family:Heiti SC,Arial,sans-serif">02 / 按需加载</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-2" x="40" y="300" width="1073" height="104" rx="10" class="c-lane" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(248, 250, 252, 0.65);stroke:#cbd5e1;stroke-dasharray:6,6" />
+        <text x="54" y="322" class="t-dim" font-size="10" font-weight="600" style="margin:0;padding:0;box-sizing:border-box;fill:#94a3b8;font-family:Heiti SC,Arial,sans-serif">03 / 执行与反馈</text>
+
+
+
+
+
+
+
+
+        <path data-edge-from="context" data-edge-to="gate" data-edge-key="0" data-edge-id="context-gate" data-composition-points="372,119;400,119" d="M 372 119 L 400 119" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="execute" data-edge-to="feedback" data-edge-label="完成后" data-edge-key="1" data-edge-id="execute-feedback" data-composition-points="956.8,367;910,367" d="M 956.8 367 L 910 367" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="gate" data-edge-to="blocked" data-edge-label="受阻" data-edge-key="2" data-edge-id="gate-blocked" data-composition-points="548,119;564,119;564,166;474,166;474,217" d="M 548 119 L 564 119 L 564 166 L 474 166 L 474 217" class="a-security" stroke-width="1.4" marker-end="url(#arrowhead-security)" style="margin:0;padding:0;box-sizing:border-box;stroke:#e11d48;fill:none;stroke-dasharray:5,5" />
+        <path data-edge-from="gate" data-edge-to="scope" data-edge-label="允许" data-edge-key="3" data-edge-id="gate-scope" data-composition-points="474,93;474,77;660,77;660,93" d="M 474 93 L 474 77 L 660 77 L 660 93" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="index" data-edge-to="leaf" data-edge-key="4" data-edge-id="index-leaf" data-composition-points="910,243;956.8,243" d="M 910 243 L 956.8 243" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="leaf" data-edge-to="execute" data-edge-key="5" data-edge-id="leaf-execute" data-composition-points="1030.8,269;1030.8,341" d="M 1030.8 269 L 1030.8 341" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="profile" data-edge-to="index" data-edge-key="6" data-edge-id="profile-index" data-composition-points="734,243;762,243" d="M 734 243 L 762 243" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="scope" data-edge-to="profile" data-edge-key="7" data-edge-id="scope-profile" data-composition-points="660,145;660,217" d="M 660 145 L 660 217" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+        <path data-edge-from="task" data-edge-to="context" data-edge-key="8" data-edge-id="task-context" data-composition-points="196,119;224,119" d="M 196 119 L 224 119" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)" style="margin:0;padding:0;box-sizing:border-box;stroke:#94a3b8;fill:none" />
+
+
+        <g id="node-task" data-node-id="task" data-node-label="接收任务" tabindex="0" role="button" aria-label="聚焦接收任务，绑定本次会话项目根, 入口与判断" aria-pressed="false" data-node-kind="external" data-node-sublabel="绑定本次会话项目根" data-node-context="入口与判断" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">接收任务 · 绑定本次会话项目根 · 入口与判断</title>
+          <rect x="48" y="93" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="48" y="93" width="148" height="52" rx="6" class="c-external" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(148, 163, 184, 0.18);stroke:#64748b" />
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(54 99) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#64748b">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="122" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">接收任务</text>
+          <text data-detail="context" x="122" y="131" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">绑定本次会话项目根</text>
+        </g>
+
+        <g id="node-context" data-node-id="context" data-node-label="检查 Context" tabindex="0" role="button" aria-label="聚焦检查 Context，校验 State · 加载最低 core, 入口与判断" aria-pressed="false" data-node-kind="backend" data-node-sublabel="校验 State · 加载最低 core" data-node-context="入口与判断" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">检查 Context · 校验 State · 加载最低 core · 入口与判断</title>
+          <rect x="224" y="93" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="224" y="93" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(230 99) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="298" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">检查 Context</text>
+          <text data-detail="context" x="298" y="131" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">校验 State · 加载最低 core</text>
+        </g>
+
+        <g id="node-gate" data-node-id="gate" data-node-label="状态允许继续？" tabindex="0" role="button" aria-label="聚焦状态允许继续？，blocked / next_action, 入口与判断" aria-pressed="false" data-node-kind="security" data-node-sublabel="blocked / next_action" data-node-context="入口与判断" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">状态允许继续？ · blocked / next_action · 入口与判断</title>
+          <rect x="400" y="93" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="400" y="93" width="148" height="52" rx="6" class="c-security" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(251, 113, 133, 0.15);stroke:#e11d48" />
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(406 99) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#e11d48">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="m5.8 8 1.5 1.5 3-3" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="474" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">状态允许继续？</text>
+          <text data-detail="context" x="474" y="131" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">blocked / next_action</text>
+        </g>
+
+        <g id="node-scope" data-node-id="scope" data-node-label="选择任务范围" tabindex="0" role="button" aria-label="聚焦选择任务范围，领域 / 模块 → 再查 Context, 入口与判断" aria-pressed="false" data-node-kind="backend" data-node-sublabel="领域 / 模块 → 再查 Context" data-node-context="入口与判断" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">选择任务范围 · 领域 / 模块 → 再查 Context · 入口与判断</title>
+          <rect x="586" y="93" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="586" y="93" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(592 99) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="660" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">选择任务范围</text>
+          <text data-detail="context" x="660" y="131" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">领域 / 模块 → 再查 Context</text>
+        </g>
+
+        <g id="node-blocked" data-node-id="blocked" data-node-label="诊断、修复或审阅" tabindex="0" role="button" aria-label="聚焦诊断、修复或审阅，受阻范围暂停实现, 按需加载" aria-pressed="false" data-node-kind="security" data-node-sublabel="受阻范围暂停实现" data-node-context="按需加载" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">诊断、修复或审阅 · 受阻范围暂停实现 · 按需加载</title>
+          <rect x="400" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="400" y="217" width="148" height="52" rx="6" class="c-security" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(251, 113, 133, 0.15);stroke:#e11d48" />
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(406 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#e11d48">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="m5.8 8 1.5 1.5 3-3" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="474" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">诊断、修复或审阅</text>
+          <text data-detail="context" x="474" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">受阻范围暂停实现</text>
+        </g>
+
+        <g id="node-profile" data-node-id="profile" data-node-label="读取有效项目事实" tabindex="0" role="button" aria-label="聚焦读取有效项目事实，只取相关 scopes, 按需加载" aria-pressed="false" data-node-kind="database" data-node-sublabel="只取相关 scopes" data-node-context="按需加载" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">读取有效项目事实 · 只取相关 scopes · 按需加载</title>
+          <rect x="586" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="586" y="217" width="148" height="52" rx="6" class="c-database" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(167, 139, 250, 0.2);stroke:#7c3aed" />
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(592 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#7c3aed">
+            <ellipse cx="8" cy="4" rx="5" ry="2" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="660" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">读取有效项目事实</text>
+          <text data-detail="context" x="660" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">只取相关 scopes</text>
+        </g>
+
+        <g id="node-index" data-node-id="index" data-node-label="加载已激活索引" tabindex="0" role="button" aria-label="聚焦加载已激活索引，INDEX 提供条件路由, 按需加载" aria-pressed="false" data-node-kind="backend" data-node-sublabel="INDEX 提供条件路由" data-node-context="按需加载" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">加载已激活索引 · INDEX 提供条件路由 · 按需加载</title>
+          <rect x="762" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="762" y="217" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(768 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="836" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">加载已激活索引</text>
+          <text data-detail="context" x="836" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">INDEX 提供条件路由</text>
+        </g>
+
+        <g id="node-leaf" data-node-id="leaf" data-node-label="展开命中规则" tabindex="0" role="button" aria-label="聚焦展开命中规则，叶子 + 必需依赖, 按需加载" aria-pressed="false" data-node-kind="backend" data-node-sublabel="叶子 + 必需依赖" data-node-context="按需加载" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">展开命中规则 · 叶子 + 必需依赖 · 按需加载</title>
+          <rect x="956.8" y="217" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="956.8" y="217" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(962.8 223) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1030.8" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">展开命中规则</text>
+          <text data-detail="context" x="1030.8" y="255" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">叶子 + 必需依赖</text>
+        </g>
+
+        <g id="node-feedback" data-node-id="feedback" data-node-label="评估规范是否需更新" tabindex="0" role="button" aria-label="聚焦评估规范是否需更新，内容 / 事实 / 来源变化, 执行与反馈" aria-pressed="false" data-node-kind="backend" data-node-sublabel="内容 / 事实 / 来源变化" data-node-context="执行与反馈" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">评估规范是否需更新 · 内容 / 事实 / 来源变化 · 执行与反馈</title>
+          <rect x="762" y="341" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="762" y="341" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(768 347) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="836" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">评估规范是否需更新</text>
+          <text data-detail="context" x="836" y="379" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">内容 / 事实 / 来源变化</text>
+        </g>
+
+        <g id="node-execute" data-node-id="execute" data-node-label="依规范执行与验证" tabindex="0" role="button" aria-label="聚焦依规范执行与验证，限制内工作 · 报告结果, 执行与反馈" aria-pressed="false" data-node-kind="backend" data-node-sublabel="限制内工作 · 报告结果" data-node-context="执行与反馈" style="margin:0;padding:0;box-sizing:border-box">
+          <title style="margin:0;padding:0;box-sizing:border-box">依规范执行与验证 · 限制内工作 · 报告结果 · 执行与反馈</title>
+          <rect x="956.8" y="341" width="148" height="52" rx="6" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <rect x="956.8" y="341" width="148" height="52" rx="6" class="c-backend" stroke-width="1.5" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(962.8 347) scale(0.6875)" style="margin:0;padding:0;box-sizing:border-box;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;opacity:0.76;color:#059669">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" style="margin:0;padding:0;box-sizing:border-box;vector-effect:non-scaling-stroke" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1030.8" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;transform-box:fill-box;transform-origin:center;font-family:Heiti SC,Arial,sans-serif">依规范执行与验证</text>
+          <text data-detail="context" x="1030.8" y="379" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">限制内工作 · 报告结果</text>
+        </g>
+
+
+
+        <g data-detail="context" data-edge-from="execute" data-edge-to="feedback" data-edge-label="完成后" data-edge-key="1" data-edge-id="execute-feedback" style="margin:0;padding:0;box-sizing:border-box">
+          <rect x="914" y="347" width="38.8" height="14" rx="3" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <text x="933.4" y="357" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">完成后</text>
+        </g>
+        <g data-detail="context" data-edge-from="gate" data-edge-to="blocked" data-edge-label="受阻" data-edge-key="2" data-edge-id="gate-blocked" style="margin:0;padding:0;box-sizing:border-box">
+          <rect x="504" y="146" width="30" height="14" rx="3" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <text x="519" y="156" class="t-security" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#e11d48;font-family:Heiti SC,Arial,sans-serif">受阻</text>
+        </g>
+        <g data-detail="context" data-edge-from="gate" data-edge-to="scope" data-edge-label="允许" data-edge-key="3" data-edge-id="gate-scope" style="margin:0;padding:0;box-sizing:border-box">
+          <rect x="552" y="57" width="30" height="14" rx="3" class="c-mask" style="margin:0;padding:0;box-sizing:border-box;fill:#ffffff;stroke:none" />
+          <text x="567" y="67" class="t-muted" font-size="8" text-anchor="middle" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">允许</text>
+        </g>
+
+
+
+
+
+
+
+        <g data-legend="" data-legend-bridge="" style="margin:0;padding:0;box-sizing:border-box">
+          <text x="20" y="428" class="t-primary" font-size="12" font-weight="650" style="margin:0;padding:0;box-sizing:border-box;fill:#0f172a;font-family:Heiti SC,Arial,sans-serif">图例</text>
+          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="Agent 逻辑" data-legend-x="20" data-legend-baseline="448" data-legend-width="87" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="20" y="440" width="14" height="9" rx="2" class="c-backend" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(52, 211, 153, 0.18);stroke:#059669" />
+            <text x="42" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">Agent 逻辑</text>
+          </g>
+          <g data-legend-semantic-kind="security" data-legend-kind="security" data-legend-label="策略" data-legend-x="114" data-legend-baseline="448" data-legend-width="61" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="114" y="440" width="14" height="9" rx="2" class="c-security" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(251, 113, 133, 0.15);stroke:#e11d48" />
+            <text x="136" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">策略</text>
+          </g>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="上下文 / 追踪" data-legend-x="182" data-legend-baseline="448" data-legend-width="100" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="182" y="440" width="14" height="9" rx="2" class="c-database" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(167, 139, 250, 0.2);stroke:#7c3aed" />
+            <text x="204" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">上下文 / 追踪</text>
+          </g>
+          <g data-legend-semantic-kind="external" data-legend-kind="external" data-legend-label="外部系统" data-legend-x="289" data-legend-baseline="448" data-legend-width="78" style="margin:0;padding:0;box-sizing:border-box">
+            <rect x="289" y="440" width="14" height="9" rx="2" class="c-external" stroke-width="1" style="margin:0;padding:0;box-sizing:border-box;fill:rgba(148, 163, 184, 0.18);stroke:#64748b" />
+            <text x="311" y="448" class="t-muted" font-size="7.5" font-weight="500" style="margin:0;padding:0;box-sizing:border-box;fill:#64748b;font-family:Heiti SC,Arial,sans-serif">外部系统</text>
+          </g>
+        </g>
+      </svg>

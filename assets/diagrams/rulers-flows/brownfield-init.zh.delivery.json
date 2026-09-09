@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/assets/diagrams/rulers-flows/brownfield-init.zh.json",
+  "output": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/assets/diagrams/rulers-flows/brownfield-init.zh.html",
+  "specification": {
+    "sha256": "f47d0d16754e3ea657e43ef2e9ae3f55a0d49ab4850358734edcce2ba298300a",
+    "bytes": 4080
+  },
+  "artifact": {
+    "sha256": "91e180b1924d8bbbb3c5b4e840369148850311fc3ad8ab1e7869029944f436a9",
+    "bytes": 711687
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

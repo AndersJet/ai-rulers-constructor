@@ -1,0 +1,203 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Agent tasks · Check, load and apply rules",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "decide",
+      "label": "Entry & eligibility"
+    },
+    {
+      "id": "load",
+      "label": "Progressive loading"
+    },
+    {
+      "id": "work",
+      "label": "Execution & feedback"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "task",
+      "lane": "decide",
+      "col": 0,
+      "type": "external",
+      "label": "Receive task",
+      "sublabel": "Bind the session root",
+      "width": 148
+    },
+    {
+      "id": "context",
+      "lane": "decide",
+      "col": 1,
+      "type": "backend",
+      "label": "Check Context",
+      "sublabel": "State checks + minimum core",
+      "width": 148
+    },
+    {
+      "id": "gate",
+      "lane": "decide",
+      "col": 2,
+      "type": "security",
+      "label": "State valid?",
+      "sublabel": "blocked / next_action",
+      "width": 148
+    },
+    {
+      "id": "scope",
+      "lane": "decide",
+      "col": 3,
+      "type": "backend",
+      "label": "Select scope",
+      "sublabel": "Domains / modules · recheck",
+      "width": 148
+    },
+    {
+      "id": "blocked",
+      "lane": "load",
+      "col": 2,
+      "type": "security",
+      "label": "Diagnose or review",
+      "sublabel": "Pause blocked work",
+      "width": 148
+    },
+    {
+      "id": "profile",
+      "lane": "load",
+      "col": 3,
+      "type": "database",
+      "label": "Read facts",
+      "sublabel": "Relevant scopes only",
+      "width": 148
+    },
+    {
+      "id": "index",
+      "lane": "load",
+      "col": 4,
+      "type": "backend",
+      "label": "Load INDEX",
+      "sublabel": "INDEX routes by condition",
+      "width": 148
+    },
+    {
+      "id": "leaf",
+      "lane": "load",
+      "col": 5,
+      "type": "backend",
+      "label": "Load rules",
+      "sublabel": "Leaves + dependencies",
+      "width": 148
+    },
+    {
+      "id": "execute",
+      "lane": "work",
+      "col": 5,
+      "type": "backend",
+      "label": "Work & verify",
+      "sublabel": "Follow rules · report results",
+      "width": 148
+    },
+    {
+      "id": "feedback",
+      "lane": "work",
+      "col": 4,
+      "type": "backend",
+      "label": "Review changes",
+      "sublabel": "Content / facts / sources",
+      "width": 148
+    }
+  ],
+  "mainPath": [
+    "task",
+    "context",
+    "gate",
+    "scope",
+    "profile",
+    "index",
+    "leaf",
+    "execute"
+  ],
+  "edges": [
+    {
+      "id": "task-context",
+      "to": "context",
+      "role": "main",
+      "from": "task"
+    },
+    {
+      "id": "context-gate",
+      "to": "gate",
+      "role": "main",
+      "from": "context"
+    },
+    {
+      "id": "gate-scope",
+      "to": "scope",
+      "role": "main",
+      "from": "gate",
+      "label": "Yes"
+    },
+    {
+      "id": "gate-blocked",
+      "to": "blocked",
+      "role": "error",
+      "from": "gate",
+      "label": "Blocked",
+      "variant": "security"
+    },
+    {
+      "id": "scope-profile",
+      "to": "profile",
+      "role": "main",
+      "from": "scope"
+    },
+    {
+      "id": "profile-index",
+      "to": "index",
+      "role": "main",
+      "from": "profile"
+    },
+    {
+      "id": "index-leaf",
+      "to": "leaf",
+      "role": "main",
+      "from": "index"
+    },
+    {
+      "id": "leaf-execute",
+      "to": "execute",
+      "role": "main",
+      "from": "leaf"
+    },
+    {
+      "id": "execute-feedback",
+      "to": "feedback",
+      "role": "branch",
+      "from": "execute",
+      "label": "After work"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Scope and state both apply",
+      "items": [
+        "Validate selected scopes too; diagnose stale or inactive rules.",
+        "Use accepted module snapshots; no automatic source sync."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Changes enter maintenance",
+      "items": [
+        "Use rules-plan for rules, reconcile for facts, manual module sync.",
+        "Review and activate revisions before subsequent tasks load them."
+      ]
+    }
+  ]
+}

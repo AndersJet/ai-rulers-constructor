@@ -1,0 +1,203 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "任务执行 · 判断、渐进加载与生效",
+    "locale": "zh-CN",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "decide",
+      "label": "入口与判断"
+    },
+    {
+      "id": "load",
+      "label": "按需加载"
+    },
+    {
+      "id": "work",
+      "label": "执行与反馈"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "task",
+      "lane": "decide",
+      "col": 0,
+      "type": "external",
+      "label": "接收任务",
+      "sublabel": "绑定本次会话项目根",
+      "width": 148
+    },
+    {
+      "id": "context",
+      "lane": "decide",
+      "col": 1,
+      "type": "backend",
+      "label": "检查 Context",
+      "sublabel": "校验 State · 加载最低 core",
+      "width": 148
+    },
+    {
+      "id": "gate",
+      "lane": "decide",
+      "col": 2,
+      "type": "security",
+      "label": "状态允许继续？",
+      "sublabel": "blocked / next_action",
+      "width": 148
+    },
+    {
+      "id": "scope",
+      "lane": "decide",
+      "col": 3,
+      "type": "backend",
+      "label": "选择任务范围",
+      "sublabel": "领域 / 模块 → 再查 Context",
+      "width": 148
+    },
+    {
+      "id": "blocked",
+      "lane": "load",
+      "col": 2,
+      "type": "security",
+      "label": "诊断、修复或审阅",
+      "sublabel": "受阻范围暂停实现",
+      "width": 148
+    },
+    {
+      "id": "profile",
+      "lane": "load",
+      "col": 3,
+      "type": "database",
+      "label": "读取有效项目事实",
+      "sublabel": "只取相关 scopes",
+      "width": 148
+    },
+    {
+      "id": "index",
+      "lane": "load",
+      "col": 4,
+      "type": "backend",
+      "label": "加载已激活索引",
+      "sublabel": "INDEX 提供条件路由",
+      "width": 148
+    },
+    {
+      "id": "leaf",
+      "lane": "load",
+      "col": 5,
+      "type": "backend",
+      "label": "展开命中规则",
+      "sublabel": "叶子 + 必需依赖",
+      "width": 148
+    },
+    {
+      "id": "execute",
+      "lane": "work",
+      "col": 5,
+      "type": "backend",
+      "label": "依规范执行与验证",
+      "sublabel": "限制内工作 · 报告结果",
+      "width": 148
+    },
+    {
+      "id": "feedback",
+      "lane": "work",
+      "col": 4,
+      "type": "backend",
+      "label": "评估规范是否需更新",
+      "sublabel": "内容 / 事实 / 来源变化",
+      "width": 148
+    }
+  ],
+  "mainPath": [
+    "task",
+    "context",
+    "gate",
+    "scope",
+    "profile",
+    "index",
+    "leaf",
+    "execute"
+  ],
+  "edges": [
+    {
+      "id": "task-context",
+      "to": "context",
+      "role": "main",
+      "from": "task"
+    },
+    {
+      "id": "context-gate",
+      "to": "gate",
+      "role": "main",
+      "from": "context"
+    },
+    {
+      "id": "gate-scope",
+      "to": "scope",
+      "role": "main",
+      "from": "gate",
+      "label": "允许"
+    },
+    {
+      "id": "gate-blocked",
+      "to": "blocked",
+      "role": "error",
+      "from": "gate",
+      "label": "受阻",
+      "variant": "security"
+    },
+    {
+      "id": "scope-profile",
+      "to": "profile",
+      "role": "main",
+      "from": "scope"
+    },
+    {
+      "id": "profile-index",
+      "to": "index",
+      "role": "main",
+      "from": "profile"
+    },
+    {
+      "id": "index-leaf",
+      "to": "leaf",
+      "role": "main",
+      "from": "index"
+    },
+    {
+      "id": "leaf-execute",
+      "to": "execute",
+      "role": "main",
+      "from": "leaf"
+    },
+    {
+      "id": "execute-feedback",
+      "to": "feedback",
+      "role": "branch",
+      "from": "execute",
+      "label": "完成后"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "任务命中与状态同时成立",
+      "items": [
+        "所选范围也须校验；失效或未激活时回到诊断。",
+        "普通任务消费已采纳模块快照，不自动同步来源。"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "变化进入维护流程",
+      "items": [
+        "规则用 rules-plan；事实用 reconcile；模块更新手动同步。",
+        "修订经审阅和适用激活后，供后续任务加载。"
+      ]
+    }
+  ]
+}

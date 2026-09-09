@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/assets/diagrams/rulers-flows/greenfield-init.zh.json",
+  "output": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/assets/diagrams/rulers-flows/greenfield-init.zh.html",
+  "specification": {
+    "sha256": "48df8217363cf077435be7f2734d76f4e80b3307131640743d50780a693e5ff8",
+    "bytes": 4068
+  },
+  "artifact": {
+    "sha256": "b0307a5e39b8e9a5aea684ae52c791274f34c1d1200ea3ba84e4a40a9f724ffa",
+    "bytes": 711639
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

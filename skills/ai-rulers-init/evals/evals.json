@@ -1,0 +1,163 @@
+{
+  "skill_name": "ai-rulers-init",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "在已有 AGENTS.md 和 changesets 的 monorepo 中初始化 rulers。",
+      "expected_output": "保留人工 AGENTS 内容，不创建 CHANGELOG，生成 draft/Level 0 状态。",
+      "files": [],
+      "assertions": [
+        "根 AGENTS 人工内容保留且只有一个受管区块",
+        "project-native 策略不创建 CHANGELOG.md",
+        "Profile draft 时 Core 为 Level 0"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "使用 documents/coding-standards 作为自定义目录完成候选初始化。",
+      "expected_output": "所有链接、状态和校验命令使用自定义目录且 candidate 校验通过。",
+      "files": [],
+      "assertions": [
+        "RULERS_STATE.rulers_dir 与自定义目录一致",
+        "目标目录中没有 bootstrap/template 产物",
+        "candidate 校验通过"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "恢复一个停在 profile_draft 的初始化。",
+      "expected_output": "从 profile_draft 继续，不重新覆盖文件或提前激活。",
+      "files": [],
+      "assertions": [
+        "恢复阶段来自 RULERS_STATE",
+        "重复 apply 零文件变化",
+        "未经审阅 Core 保持 Level 0"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "把只有 PROJECT_PROFILE.md 的 v1 项目迁移到 v2。",
+      "expected_output": "生成状态文件并将无审阅证据的旧 Level 标为待审阅。",
+      "files": [],
+      "assertions": [
+        "旧画像内容保留",
+        "profile.status 为 legacy_review_required",
+        "Core 为 Level 0"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "增量扫描发现 runtime 变化、新增数据库事实、移除旧平台。",
+      "expected_output": "分别输出 added/changed/removed，并要求变化和移除项重新审阅。",
+      "files": [],
+      "assertions": [
+        "新增、变化、移除分类准确",
+        "不自动删除已激活规则",
+        "变化事实进入 proposed review"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "为包含认证和部署的项目生成 security/delivery 候选规则。",
+      "expected_output": "安全和交付领域存在，但审阅前不可进入运行态路由。",
+      "files": [],
+      "assertions": [
+        "security 和 delivery 模板完整",
+        "未审阅领域保持 Level 0",
+        "Level 3 仅记录 readiness"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "人工修改了受管 HARD_CONSTRAINTS 后再次运行初始化。",
+      "expected_output": "报告 managed file drift，不覆盖人工内容。",
+      "files": [],
+      "assertions": [
+        "校验返回 VR040",
+        "人工内容未被覆盖",
+        "状态进入修复或冲突处理"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "尝试把 rulers_dir 设置为 ../outside。",
+      "expected_output": "拒绝路径逃逸且不写入项目外。",
+      "files": [],
+      "assertions": [
+        "操作失败并返回安全错误",
+        "项目外没有新文件",
+        "未产生部分初始化产物"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "用户要求在已激活 backend 中新增缓存规则，删除不适用的观测规则；后续升级模板。",
+      "expected_output": "通过候选差异更新正文、索引和清单；激活前无路由；升级保留缓存规则及删除决定。",
+      "files": [],
+      "assertions": [
+        "CACHING.md 受管且可加载",
+        "OBSERVABILITY.md 删除且升级不恢复",
+        "用户批准覆盖具体差异"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "仅有批准 ADR 的绿地项目建立规范，随后实现与决定不同，请更新约束。",
+      "expected_output": "用 approved 生成初始规范；实现以 observed 记录，冲突经确认后 reconcile。",
+      "files": [],
+      "assertions": [
+        "不虚构已存在的代码和命令",
+        "批准决定和观察事实分开",
+        "受影响领域重新审阅"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "主仓库通过直接 Git submodule 组合 server/ui；只修改 server 后端。请使用已采纳规范。",
+      "expected_output": "显式绑定主根，先 Context，再选择 server/backend；不自动同步或读 ui 正文。",
+      "files": [],
+      "assertions": [
+        "主 core 只加载一次",
+        "不继承子仓库批准",
+        "不同模块同名领域保持隔离"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "子仓库未提交规则修改已批准，请手动同步到主仓库；后续源变更与主工程停用项冲突。",
+      "expected_output": "导出实际字节和 dirty 来源，审阅 changes 后采纳；覆盖冲突保留人工工作，重新计划。",
+      "files": [],
+      "assertions": [
+        "HEAD 不冒充实际内容",
+        "无变化不重复审阅",
+        "来源变化使旧计划失效",
+        "冲突未经解决不覆盖"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "集中规则迁移到一个包含前后端的子仓库，source 阶段后中断，请恢复。",
+      "expected_output": "一个子仓库仍是一个模块，恢复同一迁移检查点，主旧路由在切换前仍有效，子规则保持 draft。",
+      "files": [],
+      "assertions": [
+        "不扫描第二层模块",
+        "不自动进行 Git 操作",
+        "保留无关人工修改",
+        "区分组合采纳与独立激活"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "只说使用 ai-rulers-init 初始化当前项目；项目通过直接 Git submodule 组合前后端，部分模块未初始化。",
+      "expected_output": "默认运行 init-plan 自动发现主子结构，准备可用模块候选，集中审阅；未初始化模块延期，重复调用检查增量。",
+      "files": [],
+      "assertions": [
+        "不要求用户先列出模块名",
+        "不自动 fetch 或 checkout",
+        "未解决的归属冲突保留原有效规则",
+        "无变化直接结束",
+        "不把 preparation 项声明为全部完成"
+      ]
+    }
+  ]
+}

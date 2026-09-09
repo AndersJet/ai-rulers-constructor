@@ -1,0 +1,8 @@
+{
+  "id": "project-native",
+  "commit_language": null,
+  "commit_style": "project-native",
+  "body_required": false,
+  "changelog_strategy": "preserve-existing",
+  "create_changelog_if_missing": false
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "output": "brownfield-init.en.html",
+    "diagram_type": "workflow",
+    "specification_sha256": "187de74c27e6cac2e122a8ceb8e99d979f04db8012722d5b939eac4509aeb008",
+    "artifact_sha256": "a2c245b925a64b2438039e53d29e595d0327294172b5eb851e84109750df0a3c",
+    "static_svg_sha256": "f492f61af8284ba90ed6998f3434f7b2274278b166689bb628656f677e8e1ebf",
+    "validation": "9/9 showcase, 0 errors, 0 warnings",
+    "browser_evidence": "passed",
+    "visual_review": "passed",
+    "correction_rounds": 1,
+    "review_scope": "Inspected delivered light/dark endpoint screenshots; canonical automated evidence covers four desktop sizes. Static SVG is a script-free presentation derivative, not the canonical HTML."
+  },
+  {
+    "output": "brownfield-init.zh.html",
+    "diagram_type": "workflow",
+    "specification_sha256": "f47d0d16754e3ea657e43ef2e9ae3f55a0d49ab4850358734edcce2ba298300a",
+    "artifact_sha256": "91e180b1924d8bbbb3c5b4e840369148850311fc3ad8ab1e7869029944f436a9",
+    "static_svg_sha256": "265d62daaf431e9b6e53e3ac8b528d604be414d4e07363c6028721e2bc16e2a8",
+    "validation": "9/9 showcase, 0 errors, 0 warnings",
+    "browser_evidence": "passed",
+    "visual_review": "passed",
+    "correction_rounds": 0,
+    "review_scope": "Inspected delivered light/dark endpoint screenshots; canonical automated evidence covers four desktop sizes. Static SVG is a script-free presentation derivative, not the canonical HTML."
+  },
+  {
+    "output": "greenfield-init.en.html",
+    "diagram_type": "workflow",
+    "specification_sha256": "f08f49e13ec9df248863f7bc57db833499737b8a0114d71a326871fee311eed7",
+    "artifact_sha256": "9143e249d7830c1c7b462add56b7e1db28ffdc1bad4ddd8ff9cdfaa4b482efd5",
+    "static_svg_sha256": "563b93a19f5beb19935d63ecb5214c7ae93d70a5c0d76fd73a3ac7c58935b4d3",
+    "validation": "9/9 showcase, 0 errors, 0 warnings",
+    "browser_evidence": "passed",
+    "visual_review": "passed",
+    "correction_rounds": 1,
+    "review_scope": "Inspected delivered light/dark endpoint screenshots; canonical automated evidence covers four desktop sizes. Static SVG is a script-free presentation derivative, not the canonical HTML."
+  },
+  {
+    "output": "greenfield-init.zh.html",
+    "diagram_type": "workflow",
+    "specification_sha256": "48df8217363cf077435be7f2734d76f4e80b3307131640743d50780a693e5ff8",
+    "artifact_sha256": "b0307a5e39b8e9a5aea684ae52c791274f34c1d1200ea3ba84e4a40a9f724ffa",
+    "static_svg_sha256": "54bcd29e47a7c85048c971652d2ad592d14e692a5b9cb42fd583afedfa14044e",
+    "validation": "9/9 showcase, 0 errors, 0 warnings",
+    "browser_evidence": "passed",
+    "visual_review": "passed",
+    "correction_rounds": 0,
+    "review_scope": "Inspected delivered light/dark endpoint screenshots; canonical automated evidence covers four desktop sizes. Static SVG is a script-free presentation derivative, not the canonical HTML."
+  },
+  {
+    "output": "task-loading.en.html",
+    "diagram_type": "workflow",
+    "specification_sha256": "c26d10b287dd0706de786e757f77654b8768d98ccf5a2646b3eb88ca1a785313",
+    "artifact_sha256": "973027c00b1cd983d50cd3f2cbad640ea5819717de0bd32ad807729b7915577f",
+    "static_svg_sha256": "41d75fda351936cc677a3800ff9068e8a3d7ef1a69826cc9c81c6d6774a08c6c",
+    "validation": "9/9 showcase, 0 errors, 0 warnings",
+    "browser_evidence": "passed",
+    "visual_review": "passed",
+    "correction_rounds": 1,
+    "review_scope": "Inspected delivered light/dark endpoint screenshots; canonical automated evidence covers four desktop sizes. Static SVG is a script-free presentation derivative, not the canonical HTML."
+  },
+  {
+    "output": "task-loading.zh.html",
+    "diagram_type": "workflow",
+    "specification_sha256": "a51c022afe3802d59902203301f834e327a041489313e74a6520008834615fa0",
+    "artifact_sha256": "f55defb48fcb2351297df820f791b5781619ef90657b2a3d222c7769319bc29a",
+    "static_svg_sha256": "48fe122dcca9f1e15b9674f5eb2d506f17978430d2ed198b8d031a0065c1d7af",
+    "validation": "9/9 showcase, 0 errors, 0 warnings",
+    "browser_evidence": "passed",
+    "visual_review": "passed",
+    "correction_rounds": 1,
+    "review_scope": "Inspected delivered light/dark endpoint screenshots; canonical automated evidence covers four desktop sizes. Static SVG is a script-free presentation derivative, not the canonical HTML."
+  }
+]

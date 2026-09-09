@@ -1,0 +1,190 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Brownfield · From evidence to active rules",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "prepare",
+      "label": "Discovery & setup"
+    },
+    {
+      "id": "review",
+      "label": "Review & activation"
+    },
+    {
+      "id": "hold",
+      "label": "Needs revision",
+      "variant": "exception"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "facts",
+      "lane": "prepare",
+      "col": 0,
+      "type": "external",
+      "label": "Inspect project",
+      "sublabel": "observed · code / tests",
+      "width": 148
+    },
+    {
+      "id": "plan",
+      "lane": "prepare",
+      "col": 1,
+      "type": "backend",
+      "label": "Review plan",
+      "sublabel": "plan → review → apply",
+      "width": 148
+    },
+    {
+      "id": "draft",
+      "lane": "prepare",
+      "col": 2,
+      "type": "database",
+      "label": "Create profile",
+      "sublabel": "Draft · Level 0",
+      "width": 148
+    },
+    {
+      "id": "profile-gate",
+      "lane": "review",
+      "col": 2,
+      "type": "security",
+      "label": "Profile ready?",
+      "sublabel": "review-profile",
+      "width": 148
+    },
+    {
+      "id": "candidate",
+      "lane": "review",
+      "col": 3,
+      "type": "backend",
+      "label": "Draft rules",
+      "sublabel": "Profile + INDEX + rules",
+      "width": 148
+    },
+    {
+      "id": "rule-gate",
+      "lane": "review",
+      "col": 4,
+      "type": "security",
+      "label": "Review passed?",
+      "sublabel": "candidate checks + review",
+      "width": 148
+    },
+    {
+      "id": "active",
+      "lane": "review",
+      "col": 5,
+      "type": "backend",
+      "label": "Activate rules",
+      "sublabel": "Level 2 · runtime ready",
+      "width": 148
+    },
+    {
+      "id": "facts-hold",
+      "lane": "hold",
+      "col": 2,
+      "type": "external",
+      "label": "Clarify facts",
+      "sublabel": "Keep unknowns explicit",
+      "width": 148
+    },
+    {
+      "id": "rules-hold",
+      "lane": "hold",
+      "col": 4,
+      "type": "external",
+      "label": "Revise rules",
+      "sublabel": "Unapproved stays inactive",
+      "width": 148
+    }
+  ],
+  "mainPath": [
+    "facts",
+    "plan",
+    "draft",
+    "profile-gate",
+    "candidate",
+    "rule-gate",
+    "active"
+  ],
+  "edges": [
+    {
+      "id": "facts-plan",
+      "to": "plan",
+      "role": "main",
+      "from": "facts"
+    },
+    {
+      "id": "plan-draft",
+      "to": "draft",
+      "role": "main",
+      "from": "plan"
+    },
+    {
+      "id": "draft-profile-gate",
+      "to": "profile-gate",
+      "role": "main",
+      "from": "draft"
+    },
+    {
+      "id": "profile-gate-candidate",
+      "to": "candidate",
+      "role": "main",
+      "from": "profile-gate",
+      "label": "Yes · core Level 1"
+    },
+    {
+      "id": "candidate-rule-gate",
+      "to": "rule-gate",
+      "role": "main",
+      "from": "candidate"
+    },
+    {
+      "id": "rule-gate-active",
+      "to": "active",
+      "role": "main",
+      "from": "rule-gate",
+      "label": "Yes"
+    },
+    {
+      "id": "profile-gate-facts-hold",
+      "to": "facts-hold",
+      "role": "error",
+      "from": "profile-gate",
+      "label": "No",
+      "variant": "security"
+    },
+    {
+      "id": "rule-gate-rules-hold",
+      "to": "rules-hold",
+      "role": "error",
+      "from": "rule-gate",
+      "label": "No",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Evidence and intent",
+      "items": [
+        "Use approved for designs; observed for implementation facts.",
+        "Candidates require review before they become active."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Recheck after revision",
+      "items": [
+        "Return to the relevant review step after revising inputs.",
+        "Delivery readiness and production consent are separate."
+      ]
+    }
+  ]
+}
