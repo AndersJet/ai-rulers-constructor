@@ -17,6 +17,12 @@ def review_markdown(plan):
     ]
     for item in plan["preparation"]:
         lines.append(f"- 待处理 {item['scope']}：{item['reason']}")
+    for name, declarations in plan.get("readiness_inputs", {}).items():
+        lines.extend([
+            "", f"## {name}：规则准备覆盖输入", "",
+            "引用路径相对该工程代码根；此声明仅随本次集中内容批准，不授予生产操作权限。",
+            "", "```json", json.dumps(declarations, ensure_ascii=False, indent=2), "```",
+        ])
     for name, scope in plan["changes"].items():
         lines.extend(
             [
@@ -74,6 +80,17 @@ def review_markdown(plan):
                         n: v.get("phase") for n, v in state.get("modules", {}).items()
                     },
                 }
+                readiness = {
+                    domain: {
+                        "level3_ready": value.get("level3_ready", False),
+                        "declaration": value["review"]["readiness"],
+                    }
+                    for domain, value in state["domains"].items()
+                    if isinstance(value.get("review"), dict)
+                    and "readiness" in value["review"]
+                }
+                if readiness:
+                    summary["readiness"] = readiness
                 lines.extend(
                     [
                         "",

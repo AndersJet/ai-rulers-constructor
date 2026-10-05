@@ -352,7 +352,7 @@ class UnifiedProfileAndPlanTest(unittest.TestCase):
                 ),
             )
 
-    def test_security_change_expands_to_delivery(self) -> None:
+    def test_security_change_only_expands_declared_dependencies(self) -> None:
         registry = load_domain_registry(SKILL_ROOT)
         change = ProfileChange(
             "changed",
@@ -367,7 +367,11 @@ class UnifiedProfileAndPlanTest(unittest.TestCase):
             index_hints={},
         )
 
-        self.assertTrue({"security", "delivery"}.issubset(affected))
+        self.assertIn("security", affected)
+        self.assertNotIn("delivery", affected)
+        registry["delivery"]["requires_active"] = ["security"]
+        explicit = affected_domains(changes=[change], changed_paths=(), registry=registry, index_hints={})
+        self.assertTrue({"security", "delivery"}.issubset(explicit))
 
     def test_retire_action_preserves_physical_files(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

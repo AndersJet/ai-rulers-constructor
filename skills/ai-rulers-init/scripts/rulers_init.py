@@ -51,6 +51,7 @@ def main() -> int:
     plan_parser.add_argument("--operation", default="auto", choices=("auto", "fresh", "resume", "reconcile", "upgrade", "repair", "noop"))
     plan_parser.add_argument("--resolution", action="append", default=[])
     plan_parser.add_argument("--candidate-profile")
+    plan_parser.add_argument("--candidate-dependencies")
     plan_parser.add_argument("--changed-path", action="append", default=[], dest="changed_paths")
     plan_parser.add_argument("--retired-domain", action="append", default=[], dest="retired_domains")
     plan_parser.add_argument("--output")
@@ -112,6 +113,8 @@ def main() -> int:
     rules_plan_parser.add_argument("--candidate-dir", required=True)
     rules_plan_parser.add_argument("--reason", required=True)
     rules_plan_parser.add_argument("--output", required=True)
+    rules_plan_parser.add_argument("--activate-on-apply", action="store_true")
+    rules_plan_parser.add_argument("--readiness-source")
     rules_apply_parser = subparsers.add_parser("rules-apply")
     rules_apply_parser.add_argument("--plan", required=True)
     rules_apply_parser.add_argument("--reviewed-by", required=True)
@@ -139,6 +142,7 @@ def main() -> int:
                 skill_root=SKILL_ROOT, project_root=project, rulers_dir=args.rulers_dir,
                 policy_id=args.policy, operation=args.operation,
                 candidate_profile=Path(args.candidate_profile) if args.candidate_profile else None,
+                candidate_dependencies=Path(args.candidate_dependencies) if args.candidate_dependencies else None,
                 changed_paths=args.changed_paths, retired_domains=args.retired_domains,
                 repair_resolutions=dict(item.split("=", 1) for item in args.resolution),
             )
@@ -173,14 +177,19 @@ def main() -> int:
             from rulers_lib.paths import resolve_safe_child
             project = Path(args.project_root).resolve()
             plan = plan_rules_change(skill_root=SKILL_ROOT, project_root=project, rulers_dir=args.rulers_dir,
-                domain=args.domain, candidate_dir=args.candidate_dir, reason=args.reason)
+                domain=args.domain, candidate_dir=args.candidate_dir, reason=args.reason,
+                activate_on_apply=args.activate_on_apply, readiness_source=args.readiness_source)
             output = Path(args.output)
             output = resolve_safe_child(project, output.resolve().relative_to(project) if output.is_absolute() else output)
             if output.exists() or (project / args.rulers_dir) in output.parents:
                 raise ValueError("Use a new plan path outside installed rulers")
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
-            print(json.dumps({key:plan[key] for key in ("added", "deleted", "modified", "reason", "sha256")}, ensure_ascii=False))
+            summary = {key:plan[key] for key in ("added", "deleted", "modified", "reason", "sha256",
+                "activation_scope", "affected_domains", "supersedes")}
+            summary["readiness_input"] = ({key:plan["readiness_input"][key] for key in ("path", "sha256")}
+                if plan["readiness_input"] else None)
+            print(json.dumps(summary, ensure_ascii=False))
         elif args.command == "rules-apply":
             from rulers_lib.rule_maintenance import apply_rules_change
             print(json.dumps(apply_rules_change(plan=json.loads(Path(args.plan).read_text(encoding="utf-8")),

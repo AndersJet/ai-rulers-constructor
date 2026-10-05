@@ -247,7 +247,7 @@ class RulersStateMachineTest(unittest.TestCase):
             reviewed["profile"]["review"]["reviewed_by"],
         )
 
-    def test_level3_readiness_requires_reviewed_level_two_domain_and_security(self) -> None:
+    def test_level3_snapshot_requires_review_and_explicit_dependencies(self) -> None:
         from rulers_lib.state import validate_state
 
         state = {
@@ -264,6 +264,7 @@ class RulersStateMachineTest(unittest.TestCase):
                     "review_status": "draft",
                     "readiness_level": 3,
                     "level3_ready": True,
+                    "requires_active": ["security"],
                     "review": {},
                 },
             },
@@ -424,18 +425,22 @@ managed
 
 
 class PolicyAndDomainRegistryTest(unittest.TestCase):
-    def test_security_invalidation_expands_to_delivery(self) -> None:
-        from rulers_lib.domains import expand_reverse_dependencies, load_domain_registry
+    def test_security_invalidation_follows_project_dependencies(self) -> None:
+        from rulers_lib.domains import expand_reverse_dependencies, load_domain_registry, effective_domain_configs
         from rulers_lib.state import create_initial_state
 
         registry = load_domain_registry(SKILL_ROOT)
 
         self.assertTrue(all("requires_active" in config for config in registry.values()))
-        self.assertEqual(["security"], registry["delivery"]["requires_active"])
+        self.assertEqual([], registry["delivery"]["requires_active"])
         self.assertEqual(
-            frozenset({"security", "delivery"}),
+            frozenset({"security"}),
             expand_reverse_dependencies({"security"}, registry),
         )
+        project_contract = effective_domain_configs(registry, {"domains": {
+            "delivery": {"requires_active": ["security"]}}})
+        self.assertEqual(frozenset({"security", "delivery"}),
+                         expand_reverse_dependencies({"security"}, project_contract))
         self.assertEqual(
             frozenset({"backend"}),
             expand_reverse_dependencies({"backend"}, registry),

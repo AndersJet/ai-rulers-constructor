@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from .domains import expand_reverse_dependencies, load_domain_registry, rule_owner
+from .domains import expand_reverse_dependencies, load_domain_registry, rule_owner, effective_dependency_configs, DependencyContractError
 from .issues import ValidationIssue
 from .paths import RulersLayout, UnsafeRulersPathError, resolve_layout
 from .root_entry import has_valid_managed_block
@@ -478,11 +478,34 @@ def inspect_project(
                     issues.append(ValidationIssue(issue.code, issue.message, issue.path, scope=domain))
                     invalid_domains.add(domain)
 
+    dependency_configs = {}
+    if state is not None:
+        dependency_errors = []
+        try:
+            dependency_configs = effective_dependency_configs({}, state, layout, errors=dependency_errors)
+        except (DependencyContractError, ValueError, TypeError) as exc:
+            dependency_errors.append(exc)
+        for exc in dependency_errors:
+            scope = getattr(exc, "scope", None) or "core"
+            issues.append(ValidationIssue("VR016", str(exc), getattr(exc, "path", None), scope=scope))
+            if scope != "core":
+                invalid_domains.add(scope)
+        for domain, config in dependency_configs.items():
+            current = state.get("domains", {}).get(domain, {})
+            if not isinstance(current, Mapping) or current.get("level", 0) < (1 if domain == "core" else 2):
+                continue
+            for dependency in config["requires_active"]:
+                target = state.get("domains", {}).get(dependency, {})
+                if (not isinstance(target, Mapping) or target.get("level", 0) < (1 if dependency == "core" else 2)
+                        or target.get("review_status") != "reviewed"):
+                    issues.append(ValidationIssue("VR016", f"Domain '{domain}' requires active '{dependency}'", scope=domain))
+                    invalid_domains.add(domain)
+
     if state is not None and invalid_domains:
         changed = True
         while changed:
             changed = False
-            for domain, domain_state in (state.get("domains") or {}).items():
+            for domain, domain_state in dependency_configs.items():
                 if not isinstance(domain_state, Mapping):
                     continue
                 if domain in invalid_domains:
@@ -582,14 +605,19 @@ def build_runtime_context(
             target_dir = domain_state.get("target_dir", domain)
             index_path = f"{rulers_dir}/{target_dir}/INDEX.md"
             routes[domain] = {"level": domain_state.get("level", 2), "index": index_path}
-            if domain_state.get("level3_ready") or domain_state.get("readiness_level", 0) >= 3:
+            from .readiness import evaluate_readiness
+            if evaluate_readiness(inspection, domain)["ready"]:
                 level3_ready.append(domain)
 
     unknown = set(requested_domains) - set(state.get("domains", {})) if state else set()
     if unknown:
         raise ValueError("Unknown domain selection: " + ", ".join(sorted(unknown)))
-    unavailable = set(requested_domains) - set(available)
-    requested = set(requested_domains) & set(available)
+    selected = set(requested_domains)
+    if state and not inspection.global_blocked:
+        configs = effective_dependency_configs({}, state, inspection.layout, errors=[])
+        selected = selected_domain_closure(configs, selected) - {"core"}
+    unavailable = selected - set(available)
+    requested = selected & set(available)
     if unavailable and next_action == "none":
         next_action = "review-and-activate-domain"
     load_indexes = [routes[d]["index"] for d in sorted(requested) if d in routes]
@@ -611,7 +639,7 @@ def build_runtime_context(
 
     context: dict[str, Any] = {
         "context_schema_version": _CONTEXT_SCHEMA_VERSION,
-        "blocked": inspection.global_blocked or not inspection.profile_valid or bool(unavailable),
+        "blocked": inspection.global_blocked or not inspection.profile_valid or profile_status != "reviewed" or bool(unavailable),
         "issue_count": len(inspection.issues),
         "phase": phase,
         "profile": {
@@ -635,6 +663,9 @@ def build_runtime_context(
     }
     if details_command:
         context["details_command"] = details_command
+    if "delivery" in requested:
+        from .readiness import evaluate_readiness
+        context["readiness"] = {"delivery": evaluate_readiness(inspection, "delivery")}
     return context
 
 
@@ -676,6 +707,46 @@ def runtime_context_json(context: dict[str, Any]) -> bytes:
     return result
 
 
+def selected_domain_closure(configs, domains):
+    """Actual loading requirements, independent of Markdown navigation."""
+    selected = set()
+    pending = list(domains)
+    while pending:
+        domain = pending.pop()
+        if domain in selected:
+            continue
+        if domain not in configs:
+            raise ValueError("Unknown domain selection: " + domain)
+        selected.add(domain)
+        pending.extend(configs[domain]["requires_active"])
+    return selected
+
+
+def scoped_validation_issues(inspection, domains, *, extra_issues=(), require_active_dependencies=True):
+    """Write success is scoped; the full inspection remains available for diagnosis."""
+    dependency_errors = []
+    try:
+        configs = effective_dependency_configs({}, inspection.state or {}, inspection.layout, errors=dependency_errors)
+        selected = selected_domain_closure(configs, domains)
+    except (ValueError, TypeError) as exc:
+        return [ValidationIssue("VR016", str(exc), scope="core")]
+    issues = list(inspection.issues)
+    for exc in dependency_errors:
+        issues.append(ValidationIssue("VR016", str(exc), getattr(exc, "path", None),
+                                      scope=getattr(exc, "scope", None) or "core"))
+    if inspection.global_blocked or not inspection.profile_valid or (inspection.state or {}).get("profile", {}).get("status") != "reviewed":
+        issues.append(ValidationIssue("VR012", "Global rules or project facts require repair/review", scope="core"))
+    for dependency in (selected - set(domains)) if require_active_dependencies else ():
+        value = (inspection.state or {}).get("domains", {}).get(dependency, {})
+        if (value.get("level", 0) < (1 if dependency == "core" else 2) or value.get("review_status") != "reviewed"):
+            issues.append(ValidationIssue("VR016", f"Selected rules require active '{dependency}'", scope=dependency))
+    blockers = [issue for issue in issues if issue.severity == "error" and
+                (issue.scope in {None, "core", "entry", "profile", "transaction"} or issue.scope not in configs or issue.scope in selected)]
+    # Candidate/link checks are produced specifically for the current write set.
+    blockers.extend(issue for issue in extra_issues if issue.severity == "error")
+    return blockers
+
+
 def validate_project(
     *,
     mode: str,
@@ -696,4 +767,12 @@ def validate_project(
                         str(inspection.layout.rulers_root / "RULERS_STATE.json"),
                     )
                 )
+        from .readiness import evaluate_readiness
+        for domain, value in state.get("domains", {}).items():
+            if not isinstance(value, Mapping) or not isinstance(value.get("review"), Mapping) or not {"readiness", "readiness_approval"}.intersection(value["review"]):
+                continue
+            advisory = evaluate_readiness(inspection, domain)
+            if not advisory["ready"]:
+                issues.append(ValidationIssue("VR120", "Rule readiness evidence is unmet: " + ", ".join(advisory["reasons"]),
+                                              scope=domain, severity="warning"))
     return issues

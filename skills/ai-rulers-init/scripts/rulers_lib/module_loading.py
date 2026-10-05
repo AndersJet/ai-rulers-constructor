@@ -12,6 +12,15 @@ from .reconcile import select_profile_sections
 from .validation import build_runtime_context, BUDGETS
 
 
+MODULE_PROTOCOL = (
+    "绑定绝对会话根ROOT：组合为主工程，独立为子仓库；进入子目录仍显式--project-root ROOT。"
+    "--module NAME选模块（可重复），--domain/--rule选模块规则；"
+    "主工程组合规则用--workspace-domain/--workspace-rule。"
+    "普通编码只消费已采纳快照；来源同步、调整、迁移由用户手动调用Skill。"
+    "主子入口同时注入时先消除双入口歧义再编码。"
+)
+
+
 def accepted_module(inspection, name):
     state = inspection.state or {}
     if inspection.global_blocked or not inspection.profile_valid or state.get("profile",{}).get("status") != "reviewed":
@@ -66,6 +75,8 @@ def module_context(inspection, *, names=(), domains=(), workspace_domains=()):
     context["available_modules"] = sorted(registered)[:12]
     context["module_count"] = len(registered)
     context["module_load"] = {}
+    if registered:
+        context["module_protocol"] = MODULE_PROTOCOL
     for name in names:
         try:
             record,snapshot = accepted_module(inspection,name)

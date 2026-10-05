@@ -109,9 +109,7 @@
       "render_mode": "deterministic",
       "template_root": "domains/delivery",
       "target_dir": "delivery",
-      "requires_active": [
-        "security"
-      ],
+      "requires_active": [],
       "templates": [
         "INDEX.md",
         "CI.md",

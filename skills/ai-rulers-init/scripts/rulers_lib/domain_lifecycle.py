@@ -26,7 +26,7 @@ def _require_candidate_phase(state: dict[str, Any]) -> None:
         )
 
 
-def _domain_state(state: dict[str, Any], domain: str) -> dict[str, Any]:
+def _domain_state(state: dict[str, Any], domain: str, config: dict[str, Any]) -> dict[str, Any]:
     return state.setdefault("domains", {}).setdefault(
         domain,
         {
@@ -34,6 +34,7 @@ def _domain_state(state: dict[str, Any], domain: str) -> dict[str, Any]:
             "generated": False,
             "review_status": "not_started",
             "level": 0,
+            "requires_active": list(config["requires_active"]),
             "review": {"reviewed_by": None, "reviewed_at": None, "evidence": None},
         },
     )
@@ -45,7 +46,7 @@ def _record_candidate_state(
     domain: str,
     config: dict[str, Any],
 ) -> dict[str, Any]:
-    domain_state = _domain_state(state, domain)
+    domain_state = _domain_state(state, domain, config)
     domain_state.update(
         {
             "detected": True,
@@ -92,7 +93,7 @@ def render_domain_candidate(
         )
 
     changed_files: list[str] = []
-    domain_state = _domain_state(state, domain)
+    domain_state = _domain_state(state, domain, config)
     target_dir = config["target_dir"]
     if domain_state.get("generated") and any(
         metadata.get("project_owned") for path, metadata in state.get("managed_files", {}).items()
@@ -220,7 +221,7 @@ def register_domain_candidate(
     routes = validate_index_routes(layout, index_path=f"{layout.rulers_dir}/{config['target_dir']}/INDEX.md", paths=registered_files)
     if routes:
         raise DomainLifecycleError(routes[0].message)
-    domain_state = _domain_state(state, domain)
+    domain_state = _domain_state(state, domain, config)
     if not changed and domain_state.get("generated"):
         return {
             "domain": domain,
@@ -251,15 +252,28 @@ def activate_domain(
     reviewed_by: str,
     evidence: str,
     reviewed_at: str | None = None,
+    readiness: dict | None = None,
 ) -> dict[str, Any]:
-    if not reviewed_by.strip() or not evidence.strip():
-        raise DomainLifecycleError("Domain activation requires reviewer and evidence.")
     layout = resolve_layout(project_root, rulers_dir)
     state_path = layout.rulers_root / "RULERS_STATE.json"
     state = read_state(state_path)
+    result = prepare_domain_activation(skill_root=skill_root, layout=layout, state=state,
+        domain=domain, reviewed_by=reviewed_by, evidence=evidence, reviewed_at=reviewed_at,
+        readiness=readiness)
+    write_text(state_path, state_json(state))
+    return result
+
+
+def prepare_domain_activation(*, skill_root: Path, layout, state: dict, domain: str,
+                              reviewed_by: str, evidence: str, reviewed_at: str | None = None,
+                              readiness: dict | None = None, preserve_review: bool = False,
+                              approval_plan_sha256: str | None = None) -> dict[str, Any]:
+    """Validate and update an activation inside the caller's single write boundary."""
+    if not reviewed_by.strip() or not evidence.strip():
+        raise DomainLifecycleError("Domain activation requires reviewer and evidence.")
     from .validation import inspect_project
     inspection = inspect_project(project_root=layout.project_root, rulers_dir=layout.rulers_dir)
-    if inspection.global_blocked or not inspection.profile_valid or domain in inspection.invalid_domains:
+    if inspection.global_blocked or not inspection.profile_valid or state.get("profile", {}).get("status") != "reviewed" or domain in inspection.invalid_domains:
         raise DomainLifecycleError("Repair or re-review project facts before activation")
     if state.get("phase") not in {"rules_candidate", "runtime_ready"}:
         raise DomainLifecycleError("Domain activation requires rules_candidate phase.")
@@ -269,12 +283,24 @@ def activate_domain(
     domain_state = state.get("domains", {}).get(domain)
     if not domain_state or not domain_state.get("generated"):
         raise DomainLifecycleError(f"Domain '{domain}' has no generated candidate rules.")
-    if domain == "delivery":
-        security = state.get("domains", {}).get("security") or {}
-        if security.get("review_status") != "reviewed" or security.get("level", 0) < 2:
-            raise DomainLifecycleError(
-                "delivery activation requires the security domain to be reviewed and Level 2."
-            )
+    from .domains import effective_dependency_configs
+    errors = []
+    configs = effective_dependency_configs(registry, state, layout, errors=errors)
+    required = set()
+    pending = list(configs[domain]["requires_active"])
+    while pending:
+        dependency = pending.pop()
+        if dependency in required:
+            continue
+        required.add(dependency)
+        pending.extend(configs[dependency]["requires_active"])
+    for exc in errors:
+        if getattr(exc, "domain", None) in required | {domain} or getattr(exc, "domain", None) is None:
+            raise DomainLifecycleError(str(exc))
+    for dependency in required:
+        value = state.get("domains", {}).get(dependency, {})
+        if value.get("level", 0) < (1 if dependency == "core" else 2) or value.get("review_status") != "reviewed" or dependency in inspection.invalid_domains:
+            raise DomainLifecycleError(f"{domain} activation requires active '{dependency}'")
     target_root = layout.rulers_root / domain_state.get(
         "target_dir", registry[domain]["target_dir"]
     )
@@ -291,21 +317,37 @@ def activate_domain(
     timestamp = reviewed_at or datetime.now(timezone.utc).astimezone().isoformat()
     domain_state["review_status"] = "reviewed"
     domain_state["level"] = 2
-    domain_state["review"] = {
-        "reviewed_by": reviewed_by.strip(),
-        "reviewed_at": timestamp,
-        "evidence": evidence.strip(),
-    }
+    if not preserve_review:
+        domain_state["review"] = {
+            "reviewed_by": reviewed_by.strip(),
+            "reviewed_at": timestamp,
+            "evidence": evidence.strip(),
+        }
+    if readiness is not None:
+        domain_state["review"]["readiness"] = readiness
+        if preserve_review:
+            if not approval_plan_sha256:
+                raise DomainLifecycleError("Readiness-only approval requires its bound plan")
+            domain_state["review"]["readiness_approval"] = {
+                "scope": "readiness", "reviewed_by": reviewed_by.strip(), "evidence": evidence.strip(),
+                "reviewed_at": timestamp, "plan_sha256": approval_plan_sha256,
+                "declaration_digest": readiness.get("digest"),
+            }
     domain_state["readiness_level"] = registry[domain]["readiness_level"]
-    domain_state["level3_ready"] = registry[domain]["readiness_level"] == 3
+    from dataclasses import replace
+    from .readiness import evaluate_readiness
+    readiness_result = evaluate_readiness(replace(inspection, state=state), domain)
+    if readiness is not None and not readiness_result["ready"]:
+        raise DomainLifecycleError("Readiness inputs changed: " + ", ".join(readiness_result["reasons"]))
+    domain_state["level3_ready"] = readiness_result["ready"]
     state["last_operation"] = {
         "kind": "activate-domain",
         "status": "complete",
         "updated_at": timestamp,
     }
-    write_text(state_path, state_json(state))
     return {
         "domain": domain,
         "level": domain_state["level"],
         "level3_ready": domain_state["level3_ready"],
+        "readiness": readiness_result,
     }

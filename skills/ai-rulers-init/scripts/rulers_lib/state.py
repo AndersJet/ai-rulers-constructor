@@ -227,18 +227,16 @@ def validate_state(state: dict[str, Any]) -> list[ValidationIssue]:
                 error("VR013", f"Domain '{domain}' has no review.", domain)
             if not reviewed(value.get("review")):
                 error("VR014", f"Domain '{domain}' review evidence is incomplete.", domain)
-        if value.get("level3_ready") and (value.get("readiness_level") != 3 or level < 2 or value.get("review_status") != "reviewed" or not reviewed(value.get("review"))):
+        if value.get("level3_ready") and (level < 2 or value.get("review_status") != "reviewed" or not reviewed(value.get("review"))):
             error("VR015", f"Domain '{domain}' has inconsistent Level 3 readiness.", domain)
         requirements = value.get("requires_active", [])
         if not isinstance(requirements, list) or any(not isinstance(d, str) for d in requirements):
             error("VR016", "Invalid domain dependencies.", domain)
             continue
-        if domain == "delivery":
-            requirements = list(set(requirements) | {"security"})
         if level >= 2 or value.get("level3_ready"):
             for dependency in requirements:
                 other = domains.get(dependency, {})
-                if not isinstance(other, dict) or other.get("level", 0) < 2 or other.get("review_status") != "reviewed":
+                if not isinstance(other, dict) or other.get("level", 0) < (1 if dependency == "core" else 2) or other.get("review_status") != "reviewed":
                     error("VR016", f"Domain '{domain}' requires active '{dependency}'.", domain)
     return issues
 

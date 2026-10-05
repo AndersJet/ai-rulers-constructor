@@ -30,8 +30,8 @@ metadata:
 
 ## 1. 命令驱动检查
 
-- 当 `PROJECT_PROFILE.md` 为目标 Web 平台定义了 lint、typecheck、test 和 build 命令时，运行这些命令。
-- 当目标项目定义了规范质量门禁时，不得虚构替代命令。
+- 按 Web 变更影响从 `PROJECT_PROFILE.md` 选择必要的 lint、typecheck、test 或 build 命令，并执行项目必需门禁；仅提交或推送不因这些命令存在就重跑全套。
+- 验证命令及质量门禁以项目权威配置为准，保留实际 hook 和 CI 必需检查，不虚构替代命令。
 - 如果命令无法运行，报告原因和剩余风险。
 
 ---

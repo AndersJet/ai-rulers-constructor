@@ -210,6 +210,14 @@ def apply_plan_unified(
     state_path = layout.rulers_root / "RULERS_STATE.json"
     current = read_state(state_path) if state_path.is_file() else None
     if is_already_applied(current, raw):
+        dependency_candidate = raw.get("preconditions", {}).get("operation_inputs", {}).get("candidate_dependencies")
+        if dependency_candidate:
+            candidate = resolve_safe_child(project_root, dependency_candidate["path"])
+            if not candidate.is_file() or file_sha256(candidate) != dependency_candidate["sha256"]:
+                raise ApplyError("Dependency candidate changed; replan")
+        for domain, dependencies in current["last_operation"].get("result_dependencies", {}).items():
+            if current.get("domains", {}).get(domain, {}).get("requires_active") != dependencies:
+                raise ApplyError("Applied dependency contract changed; replan")
         for path, expected in current["last_operation"].get("result_hashes", {}).items():
             target = resolve_safe_child(project_root, path)
             if not target.is_file() or file_sha256(target) != expected:
@@ -268,6 +276,18 @@ def apply_plan_unified(
                 writes[profile_relative] = resolve_safe_child(project_root, candidate["path"]).read_bytes()
             state["phase"] = "profile_draft"
         elif operation == "upgrade":
+            from .domains import effective_domain_configs, load_domain_registry
+            configs = effective_domain_configs(load_domain_registry(skill_root), state)
+            for domain, value in state["domains"].items():
+                value["requires_active"] = list(configs[domain]["requires_active"])
+            candidate = plan["preconditions"]["operation_inputs"].get("candidate_dependencies")
+            if candidate:
+                for domain, dependencies in candidate["after"].items():
+                    state["domains"][domain]["requires_active"] = list(dependencies)
+                for domain, action in plan["domain_actions"].items():
+                    if action == "downgrade" and domain in state["domains"]:
+                        state["domains"][domain].update(level=0, review_status="draft", level3_ready=False,
+                            review={"reviewed_by": None, "reviewed_at": None, "evidence": None})
             profile = state["profile"]
             old_hash = profile.get("content_sha256")
             bound_profile = plan["preconditions"].get("reviewed_profile") or {}
@@ -323,10 +343,11 @@ def apply_plan_unified(
                 # Preserve drift checks, but record project provenance for upgrades.
                 inventory[path]["project_owned"] = True
                 from .validation import _scope_for_managed_path
-                from .domains import load_domain_registry, expand_reverse_dependencies
+                from .domains import load_domain_registry, expand_reverse_dependencies, effective_dependency_configs
                 scope = _scope_for_managed_path(path, state)
                 if scope not in {None, "core", "entry", "profile"}:
-                    for domain in expand_reverse_dependencies({scope}, load_domain_registry(skill_root)):
+                    configs = effective_dependency_configs(load_domain_registry(skill_root), state, layout)
+                    for domain in expand_reverse_dependencies({scope}, configs):
                         if domain in state["domains"]:
                             state["domains"][domain].update(level=0, review_status="draft", level3_ready=False)
             if path == profile_relative:
@@ -350,6 +371,9 @@ def apply_plan_unified(
         "plan_id": plan["plan_id"], "plan_sha256": plan["plan_sha256"],
         "reviewed_by": reviewed_by, "reviewed_at": timestamp, "evidence": evidence,
         "result_hashes": {path: text_sha256(content.decode("utf-8")) for path, content in writes.items()}}
+    if operation == "upgrade":
+        state["last_operation"]["result_dependencies"] = {name: list(value.get("requires_active", []))
+                                                          for name, value in state["domains"].items()}
     state_relative = f"{layout.rulers_dir}/RULERS_STATE.json"
     writes[state_relative] = state_json(state).encode("utf-8")
     allowed = {item["path"] for item in plan["preconditions"]["write_set"]}

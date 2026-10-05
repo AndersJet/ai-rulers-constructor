@@ -59,6 +59,27 @@ observed / approved 记录。主工程负责组合约束，子工程负责可移
 只填写需要变化的项目/字段；已有有效内容会复用。export_manifest 沿用 module-workflows
 的显式导出契约。候选画像或领域文件不应直接写入已安装规则目录。
 
+生产相关规则及准备流程已经纳入本次适用性审阅时，可在对应 project 中增加
+`"readiness": {"delivery": ".rulers-work/candidates/delivery-readiness.json"}`。
+readiness 只能指向同一 project 中显式提供的 domains 候选；来源文件路径仍相对主工程 ROOT。
+声明文件只包含安全、质量、回滚三项覆盖路径列表，例如：
+
+```json
+{
+  "security": ["documents/rulers/security/SECRETS.md"],
+  "quality": ["documents/rulers/delivery/CI.md"],
+  "rollback": ["documents/rulers/delivery/ROLLBACK.md"]
+}
+```
+
+覆盖路径相对目标工程代码根，位于其实际规则目录；子模块使用自己的代码根坐标，
+不加模块路径前缀。允许自定义叶子、同一文件覆盖多项；引用须属于已采纳规则，
+相关领域在本批次全部激活后再编译。声明不填写 reviewer、时间、evidence 或 ready 标记。
+脚本将声明文件和候选内容纳入输入哈希，在 review_path 展示覆盖输入及预期 State 绑定；
+init-apply 使用同一真实集中批准材料化外层 review，不继承来源项目的准备标记。
+不提供声明时仍可形成 Level 2；提供声明只表示覆盖内容经过审阅且身份有效，不代表具体版本
+或环境可发布。声明或覆盖内容在计划后变化需重新计划；相同已采纳声明重复初始化为零差异。
+
 ```bash
 python3 scripts/rulers_init.py init-plan --project-root ROOT \
   --candidates .rulers-work/candidates.json

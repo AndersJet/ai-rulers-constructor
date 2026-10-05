@@ -74,7 +74,8 @@ def main() -> int:
     if args.format == "json":
         print(json.dumps({"mode": args.mode, "issues": [issue.to_dict() for issue in issues]}, ensure_ascii=False, indent=2))
     elif issues:
-        print(f"Rulers {args.mode} validation failed:")
+        status = "failed" if any(issue.severity == "error" for issue in issues) else "reported warnings"
+        print(f"Rulers {args.mode} validation {status}:")
         for issue in issues:
             print(f"- [{issue.code}] {issue.message}" + (f" ({issue.path})" if issue.path else ""))
     else:

@@ -8,13 +8,14 @@ import os
 import re
 from collections import Counter
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from .domains import detect_domains, expand_reverse_dependencies, load_domain_registry
+from .domains import (detect_domains, expand_reverse_dependencies, load_domain_registry,
+                      effective_dependency_configs, effective_domain_configs)
 from .issues import ValidationIssue
-from .paths import RulersLayout, UnsafeRulersPathError, resolve_layout
+from .paths import RulersLayout, UnsafeRulersPathError, resolve_layout, resolve_safe_child
 from .policies import load_policy
 from .reconcile import (
     ProfileChange,
@@ -883,6 +884,7 @@ class _PlanningFacts:
     write_hashes: Mapping[str, str | None]
     state_path: str
     profile_path: str
+    dependency_candidate: Mapping[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -1192,6 +1194,7 @@ def _capture_planning_facts(
     candidate_profile: Path | None,
     changed_paths: Sequence[str],
     retired_domains: Sequence[str],
+    candidate_dependencies: Path | None = None,
 ) -> _PlanningFacts:
     layout = resolve_layout(project_root, rulers_dir)
     registry = load_domain_registry(skill_root)
@@ -1205,7 +1208,41 @@ def _capture_planning_facts(
         layout=layout,
         registry=registry,
     )
-    issues = list(captured.issues)
+    dependency_errors = []
+    registry = effective_dependency_configs(registry, captured.derivation_state or {}, layout, errors=dependency_errors)
+    dependency_candidate = None
+    if candidate_dependencies is not None:
+        if dependency_errors:
+            raise ValueError("Repair dependency contracts before an upgrade candidate")
+        candidate, relative = _relative_path(layout.project_root, candidate_dependencies,
+                                              label="candidate dependencies")
+        if candidate == layout.rulers_root or layout.rulers_root in candidate.parents:
+            raise ValueError("Stage dependency candidates outside installed rulers")
+        resolve_safe_child(layout.project_root, relative)
+        content = candidate.read_bytes()
+        desired = json.loads(content.decode("utf-8"))
+        installed = (captured.derivation_state or {}).get("domains", {})
+        if not isinstance(desired, Mapping) or not desired:
+            raise ValueError("Dependency candidate must be a nonempty domain/list object")
+        before = {}
+        after = {}
+        for domain, requirements in desired.items():
+            if domain not in installed or domain == "core":
+                raise ValueError("Dependency candidate must name an installed non-core domain")
+            if not isinstance(requirements, list) or any(not isinstance(d, str) or d not in registry for d in requirements):
+                raise ValueError("Dependency candidate contains an invalid or unknown domain")
+            if len(requirements) != len(set(requirements)):
+                raise ValueError("Dependency candidate must not duplicate dependencies")
+            before[domain] = list(effective_domain_configs(load_domain_registry(skill_root), captured.derivation_state)[domain]["requires_active"])
+            after[domain] = sorted(requirements)
+        changed_state = json.loads(json.dumps(captured.derivation_state))
+        for domain, requirements in after.items():
+            changed_state["domains"][domain]["requires_active"] = requirements
+        effective_dependency_configs(load_domain_registry(skill_root), changed_state, layout)
+        dependency_candidate = {"path": relative, "sha256": _sha256_bytes(content),
+                                "before": dict(sorted(before.items())), "after": dict(sorted(after.items()))}
+    issues = list(captured.issues) + [ValidationIssue("PL112", str(error), error.path, scope=error.scope)
+                                   for error in dependency_errors]
     transaction = inspect_incomplete_transaction_evidence(layout)
     if transaction.semantic_error is not None:
         issues.append(
@@ -1267,12 +1304,19 @@ def _capture_planning_facts(
         operation.candidate_fact,
         *operation.changed_facts,
         *operation.index_facts,
+        dependency_candidate,
     ):
         if fact is not None:
             read_map[fact["path"]] = {
                 "path": fact["path"],
                 "sha256": fact["sha256"],
             }
+    for domain, value in (captured.derivation_state or {}).get("domains", {}).items():
+        for name in value.get("required_files", []):
+            relative = f"{layout.rulers_dir}/{value.get('target_dir', domain)}/{name}"
+            path = resolve_safe_child(layout.project_root, relative)
+            if path.is_file():
+                read_map[relative] = {"path": relative, "sha256": file_sha256(path)}
     evidence = _transaction_evidence(transaction)
     if evidence is not None:
         for fact in evidence["artifacts"]:
@@ -1348,6 +1392,7 @@ def _capture_planning_facts(
         write_hashes=write_hashes,
         state_path=state_path,
         profile_path=profile_path,
+        dependency_candidate=dependency_candidate,
     )
 def _assemble_plan(
     facts: _PlanningFacts,
@@ -1355,6 +1400,9 @@ def _assemble_plan(
     requested_operation: str,
     requested_resolutions: Mapping[str, str],
 ) -> dict[str, Any]:
+    dependency = facts.dependency_candidate
+    dependency_changes = {name for name in (dependency or {}).get("after", {})
+                          if dependency["before"][name] != dependency["after"][name]}
     profile_changes: tuple[ProfileChange, ...] = ()
     if (
         facts.candidate_snapshot is not None
@@ -1374,7 +1422,7 @@ def _assemble_plan(
         legacy_profile=facts.legacy_profile,
         unsafe_profile=facts.unsafe_profile,
         drifted=facts.drifted,
-        fingerprints_changed=facts.fingerprints_changed,
+        fingerprints_changed=facts.fingerprints_changed or bool(dependency_changes),
         profile_changes=profile_changes,
         changed_paths=facts.changed_paths,
         retired_domains=facts.retired_domains,
@@ -1390,7 +1438,20 @@ def _assemble_plan(
         runtime_paths=facts.runtime_paths,
     )
     operation = semantics.operation
-    if requested_operation != "auto" and requested_operation != operation:
+    if dependency and operation not in {"upgrade", "noop"}:
+        raise ValueError("Dependency candidates require a healthy upgrade plan")
+    if dependency_changes:
+        updated = json.loads(json.dumps(facts.state.derivation))
+        for name, requirements in dependency["after"].items():
+            updated["domains"][name]["requires_active"] = requirements
+        after_configs = effective_dependency_configs(facts.registry, updated, facts.layout)
+        affected = expand_reverse_dependencies(dependency_changes, facts.registry) | expand_reverse_dependencies(dependency_changes, after_configs)
+        semantics = replace(semantics, affected_domains=tuple(sorted(affected)),
+            domain_actions=domain_actions(state=facts.state.derivation, affected=affected,
+                detected=facts.detected_domains, retired=facts.retired_domains),
+            changes=(*semantics.changes, {"kind": "dependencies_updated", "count": len(dependency_changes),
+                                          "scopes": sorted(dependency_changes)}))
+    if requested_operation != "auto" and requested_operation != operation and not (dependency and requested_operation == "upgrade" and operation == "noop"):
         raise ValueError(
             f"Requested operation '{requested_operation}' conflicts with "
             f"detected operation '{operation}'."
@@ -1478,6 +1539,8 @@ def _assemble_plan(
         "validation": list(semantics.validation),
         "detail_references": ["profile.patch"] if has_patch else [],
     }
+    if dependency:
+        payload["preconditions"]["operation_inputs"]["candidate_dependencies"] = dependency
     return finalize_plan(payload)
 
 
@@ -1489,6 +1552,7 @@ def create_plan(
     policy_id: str | None = None,
     operation: str = "auto",
     candidate_profile: Path | None = None,
+    candidate_dependencies: Path | None = None,
     changed_paths: Sequence[str] = (),
     retired_domains: Sequence[str] = (),
     repair_resolutions: Mapping[str, str] | None = None,
@@ -1496,6 +1560,8 @@ def create_plan(
 ) -> dict[str, Any]:
     if operation != "auto" and operation not in PLAN_OPERATIONS:
         raise ValueError(f"Unknown plan operation: {operation}")
+    if candidate_dependencies is not None and operation != "upgrade":
+        raise ValueError("candidate_dependencies requires explicit operation upgrade")
     resolutions = dict(sorted((repair_resolutions or {}).items()))
     if any(
         not isinstance(key, str)
@@ -1516,6 +1582,7 @@ def create_plan(
         candidate_profile=candidate_profile,
         changed_paths=changed_paths,
         retired_domains=retired_domains,
+        candidate_dependencies=candidate_dependencies,
     )
     plan = _assemble_plan(
         facts,
@@ -1561,6 +1628,7 @@ class _PlanDocument:
     candidate_path: Path | None
     changed_paths: tuple[str, ...]
     retired_domains: tuple[str, ...]
+    dependency_path: Path | None = None
 
 
 def _valid_hash(value: Any, *, nullable: bool = False) -> bool:
@@ -1868,7 +1936,7 @@ def _decode_plan_inputs(
     inputs = preconditions.get("operation_inputs")
     input_shape = (
         isinstance(inputs, Mapping)
-        and set(inputs) == _OPERATION_INPUT_FIELDS
+        and set(inputs) in (_OPERATION_INPUT_FIELDS, _OPERATION_INPUT_FIELDS | {"candidate_dependencies"})
     )
     _require_shape(
         issues,
@@ -1880,6 +1948,17 @@ def _decode_plan_inputs(
     changed_paths: tuple[str, ...] = ()
     retired_domains: tuple[str, ...] = ()
     if input_shape:
+        dependency = inputs.get("candidate_dependencies")
+        if "candidate_dependencies" in inputs:
+            valid_dependency = (isinstance(dependency, Mapping) and set(dependency) == {"path", "sha256", "before", "after"}
+                and _valid_fact({"path": dependency.get("path"), "sha256": dependency.get("sha256")}, nullable_object=False)
+                and all(isinstance(dependency.get(key), Mapping) and all(isinstance(name, str) and name
+                    and isinstance(values, list) and all(isinstance(value, str) and value for value in values)
+                    and len(values) == len(set(values)) for name, values in dependency[key].items()) for key in ("before", "after"))
+                and set(dependency["before"]) == set(dependency["after"]) and bool(dependency["after"])
+                and plan.get("operation") in {"upgrade", "noop"})
+            _require_shape(issues, valid_dependency, "PL048", "candidate_dependencies has an invalid bound contract.",
+                           "preconditions.operation_inputs.candidate_dependencies")
         changed = inputs.get("changed_paths")
         retired = inputs.get("retired_domains")
         changed_valid = _valid_fact_list(changed, nullable_hash=False)
@@ -2117,6 +2196,8 @@ def _decode_plan_document(
             candidate_path=candidate,
             changed_paths=changed,
             retired_domains=retired,
+            dependency_path=Path(plan["preconditions"]["operation_inputs"]["candidate_dependencies"]["path"])
+                if "candidate_dependencies" in plan["preconditions"]["operation_inputs"] else None,
         ),
         issues,
     )
@@ -2161,6 +2242,7 @@ def _validate_plan(
             candidate_profile=document.candidate_path,
             changed_paths=document.changed_paths,
             retired_domains=document.retired_domains,
+            candidate_dependencies=document.dependency_path,
         )
         expected = _assemble_plan(
             facts,
@@ -2532,7 +2614,7 @@ def plan_summary(
             else:
                 if not candidate.is_symlink():
                     safe_plan_path = relative
-    return {
+    summary = {
         "operation": plan.get("operation"),
         "plan_id": plan.get("plan_id"),
         "expected_phase": plan.get("expected_phase"),
@@ -2542,3 +2624,10 @@ def plan_summary(
         "plan_path": safe_plan_path,
         "detail_references": list(plan.get("detail_references") or ()),
     }
+    dependency = (plan.get("preconditions", {}).get("operation_inputs", {}).get("candidate_dependencies"))
+    if dependency:
+        summary["dependency_changes"] = {name: {"before": dependency["before"][name], "after": requirements}
+                                         for name, requirements in dependency["after"].items()}
+    if plan.get("operation") == "upgrade":
+        summary["dependency_preservation"] = "Preserve installed dependencies unless explicitly reviewed; legacy default provenance is unknown."
+    return summary

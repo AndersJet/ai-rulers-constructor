@@ -63,6 +63,10 @@ python3 scripts/rulers_init.py init-apply --plan <PLAN_JSON> \
 规则内容变化使用 rules-plan/rules-apply；画像变化使用 reconcile。所有变化先给出
 可审阅差异及增删原因，再按已有授权实施。规则变化降级受影响领域，审阅后重新激活。
 低风险的文字改善与安全语义变化分别说明；不要因为模型能力较弱就无限增加规则。
+单域维护可在 rules-plan 选择 `--activate-on-apply`，将采纳、校验和目标域激活纳入同一批准；
+可选 `--readiness-source PATH` 必须随激活选择绑定。旧调用仍只采纳候选为 draft。
+应用成功、激活失败时保留已批准内容，用同计划及原批准继续；成功重跑零写入。
+准备声明单独更新不重造已有正文审阅；恢复或替换待激活记录按 maintenance reference 核对具体范围。
 
 ```bash
 python3 <RULERS_DIR>/scripts/validate_rulers.py --mode candidate --project-root <PROJECT_ROOT>

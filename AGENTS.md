@@ -36,5 +36,17 @@
 
 - 开发命令、测试与打包：[CONTRIBUTING-zh.md](CONTRIBUTING-zh.md)。
 - Skill 维护：[skills/ai-rulers-init/SKILL.md](skills/ai-rulers-init/SKILL.md)。
-- GitHub Issues：`AndersJet/ai-rulers-constructor`，按 [issue-tracker.md](docs/agents/issue-tracker.md) 操作；标签见 [triage-labels.md](docs/agents/triage-labels.md)。配置本身不构成远端写入授权。
-- 术语与架构决定：按 [domain.md](docs/agents/domain.md) 读取已有 CONTEXT.md 和相关 ADR；缺失时不生成空文档。
+
+## Agent skills
+
+### Issue tracker
+
+任务使用 GitHub Issues：`AndersJet/ai-rulers-constructor`；操作方式与授权边界见 [issue-tracker.md](docs/agents/issue-tracker.md)。
+
+### Triage labels
+
+使用默认的五个 triage 标签；角色映射见 [triage-labels.md](docs/agents/triage-labels.md)。
+
+### Domain docs
+
+采用 single-context；探索代码前按 [domain.md](docs/agents/domain.md) 读取已有根 `CONTEXT.md` 和相关 ADR。

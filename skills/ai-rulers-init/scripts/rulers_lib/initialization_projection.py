@@ -120,6 +120,15 @@ def local_candidates(preview, project, settings):
         if source != target:
             copy_inputs(source, target)
         local["domains"][domain] = relative
+    local["readiness"] = {}
+    for domain, path in settings.get("readiness", {}).items():
+        source = checked_path(preview, path, required=True)
+        relative = ".rulers-work/init-inputs/readiness/" + domain + ".json"
+        target = checked_path(project, relative)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if source != target:
+            shutil.copyfile(source, target)
+        local["readiness"][domain] = relative
     return local
 
 
@@ -135,6 +144,9 @@ def prepare_project(
 ):
     state_path = root / rulers_dir / "RULERS_STATE.json"
     before = state_path.read_bytes() if state_path.exists() else None
+    # Preview's internal rules-plan identities contain its disposable directory.
+    # They are not a target-side maintenance approval or recovery operation.
+    original_maintenance = read_json(state_path).get("maintenance_execution") if before is not None else None
     target = ["--project-root", str(root), "--rulers-dir", rulers_dir]
     options = []
     if not state_path.exists() and policy is None:
@@ -174,15 +186,36 @@ def prepare_project(
             "--evidence",
             batch_id,
         )
-    from .domains import load_domain_registry
+    from .domains import load_domain_registry, effective_domain_configs, effective_dependency_configs, rule_owner
+    from .paths import resolve_layout
+    import copy
 
     registry = load_domain_registry(skill_root)
+    projected = copy.deepcopy(state)
+    overrides = {}
+    configs = effective_domain_configs(registry, state)
+    for domain, candidate in settings.get("domains", {}).items():
+        if domain not in registry:
+            raise ValueError(f"Unknown candidate domain: {domain}")
+        value = projected["domains"].setdefault(domain, dict(configs[domain]))
+        value.update(generated=True, target_dir=configs[domain]["target_dir"], required_files=[])
+        for source in sorted(checked_path(root, candidate).rglob("*.md")):
+            filename = source.relative_to(root / candidate).as_posix()
+            relative = value["target_dir"] + "/" + filename
+            if rule_owner(relative, configs) != domain:
+                continue
+            path = rulers_dir + "/" + relative
+            value["required_files"].append(filename)
+            projected.setdefault("managed_files", {})[path] = {"ownership": "managed"}
+            overrides[path] = source.read_text(encoding="utf-8")
+    dependencies = effective_dependency_configs(registry, projected, resolve_layout(root, rulers_dir),
+                                                rule_text_overrides=overrides)
     ordered = []
 
     def include(domain):
         if domain in ordered:
             return
-        for dependency in registry[domain].get("requires_active", []):
+        for dependency in dependencies[domain]["requires_active"]:
             if dependency in settings.get("domains", {}):
                 include(dependency)
         ordered.append(domain)
@@ -218,6 +251,31 @@ def prepare_project(
                 reviewed_by=REVIEWER,
                 evidence=batch_id,
             )
+    # Bind readiness only after all candidate owners are active. Approval identity
+    # remains the outer review and is materialized by the existing batch pipeline.
+    for domain, source in sorted(settings.get("readiness", {}).items()):
+        from .readiness import compile_readiness
+        from .domain_lifecycle import activate_domain
+
+        state = read_json(state_path)
+        declaration = compile_readiness(
+            resolve_layout(root, rulers_dir), state, domain,
+            read_json(checked_path(root, source, required=True)),
+        )
+        domain_state = state["domains"][domain]
+        if (domain_state.get("level", 0) >= 2
+            and domain_state.get("review_status") == "reviewed"
+            and (domain_state.get("review") or {}).get("readiness") == declaration):
+            continue
+        activate_domain(
+            skill_root=skill_root,
+            project_root=root,
+            rulers_dir=rulers_dir,
+            domain=domain,
+            reviewed_by=REVIEWER,
+            evidence=batch_id,
+            readiness=declaration,
+        )
     state = read_json(state_path)
     if state["phase"] != "runtime_ready":
         _cli(skill_root, root, rulers_dir, "mark-runtime-ready", *target)
@@ -227,8 +285,13 @@ def prepare_project(
             path.read_bytes()
         )
     if state_path.read_bytes() != before:
+        projected = read_json(state_path)
+        if original_maintenance is None:
+            projected.pop("maintenance_execution", None)
+        else:
+            projected["maintenance_execution"] = original_maintenance
         state_path.write_text(
-            state_json(stamp(read_json(state_path), review, batch_id))
+            state_json(stamp(projected, review, batch_id))
         )
 
 

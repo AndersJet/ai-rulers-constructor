@@ -24,6 +24,13 @@ fresh 也可用 `--candidate-profile PATH` 提供初始画像，apply 原样保�
 升级保留 collaborative/project-owned 内容和领域自定义清单。安装版本统一记录在 State 的 `template.version`；升级时移除旧 `template_version` 字段，旧根区块原位转换为无版本边界。旧画像不满足新契约时保持
 文件内容，降为 draft，按当前画像结构补充后重新审阅；不制造审阅事实。
 
+registry 是新安装默认；已有 `requires_active` 保留为项目契约，包括来源无法判定的旧默认。
+解除或修改旧依赖时，将完整目标依赖值放在项目内、安装目录之外的 JSON 候选，例如
+`{"delivery": []}`，再执行 `plan --operation upgrade --candidate-dependencies PATH`。
+计划绑定候选哈希，展示 before/after 和受影响领域；批准后才 apply。候选或契约变化要求
+重新计划。无候选的旧命令保留已采纳依赖；真实 `must_load_with` 仍构成加载前置，普通
+INDEX 导航不构成依赖。依赖变更使受影响领域回到 draft，后续审阅不会自动扩大激活范围。
+
 受管漂移先查 runtime 详情，再计划 repair 并用
 `--resolution <项目相对文件路径>=restore-managed` 恢复框架模板，或
 `--resolution <路径>=adopt-current` 采纳人工修订。不能确定的内容先人工合并再重新计划。
@@ -32,5 +39,6 @@ fresh 也可用 `--candidate-profile PATH` 提供初始画像，apply 原样保�
 ## 日常 Context
 
 运行目标目录 `scripts/validate_rulers.py --mode context --domain NAME`。
-blocked、非零或非法 JSON 时只诊断/恢复；健康输出给出有效路由和画像选择范围。
+blocked=true、非零或非法 JSON 时只诊断/恢复；健康输出给出有效路由和画像选择范围。
+blocked=false 时，无关领域的维修提示不阻止本次健康任务；完整 runtime 校验仍报告全安装问题。
 需要更少跳转时用 `--mode load --domain NAME --rule PATH --format text` 获取同源正文。

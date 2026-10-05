@@ -27,4 +27,4 @@ metadata:
 | 版本发布、产物推广 | `RELEASE.md` |
 | 回滚、恢复、失败演练 | `ROLLBACK.md` |
 
-delivery 审阅完成只能形成 Level 3 readiness；具体生产操作仍需针对确切动作人工确认。
+delivery 规则审阅有效后可在 Level 2 加载。Level 3 readiness 仅根据明确审阅的安全、质量和回滚覆盖声明派生，是准备流程的提示状态；缺项不阻止普通 CI 维护。具体版本验证及生产操作授权分别核对。

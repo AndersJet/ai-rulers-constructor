@@ -366,7 +366,12 @@ def affected_domains(
     changed_paths: Sequence[str],
     registry: Mapping[str, Mapping[str, Any]],
     index_hints: Mapping[str, Sequence[str]],
+    state: Mapping[str, Any] | None = None,
+    layout=None,
 ) -> frozenset[str]:
+    if state is not None:
+        from .domains import effective_dependency_configs, effective_domain_configs
+        registry = effective_dependency_configs(registry, state, layout) if layout is not None else effective_domain_configs(registry, state)
     affected: set[str] = set()
     for change in changes:
         if change.kind == "evidence_only":

@@ -8,6 +8,10 @@
 - 叶子规则包含可执行约束、验证命令、审阅触发条件和退出检查。
 - 删除 AI_FILL、模板路径和生成元指令。
 - 未确认事实留在 PROJECT_PROFILE，不写成强制规则。
+- 项目已有分支、worktree、PR/MR 和 CI 约定由 WORKFLOW 消费 Profile 的权威指针；
+  叶子只补本任务所需专题约束，不生成第二份通用 Git 流程。project-native 和 strict-cn
+  都遵循项目工作流；strict-cn 只增加提交格式与 CHANGELOG 政策。
+- 验证要求按变更影响和项目必需门禁生成，不将画像中所有命令、流水线所有路径作为每次任务的固定前置。
 - 未审阅领域保持 Level 0，且不能从运行态 AGENTS/INDEX 到达。
 - security 负责跨领域安全策略；backend API security 只负责服务端执行细节。
 - delivery 负责 CI、部署、发布、回滚和部署后验证。

@@ -323,7 +323,7 @@ class FreshInitializationIntegrationTest(unittest.TestCase):
 
 
 class DomainActivationIntegrationTest(unittest.TestCase):
-    def test_security_and_delivery_activation_records_level3_readiness(self) -> None:
+    def test_security_and_delivery_activation_does_not_infer_readiness(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             project = Path(temp_dir)
             (project / "security").mkdir()
@@ -386,7 +386,7 @@ class DomainActivationIntegrationTest(unittest.TestCase):
             )
             self.assertEqual(2, state["domains"]["security"]["level"])
             self.assertEqual(2, state["domains"]["delivery"]["level"])
-            self.assertTrue(state["domains"]["delivery"]["level3_ready"])
+            self.assertFalse(state["domains"]["delivery"]["level3_ready"])
             self.assertTrue(
                 (project / "documents" / "rulers" / "security" / "INDEX.md").is_file()
             )
@@ -395,7 +395,7 @@ class DomainActivationIntegrationTest(unittest.TestCase):
             )
             self.assertFalse((project / "documents" / "rulers" / "domains").exists())
 
-    def test_delivery_cannot_activate_before_security_review(self) -> None:
+    def test_ci_only_delivery_can_activate_without_security(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             project = Path(temp_dir)
             (project / ".github" / "workflows").mkdir(parents=True)
@@ -450,8 +450,10 @@ class DomainActivationIntegrationTest(unittest.TestCase):
                 cwd=ROOT,
             )
 
-            self.assertNotEqual(0, activated.returncode)
-            self.assertIn("security", activated.stderr)
+            self.assertEqual(0, activated.returncode, activated.stderr)
+            state = json.loads((project / "documents/rulers/RULERS_STATE.json").read_text())
+            self.assertEqual(2, state["domains"]["delivery"]["level"])
+            self.assertFalse(state["domains"]["delivery"]["level3_ready"])
 
     def test_runtime_validation_rejects_missing_active_domain_leaf(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

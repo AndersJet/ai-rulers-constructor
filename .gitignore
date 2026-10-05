@@ -32,6 +32,10 @@ __pycache__/
 /docs/*
 !/docs/agents/
 !/docs/adr/
+!/docs/plans/
+/docs/plans/*
+!/docs/plans/2026-10-06-ai-rulers-init-optimization-plan.md
+!/docs/plans/2026-10-06-ai-rulers-init-validation.md
 /.superpowers/
 /.worktrees/
 .history/

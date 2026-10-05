@@ -206,16 +206,33 @@ def candidate_settings(root, candidates, policy):
             "domains",
             "export_manifest",
             "adjustments",
+            "readiness",
         }:
             raise ValueError("Unknown project candidate fields: " + name)
         domains = project.get("domains", {})
         if not isinstance(domains, dict):
             raise ValueError("Candidate domains must map names to directories")
+        readiness = project.get("readiness", {})
+        if not isinstance(readiness, dict) or any(
+            not isinstance(domain, str) or domain not in domains
+            or not isinstance(path, str) or not path
+            for domain, path in readiness.items()
+        ):
+            raise ValueError("Readiness must map explicit domain candidates to source files")
+        from .readiness import _source_paths
+
+        for domain, relative in readiness.items():
+            source = checked_path(root, relative, required=True)
+            coverage = _source_paths(read_json(source))
+            settings.setdefault("readiness_inputs", {}).setdefault(name, {})[domain] = {
+                "source": relative,
+                "coverage": coverage,
+            }
         refs = [
             project[k]
             for k in ("profile", "export_manifest", "adjustments")
             if k in project
-        ] + list(domains.values())
+        ] + list(domains.values()) + list(readiness.values())
         if project.get("adjustments"):
             adjustment = read_json(
                 checked_path(root, project["adjustments"], required=True)
@@ -316,6 +333,14 @@ def build_review_plan(
         "scopes": scopes,
         "candidate_inputs": inputs,
     }
+    if settings.get("readiness_inputs"):
+        recipe["readiness_inputs"] = {
+            name: {
+                domain: {**record, "sha256": inputs[record["source"]]}
+                for domain, record in declarations.items()
+            }
+            for name, declarations in settings["readiness_inputs"].items()
+        }
     batch_id = identity(recipe)
     changes, pending = project_batch(
         skill_root=skill_root,
