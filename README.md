@@ -169,7 +169,7 @@ For a custom directory, adjust the script path and pass `--rulers-dir`. When cha
 | Upgrade templates or resolve drift | [lifecycle](skills/ai-rulers-init/references/lifecycle.md): upgrade / repair |
 | Migrate an older installation without State | [migration-v1](skills/ai-rulers-init/references/migration-v1.md): `migrate-v1` |
 
-Validation detects broken references, missing reviews, file drift, and stale plans. Whether a rule is correct and helps an agent complete a task still needs evidence from real work. The repository includes public CLI and distribution-parity tests. Live model scenarios are recorded in [evals](skills/ai-rulers-init/evals/evals.json) and have not yet been run.
+Validation detects broken references, missing reviews, file drift, and stale plans. Whether a rule helps an agent complete a task still needs real-task evidence. The repository includes public CLI and distribution-parity tests. The 22 [eval definitions](skills/ai-rulers-init/evals/README.md) are not a fully executed suite. [Four historical observations](docs/plans/2026-10-06-ai-rulers-init-validation.md) and [the limited interop replay](docs/plans/2026-10-08-skill-interop-validation.md) separately record identities, evidence and gaps; fixed-answer replay does not establish live HITL success.
 
 ## Help improve it with evidence
 

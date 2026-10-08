@@ -36,6 +36,7 @@ __pycache__/
 /docs/plans/*
 !/docs/plans/2026-10-06-ai-rulers-init-optimization-plan.md
 !/docs/plans/2026-10-06-ai-rulers-init-validation.md
+!/docs/plans/2026-10-08-skill-interop-validation.md
 /.superpowers/
 /.worktrees/
 .history/

@@ -169,7 +169,7 @@ python3 documents/rulers/scripts/validate_rulers.py --mode context --project-roo
 | 升级模板或处理漂移 | [lifecycle](skills/ai-rulers-init/references/lifecycle.md)：upgrade / repair |
 | 迁移旧版无 State 安装 | [migration-v1](skills/ai-rulers-init/references/migration-v1.md)：`migrate-v1` |
 
-校验能发现失效引用、未审阅状态、文件漂移和过期计划；规则是否正确、是否帮助模型完成任务，还需要真实任务检验。仓库包含公开 CLI 与分发一致性测试，真实模型评测场景位于 [evals](skills/ai-rulers-init/evals/evals.json)，目前尚未执行。
+校验能发现失效引用、未审阅状态、文件漂移和过期计划；规则是否正确、是否帮助模型完成任务，还需要真实任务检验。仓库包含公开 CLI 与分发一致性测试。[evals](skills/ai-rulers-init/evals/README.md) 的 22 项定义并非完整已执行套件；[历史四类观察](docs/plans/2026-10-06-ai-rulers-init-validation.md)与[本轮有限互操作回放](docs/plans/2026-10-08-skill-interop-validation.md)分别记录身份、证据及未覆盖项，固定回答回放不代表实时 HITL 通过。
 
 ## 一起把框架做实
 

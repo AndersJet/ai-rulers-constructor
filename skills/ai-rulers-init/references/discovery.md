@@ -16,6 +16,10 @@ Git 与 CI 工作流先读项目入口、已有工作流文档和配置。按本
 remote 或工具默认不能证明分支保护、MR 权限或人员责任；证据不足保持未决，仅在任务实际
 需要该决定时确认，不要求所有项目完成统一问卷，不预设单主线、Git Flow 或自动创建 MR。
 
+项目组合使用规划、研究或访谈技能时，读取 [skill-interop.md](skill-interop.md)。按本轮阶段
+发现完成标准、tracker/domain/Git 权威、工作区复用与隔离条件、分支起点与 upstream、
+成果保存和恢复入口。已有地图先核对来源与已回答选择；仅记录影响当前动作的事实或缺口。
+
 统一 Profile 使用“项目身份、命令、当前有效事实与约束、阻塞性未决问题”四节。
 事实表为：内容 / 依据类型 / 证据 / 作用域 / 置信度；依据仅 observed 或 approved。
 作用域用 registry 领域名（core、backend、database、frontend-web、frontend-app、security、delivery）。

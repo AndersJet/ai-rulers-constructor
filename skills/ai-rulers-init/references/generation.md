@@ -18,6 +18,13 @@
 
 生成后运行 candidate 校验。相同错误集合连续两次没有减少时停止自动修复并报告阻塞。
 
+## 跨技能工作流适配
+
+项目确有规划、研究或访谈技能组合时，读取 [skill-interop.md](skill-interop.md)，结合 discovery
+所得证据生成阶段、停点及保存/恢复条件。Profile 保留项目 tracker/domain/Git 权威指针；
+具体分支策略由项目正文承载，通用模板只约束适配方式。未使用该组合的项目无需新增互操作叶子，
+Skill 的互操作 reference 不进入运行态常驻加载清单。
+
 ## 候选登记
 
 - registry 中 `render_mode: deterministic` 的领域使用 `render-domain-candidate`，脚本负责渲染与受管 hash。
