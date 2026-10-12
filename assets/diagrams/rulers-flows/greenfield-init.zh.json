@@ -1,0 +1,240 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "绿地项目的规范初始化",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "assets/diagrams/rulers-flows/greenfield-init.zh.html",
+    "repository": {
+      "url": "https://github.com/AndersJet/ai-rulers-constructor.git",
+      "revision": "29152856816e24fd2747f9c1c460590c6ec3b313",
+      "link_mode": "web"
+    }
+  },
+  "lanes": [
+    {
+      "id": "prepare",
+      "label": "证据与候选"
+    },
+    {
+      "id": "apply",
+      "label": "集中审阅与采纳"
+    },
+    {
+      "id": "hold",
+      "label": "修订与恢复",
+      "variant": "exception"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "discover",
+      "lane": "prepare",
+      "col": 0,
+      "type": "backend",
+      "label": "发现工程范围",
+      "sublabel": "init-plan",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "facts",
+      "lane": "prepare",
+      "col": 1,
+      "type": "backend",
+      "label": "核对批准设计",
+      "sublabel": "职责 · 契约 · 数据",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/discovery.md"
+        }
+      ]
+    },
+    {
+      "id": "candidate",
+      "lane": "prepare",
+      "col": 2,
+      "type": "backend",
+      "label": "准备最小候选",
+      "sublabel": "有依据 · 一份权威正文",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/generation.md"
+        }
+      ]
+    },
+    {
+      "id": "plan",
+      "lane": "prepare",
+      "col": 3,
+      "type": "backend",
+      "label": "校验并生成差异",
+      "sublabel": "init-plan / review_path",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "lane": "apply",
+      "col": 3,
+      "type": "security",
+      "label": "实际差异获批？",
+      "sublabel": "复用适用授权",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "apply",
+      "lane": "apply",
+      "col": 4,
+      "type": "backend",
+      "label": "按计划采纳",
+      "sublabel": "init-apply",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "load",
+      "lane": "apply",
+      "col": 5,
+      "type": "backend",
+      "label": "验证有效范围",
+      "sublabel": "load / runtime",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "revise",
+      "lane": "hold",
+      "col": 3,
+      "type": "external",
+      "label": "补证据或改候选",
+      "sublabel": "未决保持未决",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/rule-quality.md"
+        }
+      ]
+    },
+    {
+      "id": "recover",
+      "lane": "hold",
+      "col": 4,
+      "type": "security",
+      "label": "核对后恢复",
+      "sublabel": "输入变化须重规划",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    }
+  ],
+  "mainPath": [
+    "discover",
+    "facts",
+    "candidate",
+    "plan",
+    "review",
+    "apply",
+    "load"
+  ],
+  "edges": [
+    {
+      "id": "discover-facts",
+      "from": "discover",
+      "to": "facts",
+      "role": "main"
+    },
+    {
+      "id": "facts-candidate",
+      "from": "facts",
+      "to": "candidate",
+      "role": "main"
+    },
+    {
+      "id": "candidate-plan",
+      "from": "candidate",
+      "to": "plan",
+      "role": "main"
+    },
+    {
+      "id": "plan-review",
+      "from": "plan",
+      "to": "review",
+      "role": "main"
+    },
+    {
+      "id": "review-apply",
+      "from": "review",
+      "to": "apply",
+      "role": "main",
+      "label": "已批准"
+    },
+    {
+      "id": "apply-load",
+      "from": "apply",
+      "to": "load",
+      "role": "main"
+    },
+    {
+      "id": "review-revise",
+      "from": "review",
+      "to": "revise",
+      "role": "error",
+      "label": "未批准",
+      "variant": "security"
+    },
+    {
+      "id": "apply-recover",
+      "from": "apply",
+      "to": "recover",
+      "role": "error",
+      "label": "中断",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "事实与决定分开",
+      "items": [
+        "approved 设计可先于代码；observed 实现不自动成为约束。",
+        "主子工程由默认入口集中准备；未初始化模块保留待接入。"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "范围与完成边界",
+      "items": [
+        "必要选择只阻塞相关工作；无变化直接结束。",
+        "修订后重规划；规则生效不等于版本可发布或生产授权。"
+      ]
+    }
+  ]
+}

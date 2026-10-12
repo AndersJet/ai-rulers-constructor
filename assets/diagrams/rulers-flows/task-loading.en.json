@@ -1,0 +1,266 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Task loading and rule maintenance",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "assets/diagrams/rulers-flows/task-loading.en.html",
+    "repository": {
+      "url": "https://github.com/AndersJet/ai-rulers-constructor.git",
+      "revision": "29152856816e24fd2747f9c1c460590c6ec3b313",
+      "link_mode": "web"
+    }
+  },
+  "lanes": [
+    {
+      "id": "decide",
+      "label": "Selection and validation"
+    },
+    {
+      "id": "load",
+      "label": "Discovery and diagnosis"
+    },
+    {
+      "id": "work",
+      "label": "Execution and maintenance"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "task",
+      "lane": "decide",
+      "col": 0,
+      "type": "external",
+      "label": "Bind project root",
+      "sublabel": "Goal / phase / scope",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/core/WORKFLOW.md"
+        }
+      ]
+    },
+    {
+      "id": "scope",
+      "lane": "decide",
+      "col": 1,
+      "type": "security",
+      "label": "Rules already known?",
+      "sublabel": "Domain / module / leaf",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "lane": "load",
+      "col": 1,
+      "type": "backend",
+      "label": "Discover scope",
+      "sublabel": "Context / INDEX",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "load",
+      "lane": "decide",
+      "col": 2,
+      "type": "backend",
+      "label": "Validate and load",
+      "sublabel": "load + dependencies",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/scripts/rulers_lib/rule_loading.py"
+        }
+      ]
+    },
+    {
+      "id": "gate",
+      "lane": "decide",
+      "col": 3,
+      "type": "security",
+      "label": "Selected scope valid?",
+      "sublabel": "State / drift / dependencies",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/scripts/rulers_lib/rule_loading.py"
+        }
+      ]
+    },
+    {
+      "id": "blocked",
+      "lane": "load",
+      "col": 3,
+      "type": "security",
+      "label": "Diagnose relevant issue",
+      "sublabel": "Preserve healthy scopes",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "bundle",
+      "lane": "decide",
+      "col": 4,
+      "type": "database",
+      "label": "Use validated context",
+      "sublabel": "Core / profile / rules",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/scripts/rulers_lib/rule_loading.py"
+        }
+      ]
+    },
+    {
+      "id": "execute",
+      "lane": "work",
+      "col": 4,
+      "type": "backend",
+      "label": "Work and verify",
+      "sublabel": "Project rules / checks",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/core/WORKFLOW.md"
+        }
+      ]
+    },
+    {
+      "id": "feedback",
+      "lane": "work",
+      "col": 3,
+      "type": "backend",
+      "label": "Assess rule change",
+      "sublabel": "Content / route / no change",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/rule-quality.md"
+        }
+      ]
+    },
+    {
+      "id": "maintain",
+      "lane": "work",
+      "col": 2,
+      "type": "backend",
+      "label": "Maintain minimal diff",
+      "sublabel": "Candidate / review / apply",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/maintenance.md"
+        }
+      ]
+    }
+  ],
+  "mainPath": [
+    "task",
+    "scope",
+    "load",
+    "gate",
+    "bundle",
+    "execute"
+  ],
+  "edges": [
+    {
+      "id": "task-scope",
+      "from": "task",
+      "to": "scope",
+      "role": "main"
+    },
+    {
+      "id": "scope-load",
+      "from": "scope",
+      "to": "load",
+      "role": "main",
+      "label": "Known"
+    },
+    {
+      "id": "load-gate",
+      "from": "load",
+      "to": "gate",
+      "role": "main"
+    },
+    {
+      "id": "gate-bundle",
+      "from": "gate",
+      "to": "bundle",
+      "role": "main",
+      "label": "Valid"
+    },
+    {
+      "id": "bundle-execute",
+      "from": "bundle",
+      "to": "execute",
+      "role": "main"
+    },
+    {
+      "id": "scope-context",
+      "from": "scope",
+      "to": "context",
+      "role": "branch",
+      "label": "Unknown"
+    },
+    {
+      "id": "context-load",
+      "from": "context",
+      "to": "load",
+      "role": "branch"
+    },
+    {
+      "id": "gate-blocked",
+      "from": "gate",
+      "to": "blocked",
+      "role": "error",
+      "label": "Invalid",
+      "variant": "security"
+    },
+    {
+      "id": "execute-feedback",
+      "from": "execute",
+      "to": "feedback",
+      "role": "branch",
+      "label": "Feedback"
+    },
+    {
+      "id": "feedback-maintain",
+      "from": "feedback",
+      "to": "maintain",
+      "role": "branch",
+      "label": "Change needed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Load only what the task needs",
+      "items": [
+        "Load known selections directly; discover unknown scope before selecting leaves.",
+        "Reuse loaded text; ordinary coding does not sync modules or repair unrelated domains."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Maintain with evidence",
+      "items": [
+        "Keep sufficient rules; repair routes without duplication and replace obsolete wording.",
+        "Review applicable changes; reconcile facts and revalidate changed scope."
+      ]
+    }
+  ]
+}

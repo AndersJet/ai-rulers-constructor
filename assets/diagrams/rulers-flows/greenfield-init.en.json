@@ -1,0 +1,240 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Greenfield rule initialization",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "assets/diagrams/rulers-flows/greenfield-init.en.html",
+    "repository": {
+      "url": "https://github.com/AndersJet/ai-rulers-constructor.git",
+      "revision": "29152856816e24fd2747f9c1c460590c6ec3b313",
+      "link_mode": "web"
+    }
+  },
+  "lanes": [
+    {
+      "id": "prepare",
+      "label": "Evidence and candidates"
+    },
+    {
+      "id": "apply",
+      "label": "Review and adoption"
+    },
+    {
+      "id": "hold",
+      "label": "Revision and recovery",
+      "variant": "exception"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "discover",
+      "lane": "prepare",
+      "col": 0,
+      "type": "backend",
+      "label": "Discover projects",
+      "sublabel": "init-plan",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "facts",
+      "lane": "prepare",
+      "col": 1,
+      "type": "backend",
+      "label": "Read approved design",
+      "sublabel": "Roles / contracts / data",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/discovery.md"
+        }
+      ]
+    },
+    {
+      "id": "candidate",
+      "lane": "prepare",
+      "col": 2,
+      "type": "backend",
+      "label": "Prepare minimal rules",
+      "sublabel": "Evidence / one authority",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/generation.md"
+        }
+      ]
+    },
+    {
+      "id": "plan",
+      "lane": "prepare",
+      "col": 3,
+      "type": "backend",
+      "label": "Validate and plan",
+      "sublabel": "init-plan / review_path",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "lane": "apply",
+      "col": 3,
+      "type": "security",
+      "label": "Changes approved?",
+      "sublabel": "Use applicable approval",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "apply",
+      "lane": "apply",
+      "col": 4,
+      "type": "backend",
+      "label": "Apply reviewed plan",
+      "sublabel": "init-apply",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    },
+    {
+      "id": "load",
+      "lane": "apply",
+      "col": 5,
+      "type": "backend",
+      "label": "Verify adopted scope",
+      "sublabel": "load / runtime",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "revise",
+      "lane": "hold",
+      "col": 3,
+      "type": "external",
+      "label": "Revise inputs",
+      "sublabel": "Keep decisions unresolved",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/rule-quality.md"
+        }
+      ]
+    },
+    {
+      "id": "recover",
+      "lane": "hold",
+      "col": 4,
+      "type": "security",
+      "label": "Verify before resume",
+      "sublabel": "Changed input: replan",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/initialization.md"
+        }
+      ]
+    }
+  ],
+  "mainPath": [
+    "discover",
+    "facts",
+    "candidate",
+    "plan",
+    "review",
+    "apply",
+    "load"
+  ],
+  "edges": [
+    {
+      "id": "discover-facts",
+      "from": "discover",
+      "to": "facts",
+      "role": "main"
+    },
+    {
+      "id": "facts-candidate",
+      "from": "facts",
+      "to": "candidate",
+      "role": "main"
+    },
+    {
+      "id": "candidate-plan",
+      "from": "candidate",
+      "to": "plan",
+      "role": "main"
+    },
+    {
+      "id": "plan-review",
+      "from": "plan",
+      "to": "review",
+      "role": "main"
+    },
+    {
+      "id": "review-apply",
+      "from": "review",
+      "to": "apply",
+      "role": "main",
+      "label": "Approved"
+    },
+    {
+      "id": "apply-load",
+      "from": "apply",
+      "to": "load",
+      "role": "main"
+    },
+    {
+      "id": "review-revise",
+      "from": "review",
+      "to": "revise",
+      "role": "error",
+      "label": "Not approved",
+      "variant": "security"
+    },
+    {
+      "id": "apply-recover",
+      "from": "apply",
+      "to": "recover",
+      "role": "error",
+      "label": "Interrupted",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Facts and decisions",
+      "items": [
+        "Approved design can precede code; observed code is not automatically policy.",
+        "The default flow coordinates direct submodules; unavailable ones remain pending."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Scope and completion",
+      "items": [
+        "Only dependent work waits for a decision; unchanged input ends with noop.",
+        "Replan changed inputs; active rules do not certify a release or authorize production."
+      ]
+    }
+  ]
+}

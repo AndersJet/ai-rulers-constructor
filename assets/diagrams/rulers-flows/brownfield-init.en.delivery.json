@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "3ac87c42-dc2d-4ffb-92ca-e39ebf99622d",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/.worktrees/relaunch-1.0.0/assets/diagrams/rulers-flows/brownfield-init.en.json",
+  "output": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/.worktrees/relaunch-1.0.0/assets/diagrams/rulers-flows/brownfield-init.en.html",
+  "specification": {
+    "sha256": "eea35895a92fa95a44889517650e31e9aec3ea091dadcebd32df0676c72c996a",
+    "bytes": 5280
+  },
+  "artifact": {
+    "sha256": "d7762487b3196241e2bfdd9bd25c64ff8b9976c2c1ab970dc53996b5101fdf38",
+    "bytes": 758240
+  }
+}

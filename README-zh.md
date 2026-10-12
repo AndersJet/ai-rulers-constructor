@@ -65,13 +65,13 @@ AI 负责发现证据、起草内容和解释取舍；脚本负责差异、哈�
 
 ![绿地项目初始化流程](assets/diagrams/rulers-flows/greenfield-init.zh.svg)
 
-补齐未决输入或修订候选后，重新进入对应审阅步骤。
+[交互版 HTML](assets/diagrams/rulers-flows/greenfield-init.zh.html) · 补齐未决输入或修订候选后，重新进入对应审阅步骤。
 
 **已有项目：从实际做法出发。** 从代码、配置、测试和文档提取证据，再审阅其中哪些应成为约束。已有实现与团队目标冲突时，保留问题供人判断。
 
 ![棕地项目初始化流程](assets/diagrams/rulers-flows/brownfield-init.zh.svg)
 
-图示为已有代码工程首次建立规范。已有安装可再次调用初始化检查增量；明确的升级或修复仍使用对应维护流程。
+[交互版 HTML](assets/diagrams/rulers-flows/brownfield-init.zh.html) · 图示为已有代码工程首次建立规范。已有安装可再次调用初始化检查增量；明确的升级或修复仍使用对应维护流程。
 
 **Git submodule 工作区：保留独立开发能力。** 一个直接子仓库对应一个模块，内部可以包含多个技术领域。子仓库维护可移植规则源，主工程保存采纳快照和组合调整。初始化会自动检查本地来源变化，独立同步也可由用户手动触发；未提交规则也能在审阅后采纳，身份绑定实际内容和相关代码证据。
 
@@ -147,7 +147,9 @@ python3 skills/ai-rulers-init/scripts/rulers_init.py init-plan \
 
 ![任务执行时的规则判断、渐进加载与生效流程](assets/diagrams/rulers-flows/task-loading.zh.svg)
 
-选择范围后仍要检查其状态；未激活或失效的规则不能因任务命中就生效。任务反馈进入维护流程，修订经审阅后再供后续任务加载。
+[交互版 HTML](assets/diagrams/rulers-flows/task-loading.zh.html) · 选择范围后仍要检查其状态；未激活或失效的规则不能因任务命中就生效。任务反馈进入维护流程，修订经审阅后再供后续任务加载。
+
+图中的交互版需下载 HTML 后用浏览器打开，可缩放、切换明暗主题和导出。
 
 State 由脚本读取；已知任务直接 load，未知范围通过 Context 和索引发现，再加载命中叶子。审阅和激活记录决定规则是否可用：Level 0 准备事实与候选，Level 1 支持核心约束下的低风险工作，Level 2 用于已激活领域。Level 3 readiness 仅记录生产相关规则与流程的适用性审阅，不证明具体版本或环境可发布；具体生产操作仍需授权。
 

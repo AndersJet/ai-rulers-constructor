@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "84839fa6-c7bb-4a2c-9476-3503feed3924",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/.worktrees/relaunch-1.0.0/assets/diagrams/rulers-flows/task-loading.zh.json",
+  "output": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/.worktrees/relaunch-1.0.0/assets/diagrams/rulers-flows/task-loading.zh.html",
+  "specification": {
+    "sha256": "759334c91ed4f46ec10bc5a3f9d8b8fe87e3531e7d0643b7cdb52e9b93a1e8fa",
+    "bytes": 5906
+  },
+  "artifact": {
+    "sha256": "58005772525ff763bd5f4ad3d32c033ff627ad3f7d6c8568ca637f5a6a2cf7af",
+    "bytes": 761477
+  }
+}

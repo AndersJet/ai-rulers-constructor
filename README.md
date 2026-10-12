@@ -65,13 +65,13 @@ The diagrams show default initialization: discover projects and business evidenc
 
 ![Greenfield initialization workflow](assets/diagrams/rulers-flows/greenfield-init.en.svg)
 
-Return to the relevant review step after clarifying inputs or revising candidates.
+[Interactive HTML](assets/diagrams/rulers-flows/greenfield-init.en.html) · Return to the relevant review step after clarifying inputs or revising candidates.
 
 **Existing projects start with evidence.** Inspect code, configuration, tests, and documentation, then review which practices should become constraints. Where current behavior conflicts with the team's intent, surface the disagreement for a decision.
 
 ![Brownfield initialization workflow](assets/diagrams/rulers-flows/brownfield-init.en.svg)
 
-This shows first-time setup for an existing codebase. Repeat initialization to check an existing installation for incremental changes; explicit upgrades and repairs use their maintenance workflows.
+[Interactive HTML](assets/diagrams/rulers-flows/brownfield-init.en.html) · This shows first-time setup for an existing codebase. Repeat initialization to check an existing installation for incremental changes; explicit upgrades and repairs use their maintenance workflows.
 
 **Git submodule workspaces keep independent ownership.** Each direct submodule is one module, even if it contains several technical domains. The child repository owns portable rule sources; the parent owns accepted snapshots and workspace adjustments. Initialization checks local source changes; explicit module sync is also available. Uncommitted rules can be accepted after review, with identity tied to actual content and relevant code evidence.
 
@@ -147,7 +147,9 @@ The normal loading path is:
 
 ![Rule eligibility, progressive loading, and application during a task](assets/diagrams/rulers-flows/task-loading.en.svg)
 
-Validate selected scopes too: matching a task does not activate an inactive or stale rule. Feedback enters maintenance; revisions require review before later tasks load them.
+[Interactive HTML](assets/diagrams/rulers-flows/task-loading.en.html) · Validate selected scopes too: matching a task does not activate an inactive or stale rule. Feedback enters maintenance; revisions require review before later tasks load them.
+
+Download an interactive HTML file and open it in a browser for zoom, theme switching, and export.
 
 Scripts read State; known tasks load selected rules directly, while unknown scope uses Context and indexes before loading relevant leaves. Review and activation records determine availability: Level 0 prepares facts and candidates, Level 1 supports low-risk work under core constraints, and Level 2 covers activated domains. Level 3 readiness records the applicability review of production-related rules and procedures; it does not certify a particular release or environment. Individual production operations still require authorization.
 

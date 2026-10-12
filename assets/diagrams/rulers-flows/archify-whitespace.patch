@@ -1,0 +1,11 @@
+--- a/renderers/shared/cli.mjs
++++ b/renderers/shared/cli.mjs
+@@ -270,7 +270,7 @@
+     locale: meta.locale,
+     visualPreset: meta.visual_preset || 'classic',
+     sourceEvidence,
+-  });
++  }).replace(/^[\t ]+$/gm, '');
+   let candidatePath;
+   let candidateIdentity;
+   let candidateBinding;

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "f08b166c-56e6-4fc8-ac84-e4201ec5b0ee",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/.worktrees/relaunch-1.0.0/assets/diagrams/rulers-flows/greenfield-init.zh.json",
+  "output": "/Users/liujie/CodeSpace/Andy/Project/ai-rulers-constructor/.worktrees/relaunch-1.0.0/assets/diagrams/rulers-flows/greenfield-init.zh.html",
+  "specification": {
+    "sha256": "66d68c71a77dde81d28b8eb8efc342ded9f5c0278c155a6db016e0222c56b5b3",
+    "bytes": 5236
+  },
+  "artifact": {
+    "sha256": "36727c0bef243adf1c3768c7278ed767b6baa506d04b24e10e60439c312fe0cc",
+    "bytes": 757661
+  }
+}

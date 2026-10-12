@@ -1,0 +1,266 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "任务加载与规则维护",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "assets/diagrams/rulers-flows/task-loading.zh.html",
+    "repository": {
+      "url": "https://github.com/AndersJet/ai-rulers-constructor.git",
+      "revision": "29152856816e24fd2747f9c1c460590c6ec3b313",
+      "link_mode": "web"
+    }
+  },
+  "lanes": [
+    {
+      "id": "decide",
+      "label": "选择与校验"
+    },
+    {
+      "id": "load",
+      "label": "发现与诊断"
+    },
+    {
+      "id": "work",
+      "label": "执行与维护"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "task",
+      "lane": "decide",
+      "col": 0,
+      "type": "external",
+      "label": "绑定项目根",
+      "sublabel": "目标 · 阶段 · 范围",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/core/WORKFLOW.md"
+        }
+      ]
+    },
+    {
+      "id": "scope",
+      "lane": "decide",
+      "col": 1,
+      "type": "security",
+      "label": "已知所需规则？",
+      "sublabel": "领域 / 模块 / 叶子",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "lane": "load",
+      "col": 1,
+      "type": "backend",
+      "label": "发现可选范围",
+      "sublabel": "Context / INDEX",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "load",
+      "lane": "decide",
+      "col": 2,
+      "type": "backend",
+      "label": "校验并展开",
+      "sublabel": "load + dependencies",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/scripts/rulers_lib/rule_loading.py"
+        }
+      ]
+    },
+    {
+      "id": "gate",
+      "lane": "decide",
+      "col": 3,
+      "type": "security",
+      "label": "所选范围有效？",
+      "sublabel": "状态 · 漂移 · 依赖",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/scripts/rulers_lib/rule_loading.py"
+        }
+      ]
+    },
+    {
+      "id": "blocked",
+      "lane": "load",
+      "col": 3,
+      "type": "security",
+      "label": "诊断相关问题",
+      "sublabel": "保留独立可用范围",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/AGENTS.md.tmpl"
+        }
+      ]
+    },
+    {
+      "id": "bundle",
+      "lane": "decide",
+      "col": 4,
+      "type": "database",
+      "label": "使用有效上下文",
+      "sublabel": "core · 画像 · 命中规则",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/scripts/rulers_lib/rule_loading.py"
+        }
+      ]
+    },
+    {
+      "id": "execute",
+      "lane": "work",
+      "col": 4,
+      "type": "backend",
+      "label": "执行并验证结果",
+      "sublabel": "项目约定 · 必要检查",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/templates/runtime/core/WORKFLOW.md"
+        }
+      ]
+    },
+    {
+      "id": "feedback",
+      "lane": "work",
+      "col": 3,
+      "type": "backend",
+      "label": "判断是否需调整",
+      "sublabel": "正文 / 路由 / 无需改动",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/rule-quality.md"
+        }
+      ]
+    },
+    {
+      "id": "maintain",
+      "lane": "work",
+      "col": 2,
+      "type": "backend",
+      "label": "最小差异维护",
+      "sublabel": "候选 → 审阅 → 应用",
+      "width": 156,
+      "sources": [
+        {
+          "path": "skills/ai-rulers-init/references/maintenance.md"
+        }
+      ]
+    }
+  ],
+  "mainPath": [
+    "task",
+    "scope",
+    "load",
+    "gate",
+    "bundle",
+    "execute"
+  ],
+  "edges": [
+    {
+      "id": "task-scope",
+      "from": "task",
+      "to": "scope",
+      "role": "main"
+    },
+    {
+      "id": "scope-load",
+      "from": "scope",
+      "to": "load",
+      "role": "main",
+      "label": "已知"
+    },
+    {
+      "id": "load-gate",
+      "from": "load",
+      "to": "gate",
+      "role": "main"
+    },
+    {
+      "id": "gate-bundle",
+      "from": "gate",
+      "to": "bundle",
+      "role": "main",
+      "label": "有效"
+    },
+    {
+      "id": "bundle-execute",
+      "from": "bundle",
+      "to": "execute",
+      "role": "main"
+    },
+    {
+      "id": "scope-context",
+      "from": "scope",
+      "to": "context",
+      "role": "branch",
+      "label": "未知"
+    },
+    {
+      "id": "context-load",
+      "from": "context",
+      "to": "load",
+      "role": "branch"
+    },
+    {
+      "id": "gate-blocked",
+      "from": "gate",
+      "to": "blocked",
+      "role": "error",
+      "label": "失效",
+      "variant": "security"
+    },
+    {
+      "id": "execute-feedback",
+      "from": "execute",
+      "to": "feedback",
+      "role": "branch",
+      "label": "有反馈"
+    },
+    {
+      "id": "feedback-maintain",
+      "from": "feedback",
+      "to": "maintain",
+      "role": "branch",
+      "label": "确需调整"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "只读任务所需内容",
+      "items": [
+        "已知范围直接 load；未知范围先发现，再选择叶子。",
+        "成功后复用正文；普通编码不自动同步模块或维修无关领域。"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "维护有判断与边界",
+      "items": [
+        "已有表达充分则不改；路由失效不重复正文，内容变化清除旧措辞。",
+        "差异经适用审阅后采纳；事实变化走 reconcile，范围变化重新校验。"
+      ]
+    }
+  ]
+}
