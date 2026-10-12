@@ -1,0 +1,45 @@
+# 生命周期与恢复
+
+用户初始化默认从 initialization reference 的 init-plan/init-apply 进入；本文介绍底层单项目生命周期。
+
+State schema 3。绿地、棕地使用同一状态和命令。发布版本通过 `python3 scripts/rulers_init.py --version` 查询；它与 State、计划、Context 等数据协议版本分别管理。
+
+fresh → profile_draft → profile_reviewed → rules_candidate → runtime_ready。
+日常规则变化走 rules-plan；事实变化走 reconcile；模板/策略变化走 upgrade；漂移走 repair。
+
+## Plan / Apply
+
+`plan --project-root ROOT` 输出摘要和不可变 plan_path；有事实输入时追加
+`--operation reconcile --candidate-profile PATH [--changed-path PATH] [--retired-domain NAME]`。
+fresh 也可用 `--candidate-profile PATH` 提供初始画像，apply 原样保存并保持 draft，随后审阅激活。
+候选画像放在目标项目内、已安装画像之外。不要直接编辑已审阅画像后冒充未变化。
+无变化返回 noop；候选内容、模板或目标文件变化后必须重新计划。
+
+`apply --plan PATH` 执行 fresh/resume；reconcile/upgrade/repair 还需
+`--reviewed-by NAME --evidence REF`。审阅对应具体变更，不构成未来操作永久授权。
+
+## 升级与修复
+
+模板或策略变化由 plan 检出 upgrade；明确策略切换时用 `--operation upgrade --policy ID`。
+升级保留 collaborative/project-owned 内容和领域自定义清单。安装版本统一记录在 State 的 `template.version`；升级时移除旧 `template_version` 字段，旧根区块原位转换为无版本边界。旧画像不满足新契约时保持
+文件内容，降为 draft，按当前画像结构补充后重新审阅；不制造审阅事实。
+
+registry 是新安装默认；已有 `requires_active` 保留为项目契约，包括来源无法判定的旧默认。
+解除或修改旧依赖时，将完整目标依赖值放在项目内、安装目录之外的 JSON 候选，例如
+`{"delivery": []}`，再执行 `plan --operation upgrade --candidate-dependencies PATH`。
+计划绑定候选哈希，展示 before/after 和受影响领域；批准后才 apply。候选或契约变化要求
+重新计划。无候选的旧命令保留已采纳依赖；真实 `must_load_with` 仍构成加载前置，普通
+INDEX 导航不构成依赖。依赖变更使受影响领域回到 draft，后续审阅不会自动扩大激活范围。
+
+受管漂移先查 runtime 详情，再计划 repair 并用
+`--resolution <项目相对文件路径>=restore-managed` 恢复框架模板，或
+`--resolution <路径>=adopt-current` 采纳人工修订。不能确定的内容先人工合并再重新计划。
+有未完成事务时 repair 恢复 journal/snapshot 后要求重新计划；活跃写入者不能被恢复。
+
+## 日常 Context
+
+遵循目标入口，以绝对 ROOT 调用安装目录的 validator。已知选择时直接 `--mode load --domain NAME --rule PATH --format text`；范围未知时用 `--mode context` 发现领域/模块，再按 INDEX 选择。
+blocked=true、非零或非法 JSON 时只诊断/恢复；健康输出给出有效路由和画像选择范围。
+blocked=false 时，无关领域的维修提示不阻止本次健康任务；完整 runtime 校验仍报告全安装问题。
+load 已包含同源校验；仅选 domain 返回核心、画像和索引，并不包含全部叶子。条件核心文件可用
+`--rule core/RULER_MAINTENANCE.md` 等显式选择；提交规则仅在已安装 strict-cn 策略下可选。

@@ -1,0 +1,27 @@
+# AI 协作协议
+
+> Version: {{RELEASE_VERSION}}。RULERS_STATE.json 是机器权威；日常任务读取校验后的 Context。
+
+## 加载顺序
+
+将 shell 变量 ROOT 设为绝对会话项目根；切换目录后保持该值。独立打开子仓库时绑定子根；主子入口同时注入时先明确有效根。以下路径均相对 ROOT。
+
+执行 `python3 "$ROOT/{{RULERS_DIR}}/scripts/validate_rulers.py" --project-root "$ROOT" --rulers-dir "{{RULERS_DIR}}"` 并选择：
+
+- 已知领域和叶子：追加 `--mode load --domain NAME --rule PATH --format text`，直接使用已校验正文，无需前置 Context。选择器可重复；条件核心文件只需 `--rule core/FILE.md`。
+- 范围未知：追加 `--mode context`，按 available_domains 和相关 INDEX 确定选择，再 load。available_modules 非空时先按 module_protocol 选择模块及组合规则。
+
+load 包含核心、有效 Profile、所选 INDEX、显式叶子及真实依赖；仅选 domain 不代表叶子已齐全。范围扩大时补选必要规则。正文中的导航不等于强制依赖。
+非零退出、非法 JSON 或 Context blocked=true 时仅诊断/恢复，并读取 `{{RULERS_DIR}}/core/HARD_CONSTRAINTS.md`、`{{RULERS_DIR}}/core/WORKFLOW.md`。成功加载后不重复手动读取；新任务、规则/画像变化或范围变化时重新校验。无关领域的 next_action/issue_count 不阻止有效范围工作；模型不从原始 State 自行授信。
+
+## 条件路由
+
+| 任务条件 | 还需加载 |
+| --- | --- |
+| 增删改、移动、合并或拆分规则 | `{{RULERS_DIR}}/core/RULER_MAINTENANCE.md` |
+| 权威冲突、证据与所有权 | `{{RULERS_DIR}}/core/DOC_GOVERNANCE.md` |
+{{COMMIT_POLICY_ROUTE}}
+{{COMMIT_POLICY_BLOCK}}
+## 激活范围
+
+Level 0：发现、画像及候选准备；Level 1：已审阅事实支持的低风险工作；Level 2：已激活领域工作；Level 3 readiness：生产相关规则及准备流程已审阅，不代表具体版本或环境可发布，具体生产动作仍需授权。

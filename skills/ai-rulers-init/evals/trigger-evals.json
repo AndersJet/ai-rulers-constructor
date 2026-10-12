@@ -1,0 +1,110 @@
+[
+  {
+    "query": "帮我给这个维护了五年的 Java 单体项目初始化 AI rulers，保留已有 AGENTS.md。",
+    "should_trigger": true
+  },
+  {
+    "query": "上次 rules 初始化做到 PROJECT_PROFILE 草稿就停了，继续恢复并完成校验。",
+    "should_trigger": true
+  },
+  {
+    "query": "项目最近新增 PostgreSQL 和 migrations 目录，请 reconcile 补充数据库 rulers。",
+    "should_trigger": true
+  },
+  {
+    "query": "把仓库里的 ai-rulers-init v2 规则升级到 schema 3 统一生命周期。",
+    "should_trigger": true
+  },
+  {
+    "query": "我们的 monorepo 有 backend、web、mobile，想建立分领域的 AI 开发护栏。",
+    "should_trigger": true
+  },
+  {
+    "query": "初始化项目规范，但 rules 目录要放在 docs/ai/coding-standards。",
+    "should_trigger": true
+  },
+  {
+    "query": "现有 rulers 状态文件损坏了，帮我诊断并恢复到安全阶段。",
+    "should_trigger": true
+  },
+  {
+    "query": "setup rulers for this brownfield Go service and keep the existing release-please workflow",
+    "should_trigger": true
+  },
+  {
+    "query": "为旧前端仓库生成项目画像、激活门禁和可验证的领域规则。",
+    "should_trigger": true
+  },
+  {
+    "query": "这是一个只有 ADR 和架构文档的新项目，请基于已批准决策初始化 Greenfield rulers。",
+    "should_trigger": true
+  },
+  {
+    "query": "修改现有 PROJECT_PROFILE.md 里的单元测试命令，其他规则不要动。",
+    "should_trigger": true
+  },
+  {
+    "query": "评审一下根目录 AGENTS.md 的文字是否清楚。",
+    "should_trigger": false
+  },
+  {
+    "query": "给 README 增加一节团队编码规范说明。",
+    "should_trigger": false
+  },
+  {
+    "query": "调整 database/MIGRATION.md 里的一条命名约束。",
+    "should_trigger": true
+  },
+  {
+    "query": "解释一下 PROJECT_PROFILE 是什么，不要修改文件。",
+    "should_trigger": false
+  },
+  {
+    "query": "写一份适合新项目的 TypeScript style guide。",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我修复 AGENTS.md 中的 Markdown 链接。",
+    "should_trigger": false
+  },
+  {
+    "query": "检查 CHANGELOG 是否符合 Keep a Changelog。",
+    "should_trigger": false
+  },
+  {
+    "query": "把现有提交规范从中文改成英文。",
+    "should_trigger": false
+  },
+  {
+    "query": "分析当前 rulers 的上下文预算是否过大，只需要报告。",
+    "should_trigger": false
+  },
+  {
+    "query": "删除不适用的 OBSERVABILITY ruler，升级后也不要恢复。",
+    "should_trigger": true
+  },
+  {
+    "query": "把安全规则中重复的令牌要求合并，并更新相关索引。",
+    "should_trigger": true
+  },
+  {
+    "query": "在绿地项目里根据已批准架构生成规则，后面根据代码演进维护。",
+    "should_trigger": true
+  },
+  {
+    "query": "修复登录页面的按钮样式。",
+    "should_trigger": false
+  },
+  {
+    "query": "优化这条 PostgreSQL 查询。",
+    "should_trigger": false
+  },
+  {
+    "query": "为购物车功能增加一个测试。",
+    "should_trigger": false
+  },
+  {
+    "query": "将这段 README 翻译成英文。",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,111 @@
+{
+  "schema_version": 2,
+  "template_version": "2.0.0",
+  "rulers_dir": "documents/custom-rulers",
+  "phase": "runtime_ready",
+  "policy": {
+    "id": "strict-cn"
+  },
+  "profile": {
+    "status": "reviewed",
+    "content_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "review": {
+      "reviewed_by": "fixture-owner",
+      "reviewed_at": "2026-07-20T10:00:00+08:00",
+      "evidence": "fixture-profile-review"
+    }
+  },
+  "domains": {
+    "core": {
+      "detected": true,
+      "generated": true,
+      "review_status": "reviewed",
+      "level": 1,
+      "readiness_level": 1,
+      "target_dir": "core",
+      "required_files": [
+        "HARD_CONSTRAINTS.md"
+      ],
+      "level3_ready": false,
+      "review": {
+        "reviewed_by": "fixture-owner",
+        "reviewed_at": "2026-07-20T10:00:00+08:00",
+        "evidence": "fixture-core-review"
+      }
+    },
+    "backend": {
+      "detected": true,
+      "generated": true,
+      "review_status": "reviewed",
+      "level": 2,
+      "readiness_level": 2,
+      "target_dir": "backend",
+      "required_files": [
+        "INDEX.md"
+      ],
+      "level3_ready": false,
+      "review": {
+        "reviewed_by": "backend-owner",
+        "reviewed_at": "2026-07-20T10:05:00+08:00",
+        "evidence": "fixture-backend-review"
+      }
+    },
+    "security": {
+      "detected": true,
+      "generated": true,
+      "review_status": "reviewed",
+      "level": 2,
+      "readiness_level": 2,
+      "target_dir": "security",
+      "required_files": [
+        "INDEX.md"
+      ],
+      "level3_ready": false,
+      "review": {
+        "reviewed_by": "security-owner",
+        "reviewed_at": "2026-07-20T10:10:00+08:00",
+        "evidence": "fixture-security-review"
+      }
+    },
+    "delivery": {
+      "detected": true,
+      "generated": true,
+      "review_status": "reviewed",
+      "level": 2,
+      "readiness_level": 3,
+      "target_dir": "delivery",
+      "required_files": [
+        "INDEX.md"
+      ],
+      "level3_ready": true,
+      "review": {
+        "reviewed_by": "release-owner",
+        "reviewed_at": "2026-07-20T10:15:00+08:00",
+        "evidence": "fixture-delivery-review"
+      }
+    }
+  },
+  "managed_files": {
+    "documents/custom-rulers/PROJECT_PROFILE.md": {
+      "template_id": "PROJECT_PROFILE.md",
+      "source_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "rendered_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "ownership": "collaborative"
+    },
+    "documents/custom-rulers/core/HARD_CONSTRAINTS.md": {
+      "template_id": "core/HARD_CONSTRAINTS.md",
+      "source_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "rendered_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "ownership": "managed"
+    },
+    "documents/custom-rulers/backend/INDEX.md": {
+      "rendered_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "ownership": "project-generated"
+    }
+  },
+  "last_operation": {
+    "kind": "mark-runtime-ready",
+    "status": "complete",
+    "updated_at": "2026-07-20T10:15:00+08:00"
+  }
+}

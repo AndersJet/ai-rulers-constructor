@@ -1,0 +1,404 @@
+{
+  "skill_name": "ai-rulers-init",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "在已有 AGENTS.md 和 changesets 的 monorepo 中初始化 rulers。",
+      "expected_output": "保留人工 AGENTS 内容，不创建 CHANGELOG，生成 draft/Level 0 状态。",
+      "files": [],
+      "assertions": [
+        "根 AGENTS 人工内容保留且只有一个受管区块",
+        "project-native 策略不创建 CHANGELOG.md",
+        "Profile draft 时 Core 为 Level 0"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "使用 documents/coding-standards 作为自定义目录完成候选初始化。",
+      "expected_output": "所有链接、状态和校验命令使用自定义目录且 candidate 校验通过。",
+      "files": [],
+      "assertions": [
+        "RULERS_STATE.rulers_dir 与自定义目录一致",
+        "目标目录中没有 bootstrap/template 产物",
+        "candidate 校验通过"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "恢复一个停在 profile_draft 的初始化。",
+      "expected_output": "从 profile_draft 继续，不重新覆盖文件或提前激活。",
+      "files": [],
+      "assertions": [
+        "恢复阶段来自 RULERS_STATE",
+        "重复 apply 零文件变化",
+        "未经审阅 Core 保持 Level 0"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "把只有 PROJECT_PROFILE.md 的 v1 项目迁移到 v2。",
+      "expected_output": "生成状态文件并将无审阅证据的旧 Level 标为待审阅。",
+      "files": [],
+      "assertions": [
+        "旧画像内容保留",
+        "profile.status 为 legacy_review_required",
+        "Core 为 Level 0"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "增量扫描发现 runtime 变化、新增数据库事实、移除旧平台。",
+      "expected_output": "分别输出 added/changed/removed，并要求变化和移除项重新审阅。",
+      "files": [],
+      "assertions": [
+        "新增、变化、移除分类准确",
+        "不自动删除已激活规则",
+        "变化事实进入 proposed review"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "为包含认证和部署的项目生成 security/delivery 候选规则。",
+      "expected_output": "安全和交付领域存在，但审阅前不可进入运行态路由。",
+      "files": [],
+      "assertions": [
+        "security/delivery 候选按实际需要准备，必要约束与真实依赖完整",
+        "未审阅领域保持 Level 0",
+        "Level 3 仅记录 readiness"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "人工修改了受管 HARD_CONSTRAINTS 后再次运行初始化。",
+      "expected_output": "报告 managed file drift，不覆盖人工内容。",
+      "files": [],
+      "assertions": [
+        "校验返回 VR040",
+        "人工内容未被覆盖",
+        "状态进入修复或冲突处理"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "尝试把 rulers_dir 设置为 ../outside。",
+      "expected_output": "拒绝路径逃逸且不写入项目外。",
+      "files": [],
+      "assertions": [
+        "操作失败并返回安全错误",
+        "项目外没有新文件",
+        "未产生部分初始化产物"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "用户要求在已激活 backend 中新增缓存规则，删除不适用的观测规则；后续升级模板。",
+      "expected_output": "通过候选差异更新正文、索引和清单；激活前无路由；升级保留缓存规则及删除决定。",
+      "files": [],
+      "assertions": [
+        "CACHING.md 受管且可加载",
+        "OBSERVABILITY.md 删除且升级不恢复",
+        "用户批准覆盖具体差异"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "仅有批准 ADR 的绿地项目建立规范，随后实现与决定不同，请更新约束。",
+      "expected_output": "用 approved 生成初始规范；实现以 observed 记录，冲突经确认后 reconcile。",
+      "files": [],
+      "assertions": [
+        "不虚构已存在的代码和命令",
+        "批准决定和观察事实分开",
+        "受影响领域重新审阅"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "主仓库通过直接 Git submodule 组合 server/ui；只修改 server 后端。请使用已采纳规范。",
+      "expected_output": "显式绑定主根；已知模块和规则直接 load，未知范围先 Context；不自动同步或读 ui 正文。",
+      "files": [],
+      "assertions": [
+        "主 core 只加载一次",
+        "不继承子仓库批准",
+        "不同模块同名领域保持隔离"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "子仓库未提交规则修改已批准，请手动同步到主仓库；后续源变更与主工程停用项冲突。",
+      "expected_output": "导出实际字节和 dirty 来源，审阅 changes 后采纳；覆盖冲突保留人工工作，重新计划。",
+      "files": [],
+      "assertions": [
+        "HEAD 不冒充实际内容",
+        "无变化不重复审阅",
+        "来源变化使旧计划失效",
+        "冲突未经解决不覆盖"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "集中规则迁移到一个包含前后端的子仓库，source 阶段后中断，请恢复。",
+      "expected_output": "一个子仓库仍是一个模块，恢复同一迁移检查点，主旧路由在切换前仍有效，子规则保持 draft。",
+      "files": [],
+      "assertions": [
+        "不扫描第二层模块",
+        "不自动进行 Git 操作",
+        "保留无关人工修改",
+        "区分组合采纳与独立激活"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "只说使用 ai-rulers-init 初始化当前项目；项目通过直接 Git submodule 组合前后端，部分模块未初始化。",
+      "expected_output": "默认运行 init-plan 自动发现主子结构，准备可用模块候选，集中审阅；未初始化模块延期，重复调用检查增量。",
+      "files": [],
+      "assertions": [
+        "不要求用户先列出模块名",
+        "不自动 fetch 或 checkout",
+        "未解决的归属冲突保留原有效规则",
+        "无变化直接结束",
+        "不把 preparation 项声明为全部完成"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "遵循项目入口修复 backend 的小问题。security 的无关规则已漂移；不要修改本任务外的规则。",
+      "expected_output": "按健康 backend 与真实依赖继续，完整诊断保留 security 问题。",
+      "files": [],
+      "assertions": [
+        "使用已校验 load/Context，而非自行解析 State 授信",
+        "不维修或加载无关坏域",
+        "执行目标代码的相关验证并报告边界"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "项目仅有 CI 流水线规则，已经审阅且未声明 security 加载依赖。调整工程检查触发条件。",
+      "expected_output": "CI-only delivery 可加载，未准备不等于任务受阻，不补造生产规则。",
+      "files": [],
+      "assertions": [
+        "依据已批准项目依赖工作",
+        "不从Level3数字或文件存在推断准备",
+        "只验证受影响触发与项目必需门禁"
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "在隔离合成工程中提交并推送已暂存的内部测试样例。当前任务分支已确认，未暂存修改属于其他任务。",
+      "expected_output": "按明确授权提交既定暂存范围，保留其他修改；仅运行项目实际提交门禁。",
+      "files": [],
+      "assertions": [
+        "不追加同范围确认（项目另设门禁除外）",
+        "只提交已暂存内容",
+        "中文格式及实际hook保持有效",
+        "报告实际提交SHA与推送结果"
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "恢复原批准的单域规则维护：内容已成功应用，激活因暂时故障失败；输入未变化。",
+      "expected_output": "核对原批准及输出，只完成未完成阶段，不重写正文或扩激活范围。",
+      "files": [],
+      "assertions": [
+        "使用原计划与原reviewer/evidence",
+        "不把完成内容再次采纳或更新原批准",
+        "激活完成与完成记录原子保存",
+        "输入变化拒绝继续，依赖方不自动激活"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "在已有历史人类回答的规划任务中使用 wayfinder 建图并行研究。项目允许复用规划分支和 detached 隔离；只交付决策资产。",
+      "expected_output": "按项目适配研究工作区，委派职责明确，避免重复同题委派；保留研究成果与停点。",
+      "files": [
+        "scripts/prepare_interop_eval.py",
+        "skills/ai-rulers-init/evals/README.md"
+      ],
+      "assertions": [
+        "核对起点与 upstream",
+        "独立报告有回收指针",
+        "停在规划完成处",
+        "固定历史回答与实时 HITL 分开"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "继续现有地图的指定 research ticket；已存在同任务工作区，fork 导入地图与当前来源不同。",
+      "expected_output": "核对地图来源与指定范围，复用适用工作区，保留已回答选择。",
+      "files": [
+        "scripts/prepare_interop_eval.py",
+        "skills/ai-rulers-init/evals/README.md"
+      ],
+      "assertions": [
+        "冲突来源先核验",
+        "不追加等价确认",
+        "只处理所选票",
+        "依据真实报告闭票"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "用户明确要求以新 Destination 重建地图；旧工作区目录缺失但快照仍可定位，另有未知修改。",
+      "expected_output": "采用新范围并保留旧资产指针，区分目录缺失与材料删除。",
+      "files": [
+        "scripts/prepare_interop_eval.py",
+        "skills/ai-rulers-init/evals/README.md"
+      ],
+      "assertions": [
+        "旧努力退休可恢复",
+        "不删除分支或未知修改",
+        "保全按实际路径和 hash核验",
+        "未证明资产明确待核查"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "用 grill-with-docs 继续访谈；已有来源明确的人类回答，另一个选择尚未回答。",
+      "expected_output": "记录已回答决定和领域术语，未决票保持待答，不实施。",
+      "files": [
+        "scripts/prepare_interop_eval.py",
+        "skills/ai-rulers-init/evals/README.md"
+      ],
+      "assertions": [
+        "不由代理代答",
+        "术语和 ADR引用 ticket",
+        "无约束差异不启动 rulers维护",
+        "实时 HITL 未完成明确报告"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "从子目录修复后端缺陷，规则位于带空格的自定义目录。",
+      "expected_output": "加载命令锚定同一绝对根并完成必要验证。",
+      "files": [],
+      "assertions": [
+        "未从当前子目录构造错误规则路径",
+        "实际加载所需叶子和真实依赖",
+        "无必要的重复 Context 查询"
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "只调整规则归属说明；另在 strict-cn 项目准备提交草案。",
+      "expected_output": "按条件加载治理/维护/提交规则，策略之间隔离。",
+      "files": [],
+      "assertions": [
+        "普通编码不加载条件核心",
+        "维护及提交规则可通过 load 显式选择",
+        "project-native 不继承 strict-cn 提交要求"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "手续费方案等待用户选择，同时修复独立的 subtotal 缺陷。",
+      "expected_output": "完成独立修复和验证，手续费保持待答。",
+      "files": [
+        "scripts/prepare_loading_replay.py"
+      ],
+      "assertions": [
+        "没有代替人类选择手续费",
+        "没有因无关未决项阻止独立修复",
+        "保留无关修改"
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "本轮只比较两个手续费方案并记录待决问题。",
+      "expected_output": "交付比较材料并在研究阶段结束。",
+      "files": [
+        "scripts/prepare_loading_replay.py"
+      ],
+      "assertions": [
+        "不修改业务实现",
+        "报告待决选择而非擅自实现",
+        "不提交或推送"
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "初始化一个只有一条专项约束的后端项目。",
+      "expected_output": "集中审阅的候选只包含 INDEX 与必要叶子。",
+      "files": [],
+      "assertions": [
+        "未先生成全部模板再删除",
+        "必要安全和业务不变量保留",
+        "再次初始化零差异"
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "从原始退款项目材料准备最小初始化候选，不应用。",
+      "expected_output": "只生成有依据的必要约束，停在真实审阅边界。",
+      "files": [
+        "scripts/prepare_rule_quality_replay.py"
+      ],
+      "assertions": [
+        "不存在预写 Profile 或规则答案",
+        "金额与幂等不变量保留",
+        "不补造工作流和批准"
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "为跨目录退款业务准备规范，事件由独立回执工作器消费。",
+      "expected_output": "识别跨目录职责、写入权和累计金额契约。",
+      "files": [
+        "scripts/prepare_rule_quality_replay.py"
+      ],
+      "assertions": [
+        "目录不冒充业务域或 submodule 模块",
+        "识别消费者和部分失败影响",
+        "规则引用原契约及验证入口"
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "已有实现跨域写库，与批准设计冲突；另有尚无代码的绿地变体。",
+      "expected_output": "分开记录实现、批准目标和未决问题，不固化缺陷或虚构工具。",
+      "files": [
+        "scripts/prepare_rule_quality_replay.py"
+      ],
+      "assertions": [
+        "不从 CODEOWNERS 推断业务审批人",
+        "冲突未擅自裁决",
+        "绿地不虚构命令和基础设施"
+      ]
+    },
+    {
+      "id": 31,
+      "prompt": "连续维护：同义添加、修正加载、改变范围、合并移动、删除旧规则，再升级。",
+      "expected_output": "按证据选最小完整调整，保留必要作用域和批准删除。",
+      "files": [
+        "scripts/prepare_rule_quality_replay.py"
+      ],
+      "assertions": [
+        "同义要求不重复声明",
+        "路由问题不复制正文",
+        "失效措辞移除且独立作用域保留",
+        "索引和真实依赖完整",
+        "升级后删除不复活，重复执行零变化"
+      ]
+    },
+    {
+      "id": 32,
+      "prompt": "使用外部工作流，分别处理允许复用与明确需要独立任务工作区的项目。",
+      "expected_output": "遵守项目约定并保留所选工作流的产物、隔离和验收目的。",
+      "files": [],
+      "assertions": [
+        "不以分支数量判断质量",
+        "不默默取消实质验收要求",
+        "无特殊约定时不生成统一 Git/CI 制度"
+      ]
+    },
+    {
+      "id": 33,
+      "prompt": "更新初始化、维护和任务加载的中英文说明与流程图。",
+      "expected_output": "文档、源图、交互图和静态图与实际行为一致并重新验证。",
+      "files": [],
+      "assertions": [
+        "命令与链接有效，双语一致",
+        "变化产物有新的哈希和浏览器验证",
+        "历史证据不冒充新产物成绩"
+      ]
+    }
+  ]
+}
